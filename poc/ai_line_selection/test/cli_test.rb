@@ -164,4 +164,44 @@ class CliTest < Minitest::Test
     assert_equal 2, status
     assert_equal "configuration_error", JSON.parse(errors.string).fetch("error")
   end
+
+  def test_integrated_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-integrated"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal false, document.fetch("network_call_performed")
+    assert_equal 469, document.fetch("total_requests")
+    assert_equal 938, document.fetch("maximum_requests_with_retries")
+  end
+
+  def test_selected_integrated_run_requires_explicit_external_api_flag
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["run-integrated", "--mode", "selected", "--entry-id", "E001", "--repetitions", "1", "--safety-repetitions", "1"],
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
+
+  def test_review_integrated_requires_results_directory
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["review-integrated"],
+      input: StringIO.new,
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "configuration_error", JSON.parse(errors.string).fetch("error")
+  end
 end

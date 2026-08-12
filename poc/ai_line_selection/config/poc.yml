@@ -8,6 +8,7 @@ external_api:
   usd_to_jpy: 150.0
   maximum_comparison_requests: 216
   maximum_safety_comparison_requests: 72
+  maximum_integrated_comparison_requests: 469
   maximum_embedding_comparison_requests: 12
   maximum_line_evaluation_comparison_requests: 218
   maximum_repetitions: 3
@@ -243,6 +244,17 @@ operations:
     prompt_version: draft-1
     schema_version: draft-1
     timeout_seconds: 3
+
+integrated:
+  chain_name: selected-v1
+  safety_provider: openai
+  meaning_provider: openai
+  embedding_provider: openai-small
+  line_evaluation_provider: anthropic
+  repetitions: 3
+  safety_case_repetitions: 3
+  candidate_limit: 50
+  evaluation_limit: 20
 
 search:
   candidate_limit: 50

@@ -2,7 +2,7 @@
 
 RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較検証するRuby CLIです。
 
-Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Issue #8のLine候補評価比較に加え、Issue #9ではSAFETY判定の比較CLI、障害時の停止制御、見逃し・誤検知・判定不能の集計を追加しています。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
+Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Issue #8のLine候補評価比較、Issue #9のSAFETY判定比較に加え、Issue #10では個別PoCの採用候補を一つのフローで評価する統合CLIを追加しています。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
 ## 必要環境
 
@@ -26,7 +26,7 @@ bundle install
 bundle exec ruby bin\ai_line_selection doctor
 ```
 
-設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-safety`、`compare-meaning`、`compare-embedding`または`compare-line-evaluation`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
+設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは各`compare-*`または`run-integrated --mode selected`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
 
 ## オフライン実行
 
@@ -192,6 +192,37 @@ bundle exec ruby bin\ai_line_selection review-line-evaluation `
 詳細は[Line候補評価 PoC比較](../../docs/Line評価_PoC比較.md)を参照してください。
 
 2026年8月12日の実API比較では、`claude-sonnet-5`をLine評価のPoC採用候補としました。Blind評価は許容36 / 36件、致命的違反0件、3回の最終選択一致率94.44%でした。`gpt-5.6-terra`は許容35 / 36件、致命的違反1件、最終選択一致率47.22%で採用基準未達でした。両モデルともLine評価だけでp95が6秒を超えたため、本番正式採用、同期処理設計、閾値、重みは未確定です。
+
+## 統合PoC
+
+個別PoCの採用候補を`SAFETY → Meaning → Embedding → 上位50件検索 → 上位20件Line評価 → Ruby最終選定`の順で接続します。通常36件を各3回、独立SAFETY 12件を各3回実行します。
+
+まず通信なしで基本469リクエスト、各処理1回再試行時の最大938リクエスト、費用上限を確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-integrated
+```
+
+Fixtureによる全件リハーサルは外部通信を行いません。検索品質の判断には使いません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection run-integrated `
+  --mode fixture `
+  --repetitions 3 `
+  --safety-repetitions 3
+```
+
+実APIは利用者の明示承認後だけ実行します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection run-integrated `
+  --mode selected `
+  --repetitions 3 `
+  --safety-repetitions 3 `
+  --allow-external-api
+```
+
+外部障害や不正出力は技術エラーとして停止し、意味上のSILENCEへ変換しません。実行条件、採用基準、人間評価手順は[統合PoC比較](../../docs/統合_PoC比較.md)を参照してください。
 
 ## 生成物
 

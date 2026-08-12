@@ -42,4 +42,15 @@ class ConfigurationTest < Minitest::Test
     assert_equal [4096], providers.map { |provider| provider.fetch("max_output_tokens") }.uniq
     assert_equal %w[anthropic fixture openai], configuration.line_evaluation_provider_names.sort
   end
+
+  def test_integrated_chain_uses_the_selected_poc_winners
+    integrated = configuration.integrated
+
+    assert_equal "openai", integrated.fetch("safety_provider")
+    assert_equal "openai", integrated.fetch("meaning_provider")
+    assert_equal "openai-small", integrated.fetch("embedding_provider")
+    assert_equal "anthropic", integrated.fetch("line_evaluation_provider")
+    assert_equal 3, integrated.fetch("repetitions")
+    assert_equal 3, integrated.fetch("safety_case_repetitions")
+  end
 end

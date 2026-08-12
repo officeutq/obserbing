@@ -35,6 +35,10 @@ module AiLineSelection
       when "compare-line-evaluation" then compare_line_evaluation
       when "review-line-evaluation" then review_line_evaluation
       when "apply-line-preliminary" then apply_line_preliminary
+      when "plan-integrated" then plan_integrated
+      when "run-integrated" then run_integrated
+      when "review-integrated" then review_integrated
+      when "apply-integrated-preliminary" then apply_integrated_preliminary
       else
         @output.puts(help)
       end
@@ -357,6 +361,103 @@ module AiLineSelection
       ).call)
     end
 
+    def plan_integrated
+      options = integrated_options(default_mode: "selected", allow_external_api_option: false)
+      print_json(IntegratedComparison.new(configuration: @configuration).plan(
+        mode: options.fetch(:mode),
+        repetitions: options.fetch(:repetitions),
+        safety_case_repetitions: options.fetch(:safety_case_repetitions),
+        entry_ids: options.fetch(:entry_ids)
+      ))
+    end
+
+    def run_integrated
+      options = integrated_options(default_mode: "fixture", allow_external_api_option: true)
+      print_json(IntegratedComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        mode: options.fetch(:mode),
+        repetitions: options.fetch(:repetitions),
+        safety_case_repetitions: options.fetch(:safety_case_repetitions),
+        entry_ids: options.fetch(:entry_ids)
+      ))
+    end
+
+    def integrated_options(default_mode:, allow_external_api_option:)
+      options = {
+        mode: default_mode,
+        repetitions: nil,
+        safety_case_repetitions: nil,
+        entry_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--mode NAME", IntegratedComparison::MODES) { |value| options[:mode] = value }
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--safety-repetitions N", Integer) { |value| options[:safety_case_repetitions] = value }
+        parser.on("--entry-id ID", "Limit the normal flow to one synthetic entry") do |value|
+          options[:entry_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external integrated API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+
+      defaults = options.fetch(:mode) == "selected" ? @configuration.integrated : {}
+      options[:repetitions] ||= defaults.fetch("repetitions", 1)
+      options[:safety_case_repetitions] ||= defaults.fetch("safety_case_repetitions", 1)
+      options
+    end
+
+    def review_integrated
+      options = results_directory_options("review-integrated", "Integrated comparison results directory")
+      LineEvaluationReviewer.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        input: @input,
+        output: @output
+      ).call
+    end
+
+    def apply_integrated_preliminary
+      options = preliminary_options("apply-integrated-preliminary")
+      print_json(LineEvaluationPreliminaryImporter.new(
+        results_dir: options.fetch(:results),
+        judgments_path: options.fetch(:judgments)
+      ).call)
+    end
+
+    def results_directory_options(command, description)
+      options = { results: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", description) { |value| options[:results] = value }
+      end.parse!(@argv)
+      raise ConfigurationError.new("#{command} requires --results DIRECTORY") unless options[:results]
+
+      options
+    end
+
+    def preliminary_options(command)
+      options = { results: nil, judgments: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", "Integrated comparison results directory") do |value|
+          options[:results] = value
+        end
+        parser.on("--judgments FILE", "Complete Codex preliminary judgment JSON") do |value|
+          options[:judgments] = value
+        end
+      end.parse!(@argv)
+      unless options[:results] && options[:judgments]
+        raise ConfigurationError.new("#{command} requires --results and --judgments")
+      end
+
+      options
+    end
+
     def print_json(value)
       @output.puts(JSON.pretty_generate(value))
     end
@@ -382,6 +483,11 @@ module AiLineSelection
           ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection review-line-evaluation --results results/line_evaluation_<timestamp>_<suffix>
           ruby bin/ai_line_selection apply-line-preliminary --results results/line_evaluation_<timestamp>_<suffix> --judgments preliminary.json
+          ruby bin/ai_line_selection plan-integrated [--mode selected] [--repetitions 3] [--safety-repetitions 3]
+          ruby bin/ai_line_selection run-integrated [--mode fixture] [--repetitions 1] [--safety-repetitions 1]
+          ruby bin/ai_line_selection run-integrated --mode selected --allow-external-api
+          ruby bin/ai_line_selection review-integrated --results results/integrated_<timestamp>_<suffix>
+          ruby bin/ai_line_selection apply-integrated-preliminary --results results/integrated_<timestamp>_<suffix> --judgments preliminary.json
       TEXT
     end
   end
