@@ -48,6 +48,22 @@ module ExternalTestSupport
     }
   end
 
+  def valid_line_evaluation
+    {
+      "schema_version" => "draft-1",
+      "recommended_line_id" => "L001",
+      "candidates" => %w[L001 L002].map do |line_id|
+        {
+          "line_id" => line_id,
+          "relevance" => 0.8,
+          "directness" => 0.4,
+          "space" => 0.7,
+          "obserbing_fit" => 0.85
+        }
+      end
+    }
+  end
+
   def openai_response(meaning: valid_meaning, status: 200, model: "gpt-5.6-terra", body: nil)
     document = {
       "id" => "resp_test",
@@ -142,6 +158,31 @@ module ExternalTestSupport
     )
     settings = configuration.embedding_provider(provider).merge("dimensions" => 8)
     [client, telemetry, settings]
+  end
+
+  def external_line_evaluation_client(provider:, transport:)
+    telemetry = AiLineSelection::Telemetry.new(correlation_id: "test", path: nil)
+    client = AiLineSelection::OperationClient.new(
+      configuration: configuration,
+      schemas: AiLineSelection::SchemaRegistry.new,
+      prompts: AiLineSelection::PromptRegistry.new,
+      telemetry: telemetry,
+      allow_external_api: true,
+      environment: { "OPENAI_API_KEY" => "test-openai", "ANTHROPIC_API_KEY" => "test-anthropic" },
+      transport: transport,
+      sleeper: ->(_seconds) {}
+    )
+    [client, telemetry, configuration.line_evaluation_provider(provider)]
+  end
+
+  def line_evaluation_input
+    {
+      "meaning" => { "themes" => ["test"], "structure" => "test", "abstraction" => "test" },
+      "candidates" => [
+        { "line" => { "id" => "L001", "text" => "first" }, "similarity" => 0.8 },
+        { "line" => { "id" => "L002", "text" => "second" }, "similarity" => 0.7 }
+      ]
+    }
   end
 end
 

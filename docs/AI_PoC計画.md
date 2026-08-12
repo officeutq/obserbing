@@ -138,6 +138,8 @@ Issue #6ではMeaning専用のHTTP Adapterを実装する。`pending_external`�
 
 Issue #7ではEmbedding専用のHTTP Adapterを実装し、`plan-embedding`は常に通信なし、`compare-embedding`は`--allow-external-api`指定時だけ通信する。Line EmbeddingはApproved 96件を入力形式ごとに一括生成し、Entry Embeddingは合成日記36件を別の一括リクエストで生成する。CandidateとRetiredはAPI送信前に除外する。詳細条件は[Embedding候補検索 PoC比較](Embedding_PoC比較.md)を参照する。
 
+Issue #8ではIssue #7の採用候補で同一の上位20候補を固定し、OpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`へ4軸評価を依頼する。AI単独の推奨とRuby側の最終制御を分離し、候補IDの完全一致、数値範囲、SILENCE、3段階の閾値感度を検証する。各Providerの第1反復だけをBlind評価し、Codex一次評価の低確信ケースだけを人が対話確認する。詳細条件は[Line候補評価 PoC比較](Line評価_PoC比較.md)を参照する。
+
 Meaning比較の実Providerタイムアウトは両社30秒、同期再試行は最大1回とする。Fixtureの従来値3秒は維持する。3秒では構造化出力Schemaの初回処理や外部通信の揺らぎをモデル品質と誤認する可能性があるためであり、p50、p95、最大値を記録してPoC後に再評価する。
 
 ## 11. ログ・秘密情報・成果物

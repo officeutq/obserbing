@@ -64,19 +64,27 @@ module AiLineSelection
       end
 
       def line_evaluation(input)
+        candidates = input.fetch("candidates").map do |candidate|
+          line = candidate.fetch("line")
+          directness = line.fetch("directness", 0.5).to_f
+          {
+            "line_id" => line.fetch("id"),
+            "relevance" => clamp((candidate.fetch("similarity").to_f + 1.0) / 2.0),
+            "directness" => clamp(directness),
+            "space" => clamp(0.95 - (directness * 0.35)),
+            "obserbing_fit" => line.fetch("review_status", "reviewed") == "reviewed" ? 0.9 : 0.65
+          }
+        end
+        recommendation = FinalSelector.new(
+          "minimum_relevance" => 0.30,
+          "maximum_directness" => 0.75,
+          "minimum_space" => 0.45,
+          "minimum_obserbing_fit" => 0.60
+        ).select(candidates, input.fetch("candidates").map { |item| item.fetch("line") })
         {
           "schema_version" => "draft-1",
-          "candidates" => input.fetch("candidates").map do |candidate|
-            line = candidate.fetch("line")
-            directness = line.fetch("directness").to_f
-            {
-              "line_id" => line.fetch("id"),
-              "relevance" => clamp((candidate.fetch("similarity").to_f + 1.0) / 2.0),
-              "directness" => clamp(directness),
-              "space" => clamp(0.95 - (directness * 0.35)),
-              "obserbing_fit" => line.fetch("review_status") == "reviewed" ? 0.9 : 0.65
-            }
-          end
+          "recommended_line_id" => recommendation.fetch(:line_id) || "SILENCE",
+          "candidates" => candidates
         }
       end
 

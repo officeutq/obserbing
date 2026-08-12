@@ -7,8 +7,13 @@ module AiLineSelection
     module ExternalSupport
       private
 
-      def ensure_meaning_request!(request)
-        ensure_operation!(request, :meaning)
+      def ensure_structured_request!(request)
+        return if %i[meaning line_evaluation].include?(request.operation)
+
+        raise ProviderContractError.new(
+          "External adapter received an unsupported operation",
+          operation: request.operation
+        )
       end
 
       def ensure_operation!(request, expected)
@@ -56,8 +61,24 @@ module AiLineSelection
         when 500..599
           raise ProviderServerError.new(provider, status: response.status, request_id: id)
         else
-          raise ProviderHttpError.new(provider, status: response.status, request_id: id)
+          raise ProviderHttpError.new(
+            provider,
+            status: response.status,
+            request_id: id,
+            provider_error: provider_error_details(response)
+          )
         end
+      end
+
+      def provider_error_details(response)
+        error = JSON.parse(response.body).fetch("error", {})
+        return unless error.is_a?(Hash)
+
+        error.slice("type", "code", "param", "message").transform_values do |value|
+          value.is_a?(String) ? value[0, 1000] : value
+        end
+      rescue JSON::ParserError
+        nil
       end
 
       def validate_returned_model!(request, returned_model)

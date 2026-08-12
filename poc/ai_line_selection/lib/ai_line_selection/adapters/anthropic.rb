@@ -14,7 +14,7 @@ module AiLineSelection
       end
 
       def call(request)
-        ensure_meaning_request!(request)
+        ensure_structured_request!(request)
         provider = request.settings.fetch("provider")
         response = @transport.post(
           url: request.settings.fetch("endpoint"),
@@ -57,7 +57,7 @@ module AiLineSelection
         {
           model: request.model,
           system: request.prompt,
-          messages: [{ role: "user", content: request.input.fetch("entry_text") }],
+          messages: [{ role: "user", content: user_input(request) }],
           max_tokens: request.settings.fetch("max_output_tokens"),
           output_config: {
             effort: request.settings.fetch("reasoning_effort"),
@@ -67,6 +67,12 @@ module AiLineSelection
             }
           }
         }
+      end
+
+      def user_input(request)
+        return request.input.fetch("entry_text") if request.operation == :meaning
+
+        JSON.generate(request.input)
       end
 
       def usage_for(document, request)

@@ -29,6 +29,10 @@ module AiLineSelection
       when "review-meaning" then review_meaning
       when "plan-embedding" then plan_embedding
       when "compare-embedding" then compare_embedding
+      when "plan-line-evaluation" then plan_line_evaluation
+      when "compare-line-evaluation" then compare_line_evaluation
+      when "review-line-evaluation" then review_line_evaluation
+      when "apply-line-preliminary" then apply_line_preliminary
       else
         @output.puts(help)
       end
@@ -194,6 +198,109 @@ module AiLineSelection
       options
     end
 
+    def plan_line_evaluation
+      options = line_evaluation_options(
+        default_providers: %w[openai anthropic],
+        default_embedding_provider: LineEvaluationComparison::DEFAULT_EMBEDDING_PROVIDER,
+        default_repetitions: 3,
+        allow_external_api_option: false
+      )
+      report = LineEvaluationComparison.new(configuration: @configuration).plan(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        entry_ids: options.fetch(:entry_ids),
+        embedding_provider: options.fetch(:embedding_provider)
+      )
+      print_json(report)
+    end
+
+    def compare_line_evaluation
+      options = line_evaluation_options(
+        default_providers: ["fixture"],
+        default_embedding_provider: "fixture",
+        default_repetitions: 1,
+        allow_external_api_option: true
+      )
+      report = LineEvaluationComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        entry_ids: options.fetch(:entry_ids),
+        embedding_provider: options.fetch(:embedding_provider)
+      )
+      print_json(report)
+    end
+
+    def line_evaluation_options(default_providers:, default_embedding_provider:, default_repetitions:, allow_external_api_option:)
+      options = {
+        providers: default_providers,
+        embedding_provider: default_embedding_provider,
+        repetitions: default_repetitions,
+        entry_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--providers LIST", "Comma-separated: fixture,openai,anthropic") do |value|
+          options[:providers] = value.split(",").map(&:strip)
+        end
+        parser.on("--embedding-provider NAME", "fixture or openai-small") do |value|
+          options[:embedding_provider] = value
+        end
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--entry-id ID", "Limit the comparison to one synthetic entry") do |value|
+          options[:entry_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def review_line_evaluation
+      options = { results: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", "Line evaluation comparison results directory") do |value|
+          options[:results] = value
+        end
+      end.parse!(@argv)
+      unless options[:results]
+        raise ConfigurationError.new("review-line-evaluation requires --results DIRECTORY")
+      end
+
+      LineEvaluationReviewer.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        input: @input,
+        output: @output
+      ).call
+    end
+
+    def apply_line_preliminary
+      options = { results: nil, judgments: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", "Line evaluation comparison results directory") do |value|
+          options[:results] = value
+        end
+        parser.on("--judgments FILE", "Complete Codex preliminary judgment JSON") do |value|
+          options[:judgments] = value
+        end
+      end.parse!(@argv)
+      unless options[:results] && options[:judgments]
+        raise ConfigurationError.new("apply-line-preliminary requires --results and --judgments")
+      end
+
+      print_json(LineEvaluationPreliminaryImporter.new(
+        results_dir: options.fetch(:results),
+        judgments_path: options.fetch(:judgments)
+      ).call)
+    end
+
     def print_json(value)
       @output.puts(JSON.pretty_generate(value))
     end
@@ -211,6 +318,11 @@ module AiLineSelection
           ruby bin/ai_line_selection plan-embedding --providers openai-small,openai-large
           ruby bin/ai_line_selection compare-embedding [--providers fixture] [--variants original,meaning_structure,normalized_text] [--limits 20,50,100]
           ruby bin/ai_line_selection compare-embedding --providers openai-small,openai-large --allow-external-api
+          ruby bin/ai_line_selection plan-line-evaluation --providers openai,anthropic --repetitions 3
+          ruby bin/ai_line_selection compare-line-evaluation [--providers fixture] [--embedding-provider fixture] [--repetitions 1]
+          ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api
+          ruby bin/ai_line_selection review-line-evaluation --results results/line_evaluation_<timestamp>_<suffix>
+          ruby bin/ai_line_selection apply-line-preliminary --results results/line_evaluation_<timestamp>_<suffix> --judgments preliminary.json
       TEXT
     end
   end

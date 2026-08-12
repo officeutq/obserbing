@@ -35,6 +35,7 @@ module AiLineSelection
       adapter = AdapterFactory.build(
         adapter_name,
         configuration: @configuration,
+        operation: operation,
         allow_external_api: @allow_external_api,
         environment: @environment,
         transport: @transport
@@ -203,12 +204,27 @@ module AiLineSelection
         actual_ids = data.fetch("candidates").map { |item| item.fetch("line_id") }
         duplicate_ids = actual_ids.tally.select { |_id, count| count > 1 }.keys
         unknown_ids = actual_ids - allowed_ids
-        return if duplicate_ids.empty? && unknown_ids.empty?
+        missing_ids = allowed_ids - actual_ids
+        recommendation = data.fetch("recommended_line_id")
+        invalid_recommendation = recommendation != "SILENCE" && !allowed_ids.include?(recommendation)
+        range_errors = data.fetch("candidates").flat_map.with_index do |candidate, index|
+          %w[relevance directness space obserbing_fit].filter_map do |field|
+            value = candidate.fetch(field)
+            "$.candidates[#{index}].#{field}: must be between 0 and 1" unless value.between?(0, 1)
+          end
+        end
+        raise SchemaValidationError.new(:line_evaluation, range_errors) unless range_errors.empty?
+        return if duplicate_ids.empty? && unknown_ids.empty? && missing_ids.empty? && !invalid_recommendation
 
         raise ProviderContractError.new(
           "Line evaluation returned invalid candidate IDs",
           operation: operation,
-          details: { duplicate_ids: duplicate_ids, unknown_ids: unknown_ids }
+          details: {
+            duplicate_ids: duplicate_ids,
+            unknown_ids: unknown_ids,
+            missing_ids: missing_ids,
+            invalid_recommendation: invalid_recommendation ? recommendation : nil
+          }.compact
         )
       end
     end

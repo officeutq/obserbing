@@ -45,6 +45,16 @@ module AiLineSelection
       @data.fetch("meaning_providers").keys
     end
 
+    def line_evaluation_provider(name)
+      @data.fetch("line_evaluation_providers").fetch(name.to_s)
+    rescue KeyError
+      raise ConfigurationError.new("Unknown Line evaluation provider", details: { provider: name.to_s })
+    end
+
+    def line_evaluation_provider_names
+      @data.fetch("line_evaluation_providers").keys
+    end
+
     def embedding_provider(name)
       @data.fetch("embedding_providers").fetch(name.to_s)
     rescue KeyError
@@ -88,7 +98,7 @@ module AiLineSelection
     private
 
     def validate!
-      %w[version random_seed external_api meaning_providers embedding_providers operations search selection paths].each do |key|
+      %w[version random_seed external_api meaning_providers line_evaluation_providers embedding_providers operations search selection paths].each do |key|
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
@@ -100,6 +110,10 @@ module AiLineSelection
 
       unless external_api.fetch("maximum_embedding_comparison_requests").to_i.positive?
         raise ConfigurationError.new("external_api.maximum_embedding_comparison_requests must be positive")
+      end
+
+      unless external_api.fetch("maximum_line_evaluation_comparison_requests").to_i.positive?
+        raise ConfigurationError.new("external_api.maximum_line_evaluation_comparison_requests must be positive")
       end
 
       if external_api.fetch("total_budget_jpy").to_f.negative?
@@ -120,6 +134,32 @@ module AiLineSelection
       max_output_values = meaning_provider_names.map { |name| meaning_provider(name).fetch("max_output_tokens") }.uniq
       unless max_output_values.length == 1
         raise ConfigurationError.new("Meaning providers must use the same max_output_tokens")
+      end
+
+      line_evaluation_provider_names.each do |name|
+        provider = line_evaluation_provider(name)
+        %w[adapter provider model max_output_tokens timeout_seconds max_retries pricing].each do |key|
+          raise ConfigurationError.new("Missing Line evaluation provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+        end
+        if provider.fetch("adapter") == "fixture"
+          unless provider.fetch("max_retries") == 0
+            raise ConfigurationError.new("Fixture Line evaluation provider must not retry", details: { provider: name })
+          end
+        else
+          %w[endpoint api_key_env].each do |key|
+            raise ConfigurationError.new("Missing external Line evaluation provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+          end
+          unless provider.fetch("max_retries") == 1
+            raise ConfigurationError.new("External Line evaluation provider max_retries must be 1", details: { provider: name })
+          end
+        end
+      end
+
+      line_output_values = line_evaluation_provider_names.map do |name|
+        line_evaluation_provider(name).fetch("max_output_tokens")
+      end.uniq
+      unless line_output_values.length == 1
+        raise ConfigurationError.new("Line evaluation providers must use the same max_output_tokens")
       end
 
 
