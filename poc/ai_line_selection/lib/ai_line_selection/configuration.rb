@@ -45,6 +45,16 @@ module AiLineSelection
       @data.fetch("meaning_providers").keys
     end
 
+    def embedding_provider(name)
+      @data.fetch("embedding_providers").fetch(name.to_s)
+    rescue KeyError
+      raise ConfigurationError.new("Unknown Embedding provider", details: { provider: name.to_s })
+    end
+
+    def embedding_provider_names
+      @data.fetch("embedding_providers").keys
+    end
+
     def search
       @data.fetch("search")
     end
@@ -78,7 +88,7 @@ module AiLineSelection
     private
 
     def validate!
-      %w[version random_seed external_api meaning_providers operations search selection paths].each do |key|
+      %w[version random_seed external_api meaning_providers embedding_providers operations search selection paths].each do |key|
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
@@ -86,6 +96,10 @@ module AiLineSelection
 
       unless [true, false].include?(external_api["enabled"])
         raise ConfigurationError.new("external_api.enabled must be boolean")
+      end
+
+      unless external_api.fetch("maximum_embedding_comparison_requests").to_i.positive?
+        raise ConfigurationError.new("external_api.maximum_embedding_comparison_requests must be positive")
       end
 
       if external_api.fetch("total_budget_jpy").to_f.negative?
@@ -106,6 +120,20 @@ module AiLineSelection
       max_output_values = meaning_provider_names.map { |name| meaning_provider(name).fetch("max_output_tokens") }.uniq
       unless max_output_values.length == 1
         raise ConfigurationError.new("Meaning providers must use the same max_output_tokens")
+      end
+
+
+      embedding_provider_names.each do |name|
+        provider = embedding_provider(name)
+        %w[adapter provider model dimensions timeout_seconds max_retries pricing].each do |key|
+          raise ConfigurationError.new("Missing Embedding provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+        end
+        unless provider.fetch("dimensions").to_i.positive?
+          raise ConfigurationError.new("Embedding provider dimensions must be positive", details: { provider: name })
+        end
+        unless [0, 1].include?(provider.fetch("max_retries"))
+          raise ConfigurationError.new("Embedding provider max_retries must be 0 or 1", details: { provider: name })
+        end
       end
     end
   end

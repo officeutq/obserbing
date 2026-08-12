@@ -7,6 +7,7 @@ external_api:
   warning_ratio: 0.8
   usd_to_jpy: 150.0
   maximum_comparison_requests: 216
+  maximum_embedding_comparison_requests: 12
   maximum_repetitions: 3
 
 meaning_providers:
@@ -49,6 +50,58 @@ meaning_providers:
       cached_input_per_million_usd: 0.2
       output_per_million_usd: 10.0
       source: https://platform.claude.com/docs/en/about-claude/pricing
+
+embedding_providers:
+  fixture:
+    adapter: fixture
+    provider: fixture
+    model: offline-hash-embedding-v1
+    dimensions: 64
+    timeout_seconds: 3
+    max_retries: 0
+    pricing:
+      version: offline
+      checked_at: "2026-08-12"
+      input_per_million_usd: 0.0
+      cached_input_per_million_usd: 0.0
+      output_per_million_usd: 0.0
+      source: local-fixture
+  openai-small:
+    adapter: openai_embedding
+    provider: openai
+    model: text-embedding-3-small
+    api: embeddings
+    endpoint: https://api.openai.com/v1/embeddings
+    api_key_env: OPENAI_API_KEY
+    dimensions: 1536
+    timeout_seconds: 30
+    max_retries: 1
+    retry_delay_seconds: 0.5
+    pricing:
+      version: 2026-08-12-standard
+      checked_at: "2026-08-12"
+      input_per_million_usd: 0.02
+      cached_input_per_million_usd: 0.02
+      output_per_million_usd: 0.0
+      source: https://developers.openai.com/api/docs/models/text-embedding-3-small
+  openai-large:
+    adapter: openai_embedding
+    provider: openai
+    model: text-embedding-3-large
+    api: embeddings
+    endpoint: https://api.openai.com/v1/embeddings
+    api_key_env: OPENAI_API_KEY
+    dimensions: 1536
+    timeout_seconds: 30
+    max_retries: 1
+    retry_delay_seconds: 0.5
+    pricing:
+      version: 2026-08-12-standard
+      checked_at: "2026-08-12"
+      input_per_million_usd: 0.13
+      cached_input_per_million_usd: 0.13
+      output_per_million_usd: 0.0
+      source: https://developers.openai.com/api/docs/models/text-embedding-3-large
 
 operations:
   safety:

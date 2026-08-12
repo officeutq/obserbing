@@ -24,6 +24,14 @@ module AiLineSelection
           environment: environment,
           transport: transport || HttpTransport.new
         )
+      when "openai_embedding"
+        raise ExternalApiDisabledError.new(:embedding) unless allow_external_api
+
+        Adapters::OpenAIEmbedding.new(
+          configuration: configuration,
+          environment: environment,
+          transport: transport || HttpTransport.new
+        )
       else
         raise ConfigurationError.new("Unknown adapter", details: { adapter: name.to_s })
       end

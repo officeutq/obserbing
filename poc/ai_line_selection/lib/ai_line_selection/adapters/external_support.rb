@@ -8,10 +8,14 @@ module AiLineSelection
       private
 
       def ensure_meaning_request!(request)
-        return if request.operation == :meaning
+        ensure_operation!(request, :meaning)
+      end
+
+      def ensure_operation!(request, expected)
+        return if request.operation == expected
 
         raise ProviderContractError.new(
-          "External comparison adapter only supports Meaning Structure",
+          "External adapter received an unsupported operation",
           operation: request.operation
         )
       end

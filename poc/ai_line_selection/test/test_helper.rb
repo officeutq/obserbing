@@ -87,6 +87,24 @@ module ExternalTestSupport
     )
   end
 
+  def openai_embedding_response(count:, dimensions: 8, status: 200, model: "text-embedding-3-small", body: nil)
+    document = {
+      "object" => "list",
+      "data" => count.times.map do |index|
+        values = Array.new(dimensions, 0.0)
+        values[index % dimensions] = 1.0
+        { "object" => "embedding", "index" => index, "embedding" => values }
+      end.reverse,
+      "model" => model,
+      "usage" => { "prompt_tokens" => count * 3, "total_tokens" => count * 3 }
+    }
+    AiLineSelection::HttpResponse.new(
+      status: status,
+      headers: { "x-request-id" => "req_embedding" },
+      body: body || JSON.generate(document)
+    )
+  end
+
   def http_error(status)
     AiLineSelection::HttpResponse.new(
       status: status,
@@ -108,6 +126,22 @@ module ExternalTestSupport
       sleeper: ->(_seconds) {}
     )
     [client, telemetry, configuration.meaning_provider(provider)]
+  end
+
+  def external_embedding_client(provider:, transport:)
+    telemetry = AiLineSelection::Telemetry.new(correlation_id: "test", path: nil)
+    client = AiLineSelection::OperationClient.new(
+      configuration: configuration,
+      schemas: AiLineSelection::SchemaRegistry.new,
+      prompts: AiLineSelection::PromptRegistry.new,
+      telemetry: telemetry,
+      allow_external_api: true,
+      environment: { "OPENAI_API_KEY" => "test-openai" },
+      transport: transport,
+      sleeper: ->(_seconds) {}
+    )
+    settings = configuration.embedding_provider(provider).merge("dimensions" => 8)
+    [client, telemetry, settings]
   end
 end
 
