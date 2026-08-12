@@ -62,7 +62,7 @@ module AiLineSelection
           text: {
             format: {
               type: "json_schema",
-              name: request.operation == :meaning ? "meaning_structure" : "line_evaluation",
+              name: structured_output_name(request.operation),
               strict: true,
               schema: request.response_schema
             }
@@ -73,9 +73,17 @@ module AiLineSelection
       end
 
       def user_input(request)
-        return request.input.fetch("entry_text") if request.operation == :meaning
+        return request.input.fetch("entry_text") if %i[safety meaning].include?(request.operation)
 
         JSON.generate(request.input)
+      end
+
+      def structured_output_name(operation)
+        {
+          safety: "safety_classification",
+          meaning: "meaning_structure",
+          line_evaluation: "line_evaluation"
+        }.fetch(operation)
       end
 
       def usage_for(document, request)

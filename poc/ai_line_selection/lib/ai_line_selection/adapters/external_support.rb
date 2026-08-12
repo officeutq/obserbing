@@ -8,7 +8,7 @@ module AiLineSelection
       private
 
       def ensure_structured_request!(request)
-        return if %i[meaning line_evaluation].include?(request.operation)
+        return if %i[safety meaning line_evaluation].include?(request.operation)
 
         raise ProviderContractError.new(
           "External adapter received an unsupported operation",

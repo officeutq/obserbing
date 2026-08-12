@@ -25,6 +25,15 @@ class ConfigurationTest < Minitest::Test
     assert providers.all? { |provider| provider.fetch("max_retries") == 1 }
   end
 
+  def test_safety_providers_share_output_limit_and_have_fixture_plus_external_candidates
+    providers = configuration.safety_provider_names.map { |name| configuration.safety_provider(name) }
+
+    assert_equal [256], providers.map { |provider| provider.fetch("max_output_tokens") }.uniq
+    assert_equal %w[anthropic fixture openai], configuration.safety_provider_names.sort
+    assert_equal 0, configuration.safety_provider("fixture").fetch("max_retries")
+    assert_equal [1], %w[openai anthropic].map { |name| configuration.safety_provider(name).fetch("max_retries") }.uniq
+  end
+
   def test_line_evaluation_providers_share_output_limit
     providers = configuration.line_evaluation_provider_names.map do |name|
       configuration.line_evaluation_provider(name)

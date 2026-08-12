@@ -70,7 +70,7 @@ module AiLineSelection
       end
 
       def user_input(request)
-        return request.input.fetch("entry_text") if request.operation == :meaning
+        return request.input.fetch("entry_text") if %i[safety meaning].include?(request.operation)
 
         JSON.generate(request.input)
       end

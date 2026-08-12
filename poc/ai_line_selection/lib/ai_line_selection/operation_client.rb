@@ -187,6 +187,8 @@ module AiLineSelection
 
     def validate_contract!(operation, input, data)
       case operation.to_sym
+      when :safety
+        validate_safety_contract!(data)
       when :meaning
         validate_meaning_contract!(data)
       when :embedding
@@ -227,6 +229,25 @@ module AiLineSelection
           }.compact
         )
       end
+    end
+
+    def validate_safety_contract!(data)
+      classification = data.fetch("classification")
+      reason_code = data.fetch("reason_code")
+      confidence = data.fetch("confidence")
+      expected_reason_codes = {
+        "normal" => ["none"],
+        "safety" => %w[self_harm_imminent suicide_imminent harm_to_others_imminent],
+        "indeterminate" => ["insufficient_context"]
+      }
+      errors = []
+      errors << "$.confidence: must be between 0 and 1" unless confidence.between?(0, 1)
+      unless expected_reason_codes.fetch(classification).include?(reason_code)
+        errors << "$.reason_code: is inconsistent with classification"
+      end
+      return if errors.empty?
+
+      raise SchemaValidationError.new(:safety, errors)
     end
 
     def validate_meaning_contract!(data)

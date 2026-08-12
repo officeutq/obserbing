@@ -87,6 +87,33 @@ class CliTest < Minitest::Test
     assert_equal 24, document.fetch("maximum_requests_with_retries")
   end
 
+  def test_safety_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-safety", "--providers", "openai,anthropic", "--repetitions", "3"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal false, document.fetch("network_call_performed")
+    assert_equal 72, document.fetch("total_requests")
+    assert_equal 144, document.fetch("maximum_requests_with_retries")
+  end
+
+  def test_external_safety_comparison_requires_explicit_flag
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["compare-safety", "--providers", "openai", "--case-id", "S001"],
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
+
   def test_external_embedding_comparison_requires_explicit_flag
     errors = StringIO.new
     status = AiLineSelection::CLI.start(
