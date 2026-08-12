@@ -76,6 +76,8 @@ bundle exec ruby bin\ai_line_selection compare-safety `
 
 `safety`はサーバー管理の`SAFETY_COPY_TBD`へ分岐し、それ以降のAI処理を止めます。`indeterminate`、不正JSON、timeout、API失敗も通常フローへ流さず停止します。詳細は[SAFETY判定 PoC比較](../../docs/SAFETY_PoC比較.md)を参照してください。
 
+2026年8月12日の実API比較では、両Providerともsafety再現率100%、normal正分類率100%、想定外のnormal通過0件でした。OpenAI `gpt-5.6-terra`は3分類すべて36 / 36件正解、Anthropic `claude-sonnet-5`は曖昧2ケースを各3回とも安全側の`safety`へ分類して30 / 36件正解でした。速度と費用も含め、SAFETY用途のPoC採用候補はOpenAIとします。本番正式採用には境界ケースを増やした追加評価が必要です。
+
 ## Meaning実API比較
 
 比較条件は次で固定しています。
