@@ -29,6 +29,9 @@ class MeaningReviewerTest < Minitest::Test
       assert_includes second_output.string, "openai"
       assert_includes second_output.string, "anthropic"
       assert File.file?(File.join(directory, "interactive_human_evaluation_summary.json"))
+      comparison_summary = JSON.parse(File.read(File.join(directory, "summary.json"), encoding: "UTF-8"))
+      assert_equal false, comparison_summary.fetch("human_evaluation_pending")
+      assert_equal "complete", comparison_summary.dig("human_evaluation", "status")
     end
   end
 
@@ -131,5 +134,10 @@ class MeaningReviewerTest < Minitest::Test
       write_headers: true,
       headers: mapping_headers
     ) { |csv| mapping_rows.each { |row| csv << row } }
+    File.write(
+      File.join(directory, "summary.json"),
+      JSON.pretty_generate("human_evaluation_pending" => true),
+      mode: "w:UTF-8"
+    )
   end
 end

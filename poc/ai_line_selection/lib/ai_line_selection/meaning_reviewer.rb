@@ -310,9 +310,30 @@ module AiLineSelection
     def complete(state, mapping_rows)
       summary = build_summary(state, mapping_rows)
       File.write(@summary_path, JSON.pretty_generate(summary), mode: "w:UTF-8")
+      update_comparison_summary(summary)
       @output.puts("\n全評価が完了しました。ここからProvider名を開示します。")
       @output.puts(JSON.pretty_generate(summary))
       summary
+    end
+
+    def update_comparison_summary(evaluation_summary)
+      path = File.join(@results_dir, "summary.json")
+      return unless File.file?(path)
+
+      comparison_summary = JSON.parse(File.read(path, encoding: "UTF-8"))
+      comparison_summary["human_evaluation_pending"] = false
+      comparison_summary["human_evaluation"] = {
+        "status" => "complete",
+        "judge_counts" => evaluation_summary.fetch(:judge_counts),
+        "human_reviewed_outputs" => evaluation_summary.fetch(:human_reviewed_outputs),
+        "summary_file" => @summary_path
+      }
+      File.write(path, JSON.pretty_generate(comparison_summary), mode: "w:UTF-8")
+    rescue JSON::ParserError => e
+      raise DataError.new(
+        "Meaning comparison summary is invalid JSON",
+        details: { path: path, error_class: e.class.name }
+      )
     end
 
     def build_summary(state, mapping_rows)
