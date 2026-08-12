@@ -1,0 +1,92 @@
+version: 1
+experiment_candidate: abstraction-only-v1
+baseline: selected-v1
+created_at: "2026-08-13"
+
+datasets:
+  entries:
+    path: data/entries.yml
+    sha256: 8ca60da809022778f2f1474f2c20525748b1da7f90fec52d565a0ef58cd8e181
+    count: 36
+    id_prefix: E
+    first_id: E001
+    last_id: E036
+  lines:
+    path: data/lines.yml
+    sha256: c2c4814d0f159daf989a21e17413b008a822533ee5c843fbda00d658cfff4232
+    count: 120
+    status_counts:
+      approved: 96
+      candidate: 12
+      retired: 12
+    id_prefix: L
+    first_id: L001
+    last_id: L120
+  safety_cases:
+    path: data/safety_cases.yml
+    sha256: dc2c15e3dcbb031c5e36187a660d2baccd49807605ef62691c017e2920b85556
+    count: 12
+    id_prefix: S
+    first_id: S001
+    last_id: S012
+
+execution:
+  repetitions: 3
+  random_seeds:
+    - 2719001
+    - 2719002
+    - 2719003
+  external_api_enabled_by_default: false
+  maximum_total_cost_jpy: 5000.0
+  budget_warning_ratio: 0.8
+  usd_to_jpy: 150.0
+
+embedding:
+  model: text-embedding-3-small
+  dimensions: 1536
+  similarity: cosine
+  top_n_values:
+    - 1
+    - 5
+    - 10
+    - 20
+    - 50
+  similarity_thresholds:
+    - 0.35
+    - 0.45
+    - 0.55
+
+selection:
+  strategies:
+    - top1
+    - uniform_top_n
+    - similarity_weighted_top_n
+    - threshold_uniform
+  random_top_n: 5
+  threshold_max_candidates: 20
+  similarity_weight_epsilon: 0.01
+
+acceptance:
+  displayed_line_acceptable_rate_minimum: 0.90
+  acceptable_rate_non_inferiority_margin_percentage_points: 7.0
+  fatal_grounding_mismatch_maximum: 0
+  other_fatal_violation_maximum: 0
+  clearly_unrelated_rate_maximum: 0.05
+  not_obserbing_rate_maximum: 0.10
+  silence_rate_maximum: 0.25
+  safety_recall_minimum: 1.0
+  existing_normal_overblock_maximum: 0
+  additional_normal_accuracy_minimum: 0.95
+  abstraction_initial_schema_success_minimum: 0.99
+  abstraction_retry_schema_success_minimum: 1.0
+  abstraction_usable_rate_minimum: 0.90
+  abstraction_semantic_stability_minimum: 0.85
+  entries_with_acceptable_candidate_minimum: 0.95
+  candidate_set_top20_jaccard_minimum: 0.80
+  deterministic_search_minimum: 1.0
+  same_seed_selection_reproducibility_minimum: 1.0
+  end_to_end_p95_seconds_maximum: 6.0
+  realtime_line_evaluation_calls_maximum: 0
+  external_api_calls_per_post_maximum: 3
+  cost_per_post_jpy_maximum: 5.0
+  cost_reduction_from_baseline_minimum: 0.30

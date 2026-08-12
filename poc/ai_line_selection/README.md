@@ -4,6 +4,8 @@ RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較
 
 Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Issue #8のLine候補評価比較、Issue #9のSAFETY判定比較に加え、Issue #10では個別PoCの採用候補を一つのフローで評価する統合CLIを追加しています。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
+Epic #27では、初回PoCを変更せず、日記とLineのEmbedding入力を`abstraction`だけにそろえてリアルタイムLine評価LLMを省略する実験候補`abstraction-only-v1`を追加比較します。事前条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、機械可読な固定値は`config/additional_poc.yml`を参照してください。
+
 ## 必要環境
 
 - Ruby 3.3以上（開発時：3.4.7）
