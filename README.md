@@ -67,4 +67,5 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 - [要件定義書](docs/要件定義_v1_0.md)
 - [AI基本設計](docs/AI基本設計.md)
 - [AI一行選定 PoC計画](docs/AI_PoC計画.md)
+- [AI一行選定 PoC結果](docs/AI_PoC結果.md)
 - [統合PoC比較](docs/統合_PoC比較.md)
