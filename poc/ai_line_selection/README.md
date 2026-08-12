@@ -2,7 +2,7 @@
 
 RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較検証するRuby CLIです。
 
-Issue #6ではMeaning Structure抽出に限り、OpenAIとAnthropicの実API比較を追加しています。SAFETY、Embedding、Line評価は引き続きFixture Adapterであり、外部APIを呼びません。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
+Issue #6のMeaning Structure比較に加え、Issue #7ではEmbedding候補検索の比較CLIとOpenAI Embeddings API Adapterを追加しています。SAFETYとLine評価は引き続きFixture Adapterです。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
 ## 必要環境
 
@@ -26,7 +26,7 @@ bundle install
 bundle exec ruby bin\ai_line_selection doctor
 ```
 
-設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-meaning`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、テストからは呼べません。
+設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-meaning`または`compare-embedding`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
 
 ## オフライン実行
 
@@ -90,6 +90,34 @@ Fixture処理の従来値3秒は変更していません。実ProviderのMeaning
 ### 料金
 
 利用量はAPIレスポンスのInput / Output Tokenを使い、`config/poc.yml`に固定した料金表と150円/USDのPoC換算値でUSD・JPYを推定します。料金表の確認日は2026-08-12です。実行前に必ず各Providerの公式料金を再確認してください。
+
+## Embedding候補検索比較
+
+原文、Meaning Structure、正規化テキストを、候補件数20・50・100で比較します。固定Meaning正解を使うため、Issue #6のMeaning Provider差は混ざりません。Candidate 12件とRetired 12件はEmbedding生成前に除外し、Approved 96件だけを検索します。
+
+まず外部通信なしで料金計画を確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-embedding --providers openai-small,openai-large
+```
+
+Fixtureによる全件比較も外部通信を行いません。Fixtureは配線と再現性の確認専用で、本番品質の判定には使いません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-embedding --providers fixture
+```
+
+実API比較は明示承認後だけ実行します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-embedding `
+  --providers openai-small,openai-large `
+  --allow-external-api
+```
+
+比較結果にはRecall@20 / 50 / 100、期待候補順位、Top 1 Theme不一致、Candidate / Retired混入、API時間、検索時間、利用token、費用、次元数、`pgvector`保存量を記録します。条件と採用基準は[Embedding候補検索 PoC比較](../../docs/Embedding_PoC比較.md)を参照してください。
+
+2026年8月12日の実API比較では、`text-embedding-3-small`・1,536次元・Meaning Structure入力をPoC採用候補としました。Recall@20は95.14%、Recall@50は98.96%、Candidate / Retired混入は0件です。候補取得件数は50件、後段のLLM投入上限は20件を維持します。本番正式採用は統合PoCと`pgvector`性能試験後に判断します。
 
 ## 生成物
 

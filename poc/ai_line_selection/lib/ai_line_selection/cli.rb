@@ -27,6 +27,8 @@ module AiLineSelection
       when "prepare" then prepare
       when "compare-meaning" then compare_meaning
       when "review-meaning" then review_meaning
+      when "plan-embedding" then plan_embedding
+      when "compare-embedding" then compare_embedding
       else
         @output.puts(help)
       end
@@ -136,6 +138,62 @@ module AiLineSelection
       ).call
     end
 
+    def plan_embedding
+      options = embedding_options(allow_external_api_option: false)
+      report = EmbeddingComparison.new(configuration: @configuration).plan(
+        providers: options.fetch(:providers),
+        variants: options.fetch(:variants),
+        limits: options.fetch(:limits),
+        entry_ids: options.fetch(:entry_ids)
+      )
+      print_json(report)
+    end
+
+    def compare_embedding
+      options = embedding_options(allow_external_api_option: true)
+      report = EmbeddingComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        providers: options.fetch(:providers),
+        variants: options.fetch(:variants),
+        limits: options.fetch(:limits),
+        entry_ids: options.fetch(:entry_ids)
+      )
+      print_json(report)
+    end
+
+    def embedding_options(allow_external_api_option:)
+      options = {
+        providers: ["fixture"],
+        variants: EmbeddingTextBuilder::VARIANTS,
+        limits: EmbeddingComparison::DEFAULT_LIMITS,
+        entry_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--providers LIST", "Comma-separated: fixture,openai-small,openai-large") do |value|
+          options[:providers] = value.split(",").map(&:strip)
+        end
+        parser.on("--variants LIST", "Comma-separated: original,meaning_structure,normalized_text") do |value|
+          options[:variants] = value.split(",").map(&:strip)
+        end
+        parser.on("--limits LIST", "Comma-separated positive integers") do |value|
+          options[:limits] = value.split(",").map(&:strip)
+        end
+        parser.on("--entry-id ID", "Limit the comparison to one synthetic entry") do |value|
+          options[:entry_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external Embedding API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
     def print_json(value)
       @output.puts(JSON.pretty_generate(value))
     end
@@ -150,6 +208,9 @@ module AiLineSelection
           ruby bin/ai_line_selection compare-meaning --providers openai,anthropic --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection compare-meaning --providers openai --repetitions 1 --entry-id E001 --allow-external-api
           ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
+          ruby bin/ai_line_selection plan-embedding --providers openai-small,openai-large
+          ruby bin/ai_line_selection compare-embedding [--providers fixture] [--variants original,meaning_structure,normalized_text] [--limits 20,50,100]
+          ruby bin/ai_line_selection compare-embedding --providers openai-small,openai-large --allow-external-api
       TEXT
     end
   end

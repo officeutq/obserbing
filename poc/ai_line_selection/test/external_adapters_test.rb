@@ -129,4 +129,30 @@ class ExternalAdaptersTest < Minitest::Test
     end
     assert_empty transport.requests
   end
+
+  def test_openai_embeddings_api_normalizes_vectors_usage_and_request
+    transport = FakeTransport.new(openai_embedding_response(count: 2))
+    client, telemetry, settings = external_embedding_client(provider: "openai-small", transport: transport)
+
+    invocation = client.call(:embedding, { "texts" => %w[first second] }, settings: settings)
+
+    assert_equal [0, 1], invocation.value.fetch("vectors").map { |item| item.fetch("index") }
+    assert_equal 8, invocation.value.dig("vectors", 0, "values").length
+    assert_equal 6, invocation.metadata.dig(:usage, :input_units)
+    assert_equal "success", telemetry.events.last.fetch(:status)
+    body = JSON.parse(transport.requests.first.fetch(:body))
+    assert_equal %w[first second], body.fetch("input")
+    assert_equal "float", body.fetch("encoding_format")
+    assert_equal 8, body.fetch("dimensions")
+  end
+
+  def test_openai_embedding_adapter_rejects_non_embedding_operation
+    transport = FakeTransport.new(openai_embedding_response(count: 1))
+    client, _telemetry, settings = external_embedding_client(provider: "openai-small", transport: transport)
+
+    assert_raises(AiLineSelection::ProviderContractError) do
+      client.call(:meaning, { "entry_text" => "合成日記" }, settings: settings)
+    end
+    assert_empty transport.requests
+  end
 end

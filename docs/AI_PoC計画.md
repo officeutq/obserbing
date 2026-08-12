@@ -52,7 +52,7 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 
 ## 6. 比較対象
 
-リアルタイムLLM、Embedding、必要に応じたバッチLLMは独立して選定する。Provider・モデルの正式採用は未定とし、次を満たす候補だけを実験対象へ追加する。Issue #6のMeaning Structure比較では、OpenAI Responses APIの`gpt-5.6-terra`とAnthropic Messages APIの`claude-sonnet-5`を候補として比較する。これはMeaning用途だけのPoC条件であり、他のAI処理や本番採用を確定しない。
+リアルタイムLLM、Embedding、必要に応じたバッチLLMは独立して選定する。Provider・モデルの正式採用は未定とし、次を満たす候補だけを実験対象へ追加する。Issue #6のMeaning Structure比較では、OpenAI Responses APIの`gpt-5.6-terra`とAnthropic Messages APIの`claude-sonnet-5`を候補として比較する。Issue #7のEmbedding比較では、OpenAI Embeddings APIの`text-embedding-3-small`と`text-embedding-3-large`をともに1,536次元で比較する。いずれも対象用途だけのPoC条件であり、他のAI処理や本番採用を確定しない。
 
 - 日本語入力と構造化出力を扱える。
 - API入力をモデル学習へ利用しない契約または設定を確認できる。
@@ -135,6 +135,8 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 - 対象Provider AdapterをFake Transportで単体テスト済み。
 
 Issue #6ではMeaning専用のHTTP Adapterを実装する。`pending_external`は既存フローの接続直前境界として残し、従来どおり送信前に停止する。通常の`run`、`evaluate`、`prepare`とテストから実Provider Adapterを選択できない構成を維持する。
+
+Issue #7ではEmbedding専用のHTTP Adapterを実装し、`plan-embedding`は常に通信なし、`compare-embedding`は`--allow-external-api`指定時だけ通信する。Line EmbeddingはApproved 96件を入力形式ごとに一括生成し、Entry Embeddingは合成日記36件を別の一括リクエストで生成する。CandidateとRetiredはAPI送信前に除外する。詳細条件は[Embedding候補検索 PoC比較](Embedding_PoC比較.md)を参照する。
 
 Meaning比較の実Providerタイムアウトは両社30秒、同期再試行は最大1回とする。Fixtureの従来値3秒は維持する。3秒では構造化出力Schemaの初回処理や外部通信の揺らぎをモデル品質と誤認する可能性があるためであり、p50、p95、最大値を記録してPoC後に再評価する。
 

@@ -71,4 +71,31 @@ class CliTest < Minitest::Test
     assert_equal 2, status
     assert_equal "configuration_error", JSON.parse(errors.string).fetch("error")
   end
+
+  def test_embedding_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-embedding", "--providers", "openai-small,openai-large"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal false, document.fetch("network_call_performed")
+    assert_equal 12, document.fetch("total_requests")
+    assert_equal 24, document.fetch("maximum_requests_with_retries")
+  end
+
+  def test_external_embedding_comparison_requires_explicit_flag
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["compare-embedding", "--providers", "openai-small", "--variants", "original", "--limits", "20"],
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
 end
