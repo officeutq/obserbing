@@ -33,6 +33,7 @@ require_relative "ai_line_selection/safety_comparison"
 require_relative "ai_line_selection/line_evaluation_comparison"
 require_relative "ai_line_selection/line_evaluation_reviewer"
 require_relative "ai_line_selection/line_evaluation_preliminary_importer"
+require_relative "ai_line_selection/integrated_comparison"
 require_relative "ai_line_selection/doctor"
 require_relative "ai_line_selection/cli"
 

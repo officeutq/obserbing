@@ -83,6 +83,10 @@ module AiLineSelection
       @data.fetch("selection")
     end
 
+    def integrated
+      @data.fetch("integrated")
+    end
+
     def random_seed
       @data.fetch("random_seed")
     end
@@ -108,7 +112,7 @@ module AiLineSelection
     private
 
     def validate!
-      %w[version random_seed external_api safety_providers meaning_providers line_evaluation_providers embedding_providers operations search selection paths].each do |key|
+      %w[version random_seed external_api safety_providers meaning_providers line_evaluation_providers embedding_providers operations integrated search selection paths].each do |key|
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
@@ -124,6 +128,10 @@ module AiLineSelection
 
       unless external_api.fetch("maximum_safety_comparison_requests").to_i.positive?
         raise ConfigurationError.new("external_api.maximum_safety_comparison_requests must be positive")
+      end
+
+      unless external_api.fetch("maximum_integrated_comparison_requests").to_i.positive?
+        raise ConfigurationError.new("external_api.maximum_integrated_comparison_requests must be positive")
       end
 
       unless external_api.fetch("maximum_line_evaluation_comparison_requests").to_i.positive?
@@ -212,6 +220,26 @@ module AiLineSelection
         unless [0, 1].include?(provider.fetch("max_retries"))
           raise ConfigurationError.new("Embedding provider max_retries must be 0 or 1", details: { provider: name })
         end
+      end
+
+      %w[chain_name safety_provider meaning_provider embedding_provider line_evaluation_provider repetitions safety_case_repetitions candidate_limit evaluation_limit].each do |key|
+        raise ConfigurationError.new("Missing integrated setting", details: { key: key }) unless integrated.key?(key)
+      end
+      safety_provider(integrated.fetch("safety_provider"))
+      meaning_provider(integrated.fetch("meaning_provider"))
+      embedding_provider(integrated.fetch("embedding_provider"))
+      line_evaluation_provider(integrated.fetch("line_evaluation_provider"))
+      unless integrated.fetch("repetitions").to_i.between?(1, external_api.fetch("maximum_repetitions"))
+        raise ConfigurationError.new("integrated.repetitions is outside the allowed range")
+      end
+      unless integrated.fetch("safety_case_repetitions").to_i.between?(1, external_api.fetch("maximum_repetitions"))
+        raise ConfigurationError.new("integrated.safety_case_repetitions is outside the allowed range")
+      end
+      unless integrated.fetch("candidate_limit").to_i.positive? && integrated.fetch("evaluation_limit").to_i.positive?
+        raise ConfigurationError.new("integrated candidate and evaluation limits must be positive")
+      end
+      unless integrated.fetch("evaluation_limit").to_i <= integrated.fetch("candidate_limit").to_i
+        raise ConfigurationError.new("integrated.evaluation_limit must not exceed candidate_limit")
       end
     end
   end

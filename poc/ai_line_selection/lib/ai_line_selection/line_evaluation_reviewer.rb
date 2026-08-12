@@ -225,9 +225,24 @@ module AiLineSelection
         "human_reviewed_outputs" => review_summary.fetch(:human_reviewed_outputs),
         "summary_file" => @summary_path
       }
+      update_adoption_criteria(summary, review_summary)
       File.write(path, JSON.pretty_generate(summary), mode: "w:UTF-8")
     rescue JSON::ParserError => e
       raise DataError.new("Line evaluation comparison summary is invalid JSON", details: { error_class: e.class.name })
+    end
+
+    def update_adoption_criteria(summary, review_summary)
+      criteria = summary["adoption_criteria"]
+      return unless criteria.is_a?(Hash)
+
+      provider_results = review_summary.fetch(:providers).values
+      criteria["final_quality_decision_pending_human_evaluation"] = false
+      criteria["human_acceptable_at_least_80_percent"] = provider_results.all? do |result|
+        result.fetch(:meets_acceptable_target)
+      end
+      criteria["human_zero_fatal_violations"] = provider_results.all? do |result|
+        result.fetch(:meets_zero_fatal_target)
+      end
     end
 
     def ratio(numerator, denominator)

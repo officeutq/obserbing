@@ -15,6 +15,7 @@ class LineEvaluationReviewerTest < Minitest::Test
         embedding_provider: "fixture",
         output_dir: directory
       )
+      add_pending_human_criterion(directory)
       prepare_preliminary_rows(directory)
       output = StringIO.new
       result = AiLineSelection::LineEvaluationReviewer.new(
@@ -28,11 +29,22 @@ class LineEvaluationReviewerTest < Minitest::Test
       assert_equal({ "codex_preliminary" => 1, "human" => 1 }, result.fetch(:judge_counts))
       assert_equal 1, result.fetch(:human_reviewed_outputs)
       assert_includes output.string, "今回の確認対象: 1"
-      assert_equal "complete", JSON.parse(File.read(File.join(directory, "summary.json"))).dig("human_evaluation", "status")
+      summary = JSON.parse(File.read(File.join(directory, "summary.json")))
+      assert_equal "complete", summary.dig("human_evaluation", "status")
+      assert_equal false, summary.dig("adoption_criteria", "final_quality_decision_pending_human_evaluation")
+      assert_equal true, summary.dig("adoption_criteria", "human_acceptable_at_least_80_percent")
+      assert_equal true, summary.dig("adoption_criteria", "human_zero_fatal_violations")
     end
   end
 
   private
+
+  def add_pending_human_criterion(directory)
+    path = File.join(directory, "summary.json")
+    summary = JSON.parse(File.read(path))
+    summary["adoption_criteria"] = { "final_quality_decision_pending_human_evaluation" => true }
+    File.write(path, JSON.pretty_generate(summary), mode: "w:UTF-8")
+  end
 
   def prepare_preliminary_rows(directory)
     path = File.join(directory, "human_evaluation.csv")
