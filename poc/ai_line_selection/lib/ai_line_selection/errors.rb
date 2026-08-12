@@ -109,11 +109,11 @@ module AiLineSelection
   end
 
   class ProviderHttpError < Error
-    def initialize(provider, status:, request_id: nil)
+    def initialize(provider, status:, request_id: nil, provider_error: nil)
       super(
         "External AI provider returned an HTTP error",
         code: "provider_http_error",
-        details: { provider: provider, status: status, request_id: request_id }.compact
+        details: { provider: provider, status: status, request_id: request_id, provider_error: provider_error }.compact
       )
     end
   end

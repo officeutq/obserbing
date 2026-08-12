@@ -28,13 +28,27 @@ module AiLineSelection
       }
     end
 
+    def explain(evaluations, allowed_lines)
+      selection = select(evaluations, allowed_lines)
+      rejected = evaluations.to_h do |evaluation|
+        [evaluation.fetch("line_id"), rejection_reasons(evaluation)]
+      end
+      selection.merge(rejections: rejected, qualified_count: rejected.count { |_id, reasons| reasons.empty? })
+    end
+
     private
 
     def qualified?(evaluation)
-      evaluation.fetch("relevance") >= @settings.fetch("minimum_relevance") &&
-        evaluation.fetch("directness") <= @settings.fetch("maximum_directness") &&
-        evaluation.fetch("space") >= @settings.fetch("minimum_space") &&
-        evaluation.fetch("obserbing_fit") >= @settings.fetch("minimum_obserbing_fit")
+      rejection_reasons(evaluation).empty?
+    end
+
+    def rejection_reasons(evaluation)
+      reasons = []
+      reasons << "relevance" if evaluation.fetch("relevance") < @settings.fetch("minimum_relevance")
+      reasons << "directness" if evaluation.fetch("directness") > @settings.fetch("maximum_directness")
+      reasons << "space" if evaluation.fetch("space") < @settings.fetch("minimum_space")
+      reasons << "obserbing_fit" if evaluation.fetch("obserbing_fit") < @settings.fetch("minimum_obserbing_fit")
+      reasons
     end
 
     def final_score(evaluation)

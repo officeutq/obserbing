@@ -98,4 +98,43 @@ class CliTest < Minitest::Test
     assert_equal 2, status
     assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
   end
+
+  def test_line_evaluation_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-line-evaluation", "--providers", "openai,anthropic", "--repetitions", "3"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal false, document.fetch("network_call_performed")
+    assert_equal 218, document.fetch("total_requests")
+  end
+
+  def test_external_line_evaluation_requires_explicit_flag
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["compare-line-evaluation", "--providers", "openai", "--entry-id", "E001"],
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
+
+  def test_review_line_evaluation_requires_results_directory
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["review-line-evaluation"],
+      input: StringIO.new,
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "configuration_error", JSON.parse(errors.string).fetch("error")
+  end
 end

@@ -2,10 +2,11 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "obserbing://schemas/line-evaluation/draft-1",
   "type": "object",
-  "required": ["schema_version", "candidates"],
+  "required": ["schema_version", "recommended_line_id", "candidates"],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "const": "draft-1" },
+    "schema_version": { "type": "string", "const": "draft-1" },
+    "recommended_line_id": { "type": "string", "pattern": "^(L[0-9]{3}|SILENCE)$" },
     "candidates": {
       "type": "array",
       "items": {
@@ -14,10 +15,10 @@
         "additionalProperties": false,
         "properties": {
           "line_id": { "type": "string", "pattern": "^L[0-9]{3}$" },
-          "relevance": { "type": "number", "minimum": 0, "maximum": 1 },
-          "directness": { "type": "number", "minimum": 0, "maximum": 1 },
-          "space": { "type": "number", "minimum": 0, "maximum": 1 },
-          "obserbing_fit": { "type": "number", "minimum": 0, "maximum": 1 }
+          "relevance": { "type": "number" },
+          "directness": { "type": "number" },
+          "space": { "type": "number" },
+          "obserbing_fit": { "type": "number" }
         }
       }
     }

@@ -2,14 +2,14 @@
 
 module AiLineSelection
   class AdapterFactory
-    def self.build(name, configuration:, allow_external_api: false, environment: ENV, transport: nil)
+    def self.build(name, configuration:, operation:, allow_external_api: false, environment: ENV, transport: nil)
       case name.to_s
       when "fixture"
         Adapters::Fixture.new
       when "pending_external"
         Adapters::PendingExternal.new(configuration: configuration, environment: environment)
       when "openai"
-        raise ExternalApiDisabledError.new(:meaning) unless allow_external_api
+        raise ExternalApiDisabledError.new(operation) unless allow_external_api
 
         Adapters::OpenAI.new(
           configuration: configuration,
@@ -17,7 +17,7 @@ module AiLineSelection
           transport: transport || HttpTransport.new
         )
       when "anthropic"
-        raise ExternalApiDisabledError.new(:meaning) unless allow_external_api
+        raise ExternalApiDisabledError.new(operation) unless allow_external_api
 
         Adapters::Anthropic.new(
           configuration: configuration,
@@ -25,7 +25,7 @@ module AiLineSelection
           transport: transport || HttpTransport.new
         )
       when "openai_embedding"
-        raise ExternalApiDisabledError.new(:embedding) unless allow_external_api
+        raise ExternalApiDisabledError.new(operation) unless allow_external_api
 
         Adapters::OpenAIEmbedding.new(
           configuration: configuration,
@@ -33,6 +33,8 @@ module AiLineSelection
           transport: transport || HttpTransport.new
         )
       else
+        return name if name.respond_to?(:call)
+
         raise ConfigurationError.new("Unknown adapter", details: { adapter: name.to_s })
       end
     end

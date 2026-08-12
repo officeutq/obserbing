@@ -8,6 +8,7 @@ external_api:
   usd_to_jpy: 150.0
   maximum_comparison_requests: 216
   maximum_embedding_comparison_requests: 12
+  maximum_line_evaluation_comparison_requests: 218
   maximum_repetitions: 3
 
 meaning_providers:
@@ -40,6 +41,61 @@ meaning_providers:
     api_key_env: ANTHROPIC_API_KEY
     reasoning_effort: low
     max_output_tokens: 1024
+    timeout_seconds: 30
+    max_retries: 1
+    retry_delay_seconds: 0.5
+    pricing:
+      version: 2026-08-12-standard
+      checked_at: "2026-08-12"
+      input_per_million_usd: 2.0
+      cached_input_per_million_usd: 0.2
+      output_per_million_usd: 10.0
+      source: https://platform.claude.com/docs/en/about-claude/pricing
+
+line_evaluation_providers:
+  fixture:
+    adapter: fixture
+    provider: fixture
+    model: offline-line-evaluation-v1
+    max_output_tokens: 4096
+    timeout_seconds: 3
+    max_retries: 0
+    pricing:
+      version: offline
+      checked_at: "2026-08-12"
+      input_per_million_usd: 0.0
+      cached_input_per_million_usd: 0.0
+      output_per_million_usd: 0.0
+      source: local-fixture
+  openai:
+    adapter: openai
+    provider: openai
+    model: gpt-5.6-terra
+    api: responses
+    endpoint: https://api.openai.com/v1/responses
+    api_key_env: OPENAI_API_KEY
+    reasoning_effort: low
+    max_output_tokens: 4096
+    timeout_seconds: 30
+    max_retries: 1
+    retry_delay_seconds: 0.5
+    pricing:
+      version: 2026-08-12-standard-short-context
+      checked_at: "2026-08-12"
+      input_per_million_usd: 2.0
+      cached_input_per_million_usd: 0.2
+      output_per_million_usd: 12.0
+      source: https://developers.openai.com/api/docs/pricing
+  anthropic:
+    adapter: anthropic
+    provider: anthropic
+    model: claude-sonnet-5
+    api: messages
+    endpoint: https://api.anthropic.com/v1/messages
+    api_version: "2023-06-01"
+    api_key_env: ANTHROPIC_API_KEY
+    reasoning_effort: low
+    max_output_tokens: 4096
     timeout_seconds: 30
     max_retries: 1
     retry_delay_seconds: 0.5
@@ -141,6 +197,22 @@ selection:
   maximum_directness: 0.75
   minimum_space: 0.45
   minimum_obserbing_fit: 0.60
+  policies:
+    permissive:
+      minimum_relevance: 0.25
+      maximum_directness: 0.82
+      minimum_space: 0.35
+      minimum_obserbing_fit: 0.50
+    balanced:
+      minimum_relevance: 0.30
+      maximum_directness: 0.75
+      minimum_space: 0.45
+      minimum_obserbing_fit: 0.60
+    conservative:
+      minimum_relevance: 0.40
+      maximum_directness: 0.65
+      minimum_space: 0.55
+      minimum_obserbing_fit: 0.70
 
 paths:
   entries: data/entries.yml

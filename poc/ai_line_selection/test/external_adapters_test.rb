@@ -35,6 +35,32 @@ class ExternalAdaptersTest < Minitest::Test
     refute body.key?("tools")
   end
 
+  def test_openai_line_evaluation_uses_structured_batch_without_hidden_line_metadata
+    transport = FakeTransport.new(openai_response(meaning: valid_line_evaluation))
+    client, _telemetry, settings = external_line_evaluation_client(provider: "openai", transport: transport)
+
+    invocation = client.call(:line_evaluation, line_evaluation_input, settings: settings)
+
+    assert_equal "L001", invocation.value.fetch("recommended_line_id")
+    body = JSON.parse(transport.requests.first.fetch(:body))
+    input = JSON.parse(body.fetch("input"))
+    assert_equal 2, input.fetch("candidates").length
+    refute_includes body.fetch("input"), "directness"
+    assert_equal "line_evaluation", body.dig("text", "format", "name")
+  end
+
+  def test_anthropic_line_evaluation_uses_structured_batch
+    transport = FakeTransport.new(anthropic_response(meaning: valid_line_evaluation))
+    client, _telemetry, settings = external_line_evaluation_client(provider: "anthropic", transport: transport)
+
+    invocation = client.call(:line_evaluation, line_evaluation_input, settings: settings)
+
+    assert_equal "L001", invocation.value.fetch("recommended_line_id")
+    body = JSON.parse(transport.requests.first.fetch(:body))
+    input = JSON.parse(body.dig("messages", 0, "content"))
+    assert_equal %w[L001 L002], input.fetch("candidates").map { |item| item.dig("line", "id") }
+  end
+
   def test_authentication_error_is_not_retried
     transport = FakeTransport.new(http_error(401), openai_response)
     client, telemetry, settings = external_client(provider: "openai", transport: transport)
@@ -46,6 +72,28 @@ class ExternalAdaptersTest < Minitest::Test
     assert_equal "authentication_error", error.code
     assert_equal 1, transport.requests.length
     assert_equal "error", telemetry.events.last.fetch(:status)
+  end
+
+  def test_non_retryable_http_error_exposes_only_structured_provider_fields
+    response = AiLineSelection::HttpResponse.new(
+      status: 400,
+      headers: { "x-request-id" => "req_bad" },
+      body: JSON.generate("error" => {
+        "type" => "invalid_request_error",
+        "code" => "invalid_schema",
+        "param" => "text.format.schema",
+        "message" => "Schema is invalid",
+        "raw_request" => "must not be exposed"
+      })
+    )
+    client, _telemetry, settings = external_client(provider: "openai", transport: FakeTransport.new(response))
+
+    error = assert_raises(AiLineSelection::ProviderHttpError) do
+      client.call(:meaning, { "entry_text" => "test" }, settings: settings)
+    end
+
+    assert_equal %w[code message param type], error.details.fetch(:provider_error).keys.sort
+    refute_includes error.details.to_s, "raw_request"
   end
 
   def test_rate_limit_is_retried_once_and_can_succeed

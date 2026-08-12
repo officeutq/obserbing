@@ -2,7 +2,7 @@
 
 RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較検証するRuby CLIです。
 
-Issue #6のMeaning Structure比較に加え、Issue #7ではEmbedding候補検索の比較CLIとOpenAI Embeddings API Adapterを追加しています。SAFETYとLine評価は引き続きFixture Adapterです。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
+Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較に加え、Issue #8ではLine候補評価の比較CLI、OpenAI / Anthropic Adapter、AI推奨とRuby最終制御の差分集計を追加しています。SAFETYは引き続きFixture Adapterです。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
 ## 必要環境
 
@@ -26,7 +26,7 @@ bundle install
 bundle exec ruby bin\ai_line_selection doctor
 ```
 
-設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-meaning`または`compare-embedding`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
+設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-meaning`、`compare-embedding`または`compare-line-evaluation`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
 
 ## オフライン実行
 
@@ -119,6 +119,51 @@ bundle exec ruby bin\ai_line_selection compare-embedding `
 
 2026年8月12日の実API比較では、`text-embedding-3-small`・1,536次元・Meaning Structure入力をPoC採用候補としました。Recall@20は95.14%、Recall@50は98.96%、Candidate / Retired混入は0件です。候補取得件数は50件、後段のLLM投入上限は20件を維持します。本番正式採用は統合PoCと`pgvector`性能試験後に判断します。
 
+## Line候補評価比較
+
+Issue #7で採用したEmbedding条件から同じ上位20候補を作り、OpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`へrelevance、directness、space、obserbing_fitの4軸評価を依頼します。合成データの`directness`等の正解用メタデータはLLMへ送りません。
+
+まず通信なしでリクエスト数と費用上限を確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-line-evaluation `
+  --providers openai,anthropic `
+  --embedding-provider openai-small `
+  --repetitions 3
+```
+
+Fixtureによる全配線確認も外部通信を行いません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-line-evaluation `
+  --providers fixture `
+  --embedding-provider fixture `
+  --repetitions 1
+```
+
+実API比較は利用者が費用条件を確認した後、明示フラグ付きで実行します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-line-evaluation `
+  --providers openai,anthropic `
+  --embedding-provider openai-small `
+  --repetitions 3 `
+  --allow-external-api
+```
+
+結果にはAI自身の推奨とRubyのbalanced最終選択を分けて保存します。permissive・balanced・conservativeの閾値感度、SILENCE、3回の最終選択一致率も集計します。候補欠落・重複・候補外ID・数値範囲外などの技術エラーはSILENCEへ変換せず停止します。
+
+人の確認は全反復を対象にしません。各Providerの第1反復をCodexがBlind一次評価し、`judge=codex_preliminary`、確信度、理由をCSVへ記録します。低確信行だけを次のコマンドで対話確認し、人の判定は`judge=human`として分離します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection review-line-evaluation `
+  --results results\line_evaluation_<timestamp>_<suffix>
+```
+
+詳細は[Line候補評価 PoC比較](../../docs/Line評価_PoC比較.md)を参照してください。
+
+2026年8月12日の実API比較では、`claude-sonnet-5`をLine評価のPoC採用候補としました。Blind評価は許容36 / 36件、致命的違反0件、3回の最終選択一致率94.44%でした。`gpt-5.6-terra`は許容35 / 36件、致命的違反1件、最終選択一致率47.22%で採用基準未達でした。両モデルともLine評価だけでp95が6秒を超えたため、本番正式採用、同期処理設計、閾値、重みは未確定です。
+
 ## 生成物
 
 実行結果は`results/meaning_<timestamp>_<suffix>/`へ作成され、Git管理されません。
@@ -131,6 +176,8 @@ bundle exec ruby bin\ai_line_selection compare-embedding `
 | `human_evaluation.csv` | Provider名を伏せた人間評価票 |
 | `blind_mapping.csv` | Blind IDとProvider・モデルの対応表 |
 | `manifest.json` | 実験条件、料金表、Prompt / Schemaハッシュ |
+
+Line比較の`results/line_evaluation_<timestamp>_<suffix>/`には、固定候補の`candidate_sets.jsonl`、AIとRuby選択を分離した`provider_outputs.jsonl`、低確信確認用`human_evaluation.csv`、Provider対応を隔離した`blind_mapping.csv`も保存します。
 
 人間評価票では、検索利用可能性（3段階）、診断、根拠のない感情・人物像の固定、不要な固有名詞を評価します。CLIは定量結果だけを集計し、人間評価前に勝者を決めません。
 
