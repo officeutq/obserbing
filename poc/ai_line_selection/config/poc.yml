@@ -1,0 +1,53 @@
+version: 1
+random_seed: 20260812
+
+external_api:
+  enabled: false
+  total_budget_jpy: 5000
+  warning_ratio: 0.8
+  api_key_env: OBSERBING_AI_API_KEY
+
+operations:
+  safety:
+    adapter: fixture
+    provider: fixture
+    model: offline-safety-v1
+    prompt_version: draft-1
+    schema_version: draft-1
+    timeout_seconds: 3
+  meaning:
+    adapter: fixture
+    provider: fixture
+    model: offline-meaning-v1
+    prompt_version: draft-1
+    schema_version: draft-1
+    timeout_seconds: 3
+  embedding:
+    adapter: fixture
+    provider: fixture
+    model: offline-hash-embedding-v1
+    schema_version: draft-1
+    timeout_seconds: 3
+  line_evaluation:
+    adapter: fixture
+    provider: fixture
+    model: offline-line-evaluation-v1
+    prompt_version: draft-1
+    schema_version: draft-1
+    timeout_seconds: 3
+
+search:
+  candidate_limit: 50
+  evaluation_limit: 20
+
+selection:
+  minimum_relevance: 0.30
+  maximum_directness: 0.75
+  minimum_space: 0.45
+  minimum_obserbing_fit: 0.60
+
+paths:
+  entries: data/entries.yml
+  lines: data/lines.yml
+  safety_cases: data/safety_cases.yml
+  telemetry: tmp/telemetry.jsonl

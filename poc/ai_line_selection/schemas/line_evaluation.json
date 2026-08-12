@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "obserbing://schemas/line-evaluation/draft-1",
+  "type": "object",
+  "required": ["schema_version", "candidates"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "draft-1" },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["line_id", "relevance", "directness", "space", "obserbing_fit"],
+        "additionalProperties": false,
+        "properties": {
+          "line_id": { "type": "string", "pattern": "^L[0-9]{3}$" },
+          "relevance": { "type": "number", "minimum": 0, "maximum": 1 },
+          "directness": { "type": "number", "minimum": 0, "maximum": 1 },
+          "space": { "type": "number", "minimum": 0, "maximum": 1 },
+          "obserbing_fit": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    }
+  }
+}
