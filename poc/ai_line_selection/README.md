@@ -224,6 +224,8 @@ bundle exec ruby bin\ai_line_selection run-integrated `
 
 外部障害や不正出力は技術エラーとして停止し、意味上のSILENCEへ変換しません。実行条件、採用基準、人間評価手順は[統合PoC比較](../../docs/統合_PoC比較.md)を参照してください。
 
+2026年8月13日の実API評価では、独立SAFETY再現率100%、Recall@50 95.60%、Blind許容率96.88%、1投稿あたり2.2756円を達成しました。一方、通常日記4 / 36件のSAFETY過剰遮断、Recall@20 79.46%、最終選択一致率72.22%、全体p95 15.09秒、致命的なLine誤選定1件により、`selected-v1`の現状採用は見送ります。詳細と追加検証項目は[統合PoC比較](../../docs/統合_PoC比較.md)に記録しています。
+
 ## 生成物
 
 実行結果は`results/<operation>_<timestamp>_<suffix>/`へ作成され、Git管理されません。

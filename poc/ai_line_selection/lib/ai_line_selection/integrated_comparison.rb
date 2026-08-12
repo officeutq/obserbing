@@ -588,7 +588,9 @@ module AiLineSelection
       stable = context.fetch(:entries).count do |entry|
         values = records.select { |record| record.fetch(:entry_id) == entry.fetch("id") }
                         .map { |record| [record.fetch(:status), record.dig(:rails_selection, :line_id)] }
-        values.length == context.fetch(:repetitions) && values.uniq.length == 1
+        values.length == context.fetch(:repetitions) &&
+          values.all? { |status, _line_id| %w[line silence].include?(status.to_s) } &&
+          values.uniq.length == 1
       end
       { stable_entries: stable, total_entries: context.fetch(:entries).length, rate: ratio(stable, context.fetch(:entries).length) }
     end

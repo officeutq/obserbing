@@ -101,4 +101,21 @@ class IntegratedComparisonTest < Minitest::Test
       assert_equal 3, transport.requests.length
     end
   end
+
+  def test_selection_stability_does_not_count_repeatable_technical_errors_as_stable
+    comparison = AiLineSelection::IntegratedComparison.new(configuration: configuration)
+    context = { entries: [{ "id" => "E001" }, { "id" => "E002" }], repetitions: 3 }
+    records = 3.times.flat_map do
+      [
+        { entry_id: "E001", status: "line", rails_selection: { line_id: "L001" } },
+        { entry_id: "E002", status: "technical_error" }
+      ]
+    end
+
+    result = comparison.send(:selection_stability, context, records)
+
+    assert_equal 1, result.fetch(:stable_entries)
+    assert_equal 2, result.fetch(:total_entries)
+    assert_equal 0.5, result.fetch(:rate)
+  end
 end
