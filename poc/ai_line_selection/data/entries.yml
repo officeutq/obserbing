@@ -1,0 +1,357 @@
+version: 1
+source: synthetic
+entries:
+  - id: E001
+    body: "二つの案のどちらを選んでも、選ばなかった方が気になりそうだ。"
+    dimensions: [short, choice]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [選択, 不確実性]
+      structure: "選択によって別の可能性を失うことへのためらい"
+      abstraction: "決定と喪失可能性の同居"
+  - id: E002
+    body: |-
+      返事は明日まででいいと言われた。
+      急がなくていいはずなのに、考えるほど何が自分の希望なのかわからなくなる。
+    dimensions: [multiline, choice]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [選択, 自己理解]
+      structure: "決断の猶予があることで、かえって自分の希望が見えにくくなる"
+      abstraction: "猶予と迷いの増幅"
+  - id: E003
+    body: "決めた。たぶん。"
+    dimensions: [very_short, ambiguous]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [選択, ためらい]
+      structure: "決定を口にしながら確信が残っていない"
+      abstraction: "決定と留保"
+  - id: E004
+    body: "準備はしたけれど、当日になったら何か見落としている気がしてきた。"
+    dimensions: [short, uncertainty]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [不確実性, 準備]
+      structure: "準備後にも残る見落としへの懸念"
+      abstraction: "備えと不確実性"
+  - id: E005
+    body: |-
+      予定が一つ変わっただけなのに、その先も全部ずれる気がする。
+
+      実際にはまだ何も起きていない。
+    dimensions: [multiline, uncertainty]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [不確実性, 予定]
+      structure: "小さな予定変更から先の連鎖を想像している"
+      abstraction: "局所的変化と全体への予感"
+  - id: E006
+    body: "うまくいく根拠も、だめな根拠も同じくらいある。"
+    dimensions: [balanced, uncertainty]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [不確実性, 均衡]
+      structure: "相反する見通しが同じ重さで並んでいる"
+      abstraction: "判断材料の均衡"
+  - id: E007
+    body: "久しぶりに会ったら楽しかった。でも次の約束をすぐ決めたい感じではなかった。"
+    dimensions: [relationship, mixed]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [関係, 距離]
+      structure: "再会の楽しさと次の接触を急がない感覚が同居する"
+      abstraction: "親しさと間隔"
+  - id: E008
+    body: |-
+      相手の話を聞いていたつもりだった。
+      帰ってから、自分が話す番を待っていただけだったかもしれないと思った。
+    dimensions: [multiline, relationship]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [関係, 聞くこと]
+      structure: "対話後に、自分の聞き方を別の角度から見直している"
+      abstraction: "参加と待機の境界"
+  - id: E009
+    body: "嫌いではない。それだけでは近くにいる理由にならないのかもしれない。"
+    dimensions: [relationship, ambiguous]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [関係, 距離]
+      structure: "否定的ではない関係を続ける理由が見えにくい"
+      abstraction: "非拒絶と接続理由"
+  - id: E010
+    body: "連絡を返さないまま三日たった。返したくないというより、今の距離が静かだ。"
+    dimensions: [distance, quiet]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [距離, 静けさ]
+      structure: "未返信によって生まれた距離を静かなものとして感じている"
+      abstraction: "不在の接触と静けさ"
+  - id: E011
+    body: |-
+      近況を詳しく説明しなくてもいい相手だと思っていた。
+      だからこそ、何も言わないままなのが少し気になる。
+    dimensions: [multiline, distance]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [距離, 信頼]
+      structure: "説明不要の信頼と沈黙への引っかかりが並ぶ"
+      abstraction: "省略できる関係の沈黙"
+  - id: E012
+    body: "離れてみて、遠かったのか近すぎたのか、まだわからない。"
+    dimensions: [short, distance]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [距離, 振り返り]
+      structure: "距離を置いた後も以前の距離感を定められない"
+      abstraction: "距離の再測定"
+  - id: E013
+    body: "今日はずっと忙しかったのに、何を進めたのか説明しようとすると言葉がない。"
+    dimensions: [work, busy]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [仕事, 時間]
+      structure: "多忙さと進捗の実感が一致していない"
+      abstraction: "活動量と到達感のずれ"
+  - id: E014
+    body: |-
+      会議では反対しなかった。
+      賛成だったわけでもない。
+      終わってから、その間にいた自分の立場が気になっている。
+    dimensions: [multiline, work]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [仕事, 立場]
+      structure: "反対も賛成もしなかった場での自分の位置を振り返る"
+      abstraction: "沈黙と立場"
+  - id: E015
+    body: "やることは減ったのに、机を離れるタイミングがわからない。"
+    dimensions: [work, short]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [仕事, 区切り]
+      structure: "作業量が減っても終了の区切りを持てない"
+      abstraction: "完了と離脱のずれ"
+  - id: E016
+    body: "失敗した場面より、そのあと普通に話しかけられたことの方を何度も思い出す。"
+    dimensions: [failure, reflection]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [失敗, 関係]
+      structure: "失敗そのものより周囲の通常の反応が記憶に残る"
+      abstraction: "失敗後の平常"
+  - id: E017
+    body: |-
+      間違いに気づいて直した。
+      誰にも指摘されていないし影響もなかった。
+      それでも一日中、見つかる前の時間に戻りたい感じがした。
+    dimensions: [multiline, failure]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [失敗, 時間]
+      structure: "修正済みの小さな間違いに、発見前へ戻りたい感覚が残る"
+      abstraction: "修復と不可逆性"
+  - id: E018
+    body: "できなかったことは一つ。できたことを数える気にはならない。"
+    dimensions: [failure, contrast]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [失敗, 注目]
+      structure: "一つの未達成が他の達成への注意を覆っている"
+      abstraction: "欠けへの集中"
+  - id: E019
+    body: "部屋の配置を変えたら、前より使いやすいのに自分の部屋ではないみたいだ。"
+    dimensions: [change, ordinary]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [変化, 慣れ]
+      structure: "改善された環境にまだ自己感覚が追いついていない"
+      abstraction: "改善と馴染みの時差"
+  - id: E020
+    body: |-
+      長く使っていたものを新しくした。
+      不便はなくなった。
+      古い方を捨てる理由もできたのに、まだ箱に入れてある。
+    dimensions: [multiline, change]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [変化, 手放すこと]
+      structure: "新しいものへの移行後も古いものを手元に残している"
+      abstraction: "更新と残存"
+  - id: E021
+    body: "変わりたかった頃の自分に、今の変化を見せたいとは思わない。"
+    dimensions: [change, ambiguous]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [変化, 自己]
+      structure: "望んだ変化が過去の期待と単純には重ならない"
+      abstraction: "願望と到達の非対称"
+  - id: E022
+    body: "なくした鍵は見つかった。でも探していた二時間だけがまだ戻ってこない感じがする。"
+    dimensions: [loss, ordinary]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [喪失, 時間]
+      structure: "物は戻っても失った時間の感覚が残っている"
+      abstraction: "回復できるものとできないもの"
+  - id: E023
+    body: |-
+      もう使わない場所の写真を消した。
+      容量はほとんど変わらなかった。
+      消したという事実だけが少し大きい。
+    dimensions: [multiline, loss]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [喪失, 記録]
+      structure: "小さなデータ削除が場所との関係の変化を際立たせる"
+      abstraction: "記録の削除と意味の増幅"
+  - id: E024
+    body: "終わったことに名前をつけると、まだ続いていた部分まで終わる気がする。"
+    dimensions: [loss, abstract]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [喪失, 境界]
+      structure: "終了を言語化することで曖昧に続く部分も失うことをためらう"
+      abstraction: "命名と終結"
+  - id: E025
+    body: "一人で食べるのは平気だった。おいしかったと誰にも言わないのが少しだけ残った。"
+    dimensions: [solitude, ordinary]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [孤独, 共有]
+      structure: "一人の食事は快適だが感想を共有しない余韻が残る"
+      abstraction: "自足と未共有"
+  - id: E026
+    body: |-
+      休日は誰にも会わなかった。
+      静かでよかった。
+      夜になって、今日の声を自分しか聞いていないことに気づいた。
+    dimensions: [multiline, solitude]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [孤独, 静けさ]
+      structure: "望んだ静かな一日の終わりに、声が共有されなかった事実へ気づく"
+      abstraction: "静けさと存在の未共有"
+  - id: E027
+    body: "一人になりたかったのに、一人になったことを確認している。"
+    dimensions: [short, solitude]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [孤独, 確認]
+      structure: "望んだ孤独の中で孤独である事実を繰り返し確かめる"
+      abstraction: "選んだ孤独と確認"
+  - id: E028
+    body: "来週の予定ばかり見ていたら、今日がもう夜になっていた。"
+    dimensions: [time, short]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [時間, 予定]
+      structure: "未来の予定への注意によって現在の一日が過ぎた"
+      abstraction: "未来への注視と現在の通過"
+  - id: E029
+    body: |-
+      待ち時間が長いと思っていた。
+      順番が来たら、もう少し待っていてもよかった気がした。
+    dimensions: [multiline, time]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [時間, 待つこと]
+      structure: "待っている間の長さと終わる際の短さが反転する"
+      abstraction: "時間感覚の反転"
+  - id: E030
+    body: "昔は長かった一年を、今は予定表の十二枚として見ている。"
+    dimensions: [time, abstract]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [時間, 変化]
+      structure: "一年の体感が経験とともに区切りの集合へ変わった"
+      abstraction: "時間の単位化"
+  - id: E031
+    body: "誰にも頼まれていないのに、期待に足りない気がする。誰の期待なのかはわからない。"
+    dimensions: [self_expectation, ambiguous]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [期待, 自己]
+      structure: "出所のわからない期待に自分を照らして不足を感じる"
+      abstraction: "無主語の期待"
+  - id: E032
+    body: |-
+      今日は予定していた三つを終えた。
+      四つ目を始めなかったことだけが、帰るときに残った。
+    dimensions: [multiline, self_expectation]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [期待, 完了]
+      structure: "完了した複数の予定より着手しなかった追加項目が残る"
+      abstraction: "達成と追加期待"
+  - id: E033
+    body: "もっとできたはず、という言葉だけはいつも準備がいい。"
+    dimensions: [short, self_expectation]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [期待, 反復]
+      structure: "実際の結果にかかわらず追加可能性への批評がすぐ現れる"
+      abstraction: "常備された不足"
+  - id: E034
+    body: "洗濯物がよく乾いた。それだけの日だったと言うには、少しちゃんとした日だった。"
+    dimensions: [ordinary, quiet]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [日常, 充足]
+      structure: "小さな生活上の出来事が一日の手触りを支えている"
+      abstraction: "平凡さの密度"
+  - id: E035
+    body: |-
+      帰り道の店が閉まっていた。
+      困らなかったけれど、いつも明るかった場所が暗いと道が少し短く感じた。
+    dimensions: [multiline, ordinary]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [日常, 変化]
+      structure: "日常の目印が消えたことで道の感覚が変わる"
+      abstraction: "反復する景色と距離感"
+  - id: E036
+    body: "特に何もなかったことを、今日はわざわざ覚えておきたい。"
+    dimensions: [very_short, ordinary]
+    expected:
+      safety: normal
+      reason_code: none
+      themes: [日常, 記録]
+      structure: "出来事の少ない一日そのものを記録しようとしている"
+      abstraction: "無事と記憶"

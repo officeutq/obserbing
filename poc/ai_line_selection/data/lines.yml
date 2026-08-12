@@ -1,0 +1,134 @@
+version: 1
+source: synthetic
+lines:
+  - { id: L001, text: "選ばなかった方も、しばらく隣を歩く。", theme: 選択, meaning: 選択後に残る別の可能性, directness: 0.42, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L002, text: "決める前より、決めた後の方が道は増えることがある。", theme: 選択, meaning: 決定後の展開, directness: 0.48, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L003, text: "片方を手に取ると、もう片方の重さがわかる。", theme: 選択, meaning: 選択による不在の可視化, directness: 0.35, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L004, text: "分かれ道は、通り過ぎても消えない。", theme: 選択, meaning: 選択の記憶, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L005, text: "答えより先に、選んだという事実が残る。", theme: 選択, meaning: 決定の事実性, directness: 0.38, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L006, text: "どちらにも理由がある日は、理由だけでは動かない。", theme: 選択, meaning: 根拠の均衡, directness: 0.52, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L007, text: "扉は、開ける音より閉じる音の方が長く残る。", theme: 選択, meaning: 決定と喪失, directness: 0.18, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L008, text: "決めかけた言葉には、まだ余白がある。", theme: 選択, meaning: 決定と留保, directness: 0.30, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L009, text: "今すぐ正しい方を選ばなくてもいい。", theme: 選択, meaning: 選択への助言, directness: 0.82, status: candidate, source: synthetic, review_status: pending }
+  - { id: L010, text: "迷ったら最初に思った方が正解だ。", theme: 選択, meaning: 単純な選択指示, directness: 0.95, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L011, text: "見えない先にも、同じだけ朝は来る。", theme: 不確実性, meaning: 不確実な未来の継続, directness: 0.28, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L012, text: "わからなさは、空白ではなく形の途中かもしれない。", theme: 不確実性, meaning: 未確定な状態, directness: 0.36, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L013, text: "霧の中では、近いものまで遠く見える。", theme: 不確実性, meaning: 不確実性による距離感, directness: 0.22, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L014, text: "予想は、未来より今の輪郭を映す。", theme: 不確実性, meaning: 予想と現在認識, directness: 0.34, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L015, text: "まだ起きていないことにも、影はできる。", theme: 不確実性, meaning: 予期の影響, directness: 0.31, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L016, text: "同じ重さの根拠は、静かに釣り合う。", theme: 不確実性, meaning: 相反する根拠の均衡, directness: 0.40, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L017, text: "地図の端は、道の端とは限らない。", theme: 不確実性, meaning: 認識範囲と可能性, directness: 0.20, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L018, text: "見落としを探す目は、見つけたものも疑う。", theme: 不確実性, meaning: 確認と疑念, directness: 0.46, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L019, text: "心配しすぎず結果を待とう。", theme: 不確実性, meaning: 不安への直接助言, directness: 0.88, status: candidate, source: synthetic, review_status: pending }
+  - { id: L020, text: "不安の九割は起こらない。", theme: 不確実性, meaning: 不確かな断定, directness: 0.92, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L021, text: "会話のあとに残る声は、話した人のものだけではない。", theme: 関係, meaning: 対話後の余韻, directness: 0.32, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L022, text: "親しさにも、呼吸する間がある。", theme: 関係, meaning: 親しさと間隔, directness: 0.28, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L023, text: "同じ席にいても、見ている窓は違う。", theme: 関係, meaning: 共在と視点差, directness: 0.24, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L024, text: "返事のない時間も、関係の外ではない。", theme: 関係, meaning: 沈黙と関係, directness: 0.43, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L025, text: "聞いていた言葉と、待っていた言葉は似ている。", theme: 関係, meaning: 聞くことと発話待ち, directness: 0.49, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L026, text: "近くにいる理由は、近さだけでは測れない。", theme: 関係, meaning: 接続理由と距離, directness: 0.41, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L027, text: "一緒に笑った時間は、次の約束を要求しない。", theme: 関係, meaning: 楽しさと継続義務の分離, directness: 0.38, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L028, text: "説明しないで伝わることと、伝えないことは少し違う。", theme: 関係, meaning: 省略と沈黙, directness: 0.51, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L029, text: "相手の気持ちをもっと考えるべきだ。", theme: 関係, meaning: 対人関係への指示, directness: 0.90, status: candidate, source: synthetic, review_status: pending }
+  - { id: L030, text: "本当の友人なら何でも話せる。", theme: 関係, meaning: 関係性の断定, directness: 0.93, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L031, text: "距離は、離れたときだけ生まれるものではない。", theme: 距離, meaning: 心理的距離の多様性, directness: 0.30, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L032, text: "返さなかった言葉のぶん、静かな場所ができる。", theme: 距離, meaning: 未返信と静けさ, directness: 0.36, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L033, text: "遠くから見える輪郭もある。", theme: 距離, meaning: 距離による認識, directness: 0.19, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L034, text: "近さを測る物差しは、日によって伸び縮みする。", theme: 距離, meaning: 距離感の変動, directness: 0.33, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L035, text: "空いた席は、不在より先に距離を語る。", theme: 距離, meaning: 不在の可視化, directness: 0.21, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L036, text: "離れたあとで、近すぎた音が聞こえる。", theme: 距離, meaning: 距離後の再評価, directness: 0.27, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L037, text: "境界は壁ではなく、二つの場所の名前でもある。", theme: 距離, meaning: 境界の両義性, directness: 0.24, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L038, text: "間を置くと、途切れたものと続いているものが分かれる。", theme: 距離, meaning: 間隔による関係の識別, directness: 0.44, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L039, text: "無理な関係からはすぐ離れよう。", theme: 距離, meaning: 離脱の直接助言, directness: 0.94, status: candidate, source: synthetic, review_status: pending }
+  - { id: L040, text: "連絡がないなら大切にされていない。", theme: 距離, meaning: 関係の一面的断定, directness: 0.96, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L041, text: "忙しさは、進んだ距離と同じ単位では測れない。", theme: 仕事, meaning: 活動量と進捗のずれ, directness: 0.42, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L042, text: "机には、終わった仕事より残った姿勢がある。", theme: 仕事, meaning: 作業後の身体感覚, directness: 0.29, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L043, text: "会議が終わってから見つかる席もある。", theme: 仕事, meaning: 会議後に気づく立場, directness: 0.31, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L044, text: "区切りは、仕事の量より光の変化に似ている。", theme: 仕事, meaning: 終業感覚, directness: 0.23, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L045, text: "反対しなかった声も、賛成の中には溶けきらない。", theme: 仕事, meaning: 沈黙と立場, directness: 0.47, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L046, text: "終わった項目の間に、一日の形が隠れている。", theme: 仕事, meaning: タスクと一日, directness: 0.34, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L047, text: "手を止めても、考えていた速度はすぐには止まらない。", theme: 仕事, meaning: 作業後の慣性, directness: 0.39, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L048, text: "進捗のない日にも、使われた時間の跡はある。", theme: 仕事, meaning: 成果と時間の分離, directness: 0.45, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L049, text: "効率を上げる方法を考えよう。", theme: 仕事, meaning: 生産性への助言, directness: 0.91, status: candidate, source: synthetic, review_status: pending }
+  - { id: L050, text: "忙しいのは能力が足りないからだ。", theme: 仕事, meaning: 能力の断定, directness: 0.98, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L051, text: "直した跡は、間違いがあった場所だけに残る。", theme: 失敗, meaning: 修復の痕跡, directness: 0.38, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L052, text: "小さな欠けは、広い面の中でよく光る。", theme: 失敗, meaning: 欠点への注目, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L053, text: "戻れない時間にも、直せたものは置かれている。", theme: 失敗, meaning: 不可逆性と修復, directness: 0.35, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L054, text: "失敗のあとに普通の声がすると、世界の続きが見える。", theme: 失敗, meaning: 失敗後の平常, directness: 0.44, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L055, text: "できなかった一つは、数え方を変える力が強い。", theme: 失敗, meaning: 未達成による評価の偏り, directness: 0.49, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L056, text: "消した線も、書いた順番の一部だ。", theme: 失敗, meaning: 修正と過程, directness: 0.28, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L057, text: "見つからなかった間違いと、見つけた自分は同時にいる。", theme: 失敗, meaning: 発見と自己, directness: 0.41, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L058, text: "転んだ場所は、立った場所にもなる。", theme: 失敗, meaning: 失敗と再開, directness: 0.36, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L059, text: "失敗から学んで次に生かそう。", theme: 失敗, meaning: 学習への直接助言, directness: 0.90, status: candidate, source: synthetic, review_status: pending }
+  - { id: L060, text: "失敗は成功のもとだ。", theme: 失敗, meaning: 定型的な意味付与, directness: 0.86, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L061, text: "新しい配置には、古い動きが何度かぶつかる。", theme: 変化, meaning: 変化と身体の慣れ, directness: 0.40, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L062, text: "便利になった場所にも、馴染むまでの影がある。", theme: 変化, meaning: 改善と馴染み, directness: 0.33, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L063, text: "新しいものの箱には、古いものの時間も入る。", theme: 変化, meaning: 更新と過去, directness: 0.27, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L064, text: "変わったあとで、望んでいた形が見直される。", theme: 変化, meaning: 変化後の願望再評価, directness: 0.42, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L065, text: "慣れは、変化より少し遅れて到着する。", theme: 変化, meaning: 変化と適応の時差, directness: 0.36, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L066, text: "手放した場所に、手の形だけがしばらく残る。", theme: 変化, meaning: 手放しの余韻, directness: 0.22, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L067, text: "同じ道の景色が変わると、歩幅も少し変わる。", theme: 変化, meaning: 環境変化と感覚, directness: 0.29, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L068, text: "更新されたものには、更新されなかった部分がよく見える。", theme: 変化, meaning: 変化と残存, directness: 0.45, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L069, text: "変化を恐れず前へ進もう。", theme: 変化, meaning: 前進の直接助言, directness: 0.94, status: candidate, source: synthetic, review_status: pending }
+  - { id: L070, text: "人は変わらなければ成長できない。", theme: 変化, meaning: 成長の断定, directness: 0.96, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L071, text: "戻ってきたものにも、戻らなかった時間がある。", theme: 喪失, meaning: 回復と失われた時間, directness: 0.40, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L072, text: "消した記録は、消したという記録を残す。", theme: 喪失, meaning: 削除の痕跡, directness: 0.37, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L073, text: "名前をつけると、終わりの輪郭が濃くなる。", theme: 喪失, meaning: 命名と終結, directness: 0.43, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L074, text: "空になった場所は、前より広く見える。", theme: 喪失, meaning: 不在と空間, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L075, text: "なくしたものの大きさは、探した時間にも宿る。", theme: 喪失, meaning: 探索時間と価値, directness: 0.34, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L076, text: "終わった線の先にも、同じ紙が続いている。", theme: 喪失, meaning: 終結と継続, directness: 0.21, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L077, text: "捨てなかった箱は、まだ決めていない時間を守る。", theme: 喪失, meaning: 保留された手放し, directness: 0.39, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L078, text: "不在は、ときどき物より先に部屋へ着く。", theme: 喪失, meaning: 不在の感覚, directness: 0.18, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L079, text: "過去を手放して前向きになろう。", theme: 喪失, meaning: 手放しの直接助言, directness: 0.95, status: candidate, source: synthetic, review_status: pending }
+  - { id: L080, text: "時間がすべてを解決する。", theme: 喪失, meaning: 回復の断定, directness: 0.90, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L081, text: "一人分の食卓にも、二つ目の言葉が置かれる場所がある。", theme: 孤独, meaning: 一人の時間と未共有, directness: 0.31, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L082, text: "静かな日は、自分の声の距離がよくわかる。", theme: 孤独, meaning: 静けさと自己の声, directness: 0.34, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L083, text: "選んだ一人にも、選ばなかった誰かの気配がある。", theme: 孤独, meaning: 選択した孤独と他者, directness: 0.38, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L084, text: "誰にも聞かれなかった声は、消えたわけではない。", theme: 孤独, meaning: 未共有の存在, directness: 0.36, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L085, text: "空席の数と、孤独の数は一致しない。", theme: 孤独, meaning: 物理的単独と孤独感, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L086, text: "一人の夜には、時計の音が少し近い。", theme: 孤独, meaning: 単独時の感覚, directness: 0.17, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L087, text: "静けさを望んだ耳も、静けさを確かめる。", theme: 孤独, meaning: 望んだ孤独の確認, directness: 0.41, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L088, text: "共有しなかった出来事にも、同じ一日の重さがある。", theme: 孤独, meaning: 未共有と出来事の価値, directness: 0.43, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L089, text: "寂しいなら誰かに連絡しよう。", theme: 孤独, meaning: 接触の直接助言, directness: 0.96, status: candidate, source: synthetic, review_status: pending }
+  - { id: L090, text: "一人を楽しめない人は弱い。", theme: 孤独, meaning: 人物評価, directness: 0.99, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L091, text: "先の予定をめくる指の下で、今日も一枚になっていく。", theme: 時間, meaning: 未来への注視と現在, directness: 0.31, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L092, text: "待つ時間は、終わる直前に形を変える。", theme: 時間, meaning: 待ち時間の反転, directness: 0.35, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L093, text: "十二枚の紙にも、長かった午後は折りたためない。", theme: 時間, meaning: 暦と体感時間, directness: 0.24, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L094, text: "時計は同じ幅で進み、日は違う深さで残る。", theme: 時間, meaning: 客観時間と体感, directness: 0.22, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L095, text: "過ぎたあとで長くなる時間もある。", theme: 時間, meaning: 回想による時間変化, directness: 0.20, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L096, text: "順番が来ると、待っていた場所が少し惜しくなる。", theme: 時間, meaning: 待機終了の名残, directness: 0.40, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L097, text: "未来を見ている間も、足元は静かに通り過ぎる。", theme: 時間, meaning: 未来と現在の通過, directness: 0.33, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L098, text: "区切った時間の隙間に、区切れない一日がある。", theme: 時間, meaning: 時間単位と連続性, directness: 0.27, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L099, text: "今この瞬間を大切にしよう。", theme: 時間, meaning: 現在への直接助言, directness: 0.93, status: candidate, source: synthetic, review_status: pending }
+  - { id: L100, text: "時間は誰にでも平等だ。", theme: 時間, meaning: 時間の単純化, directness: 0.86, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L101, text: "主語のない期待も、肩には重さを残す。", theme: 期待, meaning: 出所不明の期待, directness: 0.42, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L102, text: "終えた三つより、始めなかった一つは声が大きい。", theme: 期待, meaning: 達成と追加期待, directness: 0.48, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L103, text: "『もっと』は、いつも少し早く席に着いている。", theme: 期待, meaning: 常在する追加要求, directness: 0.35, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L104, text: "届かなかった高さは、誰が置いたのか見えにくい。", theme: 期待, meaning: 基準の出所, directness: 0.37, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L105, text: "満ちた器にも、次の一滴の場所を探す目がある。", theme: 期待, meaning: 達成後の不足探索, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L106, text: "できたことは静かで、できなかったことはよく響く。", theme: 期待, meaning: 未達成への注意, directness: 0.46, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L107, text: "期待の影は、持ち主より先に伸びることがある。", theme: 期待, meaning: 期待と主体, directness: 0.28, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L108, text: "余った力と、使わなかった力は同じではない。", theme: 期待, meaning: 余力と自己評価, directness: 0.39, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L109, text: "自分にもっと優しくするべきだ。", theme: 期待, meaning: 自己受容への直接助言, directness: 0.88, status: candidate, source: synthetic, review_status: pending }
+  - { id: L110, text: "努力すれば必ず期待に応えられる。", theme: 期待, meaning: 努力と結果の断定, directness: 0.96, status: retired, source: synthetic, review_status: reviewed_retired }
+
+  - { id: L111, text: "よく乾いた布には、その日の光が少し残る。", theme: 日常, meaning: 小さな生活の充足, directness: 0.22, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L112, text: "いつもの灯りがないだけで、道は別の長さになる。", theme: 日常, meaning: 日常の目印と距離, directness: 0.38, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L113, text: "何もなかった日は、何も壊れなかった日でもある。", theme: 日常, meaning: 無事な一日, directness: 0.43, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L114, text: "小さな出来事ほど、一日の底で長く光る。", theme: 日常, meaning: 平凡な出来事の余韻, directness: 0.25, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L115, text: "閉じた店の暗さも、帰り道の一部になる。", theme: 日常, meaning: 景色の変化, directness: 0.30, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L116, text: "覚えておくほどでもない日は、静かに覚えられる。", theme: 日常, meaning: 平凡な日の記録, directness: 0.33, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L117, text: "湯気が消えるまでの時間にも、一日は流れている。", theme: 日常, meaning: 小さな時間の経過, directness: 0.18, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L118, text: "同じ景色を通るたび、同じではないものが増える。", theme: 日常, meaning: 反復と変化, directness: 0.29, status: approved, source: synthetic, review_status: reviewed }
+  - { id: L119, text: "平凡な毎日に感謝しよう。", theme: 日常, meaning: 感謝の直接助言, directness: 0.90, status: candidate, source: synthetic, review_status: pending }
+  - { id: L120, text: "何もない日は無駄な日だ。", theme: 日常, meaning: 日常の否定的評価, directness: 0.98, status: retired, source: synthetic, review_status: reviewed_retired }
