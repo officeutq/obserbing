@@ -2,8 +2,9 @@
 
 module AiLineSelection
   class Doctor
-    def initialize(configuration)
+    def initialize(configuration, environment: ENV)
       @configuration = configuration
+      @environment = environment
     end
 
     def call
@@ -18,7 +19,11 @@ module AiLineSelection
         status: "ok",
         ruby_version: RUBY_VERSION,
         external_api_enabled: @configuration.external_api_enabled?,
-        external_adapter_implemented: false,
+        external_adapter_implemented: true,
+        api_keys: @configuration.meaning_provider_names.to_h do |name|
+          variable = @configuration.meaning_provider(name).fetch("api_key_env")
+          [name, { configured: !@environment[variable].to_s.empty? }]
+        end,
         datasets: {
           entries: data.entries.length,
           lines: data.lines.length,

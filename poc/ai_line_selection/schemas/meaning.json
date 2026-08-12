@@ -1,18 +1,14 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "obserbing://schemas/meaning/draft-1",
   "type": "object",
   "required": ["schema_version", "themes", "structure", "abstraction"],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "const": "draft-1" },
+    "schema_version": { "type": "string", "enum": ["draft-1"] },
     "themes": {
       "type": "array",
-      "minItems": 1,
-      "maxItems": 4,
-      "items": { "type": "string", "minLength": 1, "maxLength": 30 }
+      "items": { "type": "string" }
     },
-    "structure": { "type": "string", "minLength": 1, "maxLength": 200 },
-    "abstraction": { "type": "string", "minLength": 1, "maxLength": 120 }
+    "structure": { "type": "string" },
+    "abstraction": { "type": "string" }
   }
 }

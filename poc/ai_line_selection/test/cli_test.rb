@@ -43,4 +43,19 @@ class CliTest < Minitest::Test
     assert_equal 12, document.fetch("safety_runs")
     assert_empty document.fetch("failures")
   end
+
+  def test_meaning_comparison_requires_explicit_external_api_flag
+    output = StringIO.new
+    errors = StringIO.new
+
+    status = AiLineSelection::CLI.start(
+      ["compare-meaning", "--providers", "openai", "--repetitions", "1", "--entry-id", "E001"],
+      output: output,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_empty output.string
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
 end

@@ -4,3 +4,4 @@ ruby ">= 3.3"
 
 gem "minitest", "~> 6.0"
 gem "rake", "~> 13.0"
+gem "csv", "~> 3.3"

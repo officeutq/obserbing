@@ -8,7 +8,8 @@ module AiLineSelection
   class Telemetry
     ALLOWED_KEYS = %i[
       timestamp correlation_id operation status duration_ms provider model request_id
-      input_units output_units estimated_cost_jpy error_code candidate_count
+      input_units output_units cached_input_units estimated_cost_usd estimated_cost_jpy
+      error_code candidate_count attempt retry_count
     ].freeze
 
     attr_reader :events
@@ -37,6 +38,8 @@ module AiLineSelection
         duration_ms: events.sum { |event| event[:duration_ms].to_f }.round(2),
         input_units: events.sum { |event| event[:input_units].to_i },
         output_units: events.sum { |event| event[:output_units].to_i },
+        cached_input_units: events.sum { |event| event[:cached_input_units].to_i },
+        estimated_cost_usd: events.sum { |event| event[:estimated_cost_usd].to_f }.round(8),
         estimated_cost_jpy: events.sum { |event| event[:estimated_cost_jpy].to_f }.round(4)
       }
     end
