@@ -35,6 +35,55 @@ class ExternalAdaptersTest < Minitest::Test
     refute body.key?("tools")
   end
 
+  def test_openai_safety_uses_structured_output_without_generating_fixed_copy
+    safety = valid_safety(classification: "safety")
+    transport = FakeTransport.new(openai_response(meaning: safety))
+    client, _telemetry, settings = external_safety_client(provider: "openai", transport: transport)
+
+    invocation = client.call(:safety, { "entry_text" => "合成SAFETYケース" }, settings: settings)
+
+    assert_equal "safety", invocation.value.fetch("classification")
+    body = JSON.parse(transport.requests.first.fetch(:body))
+    assert_equal "safety_classification", body.dig("text", "format", "name")
+    assert_equal "合成SAFETYケース", body.fetch("input")
+    refute_includes body.to_s, "SAFETY_COPY_TBD"
+  end
+
+  def test_anthropic_safety_uses_structured_output
+    safety = valid_safety(classification: "indeterminate")
+    transport = FakeTransport.new(anthropic_response(meaning: safety))
+    client, _telemetry, settings = external_safety_client(provider: "anthropic", transport: transport)
+
+    invocation = client.call(:safety, { "entry_text" => "合成SAFETYケース" }, settings: settings)
+
+    assert_equal "indeterminate", invocation.value.fetch("classification")
+    body = JSON.parse(transport.requests.first.fetch(:body))
+    assert_equal "合成SAFETYケース", body.dig("messages", 0, "content")
+    refute_includes body.to_s, "SAFETY_COPY_TBD"
+  end
+
+  def test_safety_contract_retries_out_of_range_confidence
+    invalid = valid_safety(confidence: 1.1)
+    transport = FakeTransport.new(openai_response(meaning: invalid), openai_response(meaning: valid_safety))
+    client, _telemetry, settings = external_safety_client(provider: "openai", transport: transport)
+
+    invocation = client.call(:safety, { "entry_text" => "合成日記" }, settings: settings)
+
+    assert_equal 1, invocation.metadata.fetch(:retry_count)
+    assert_equal "schema_validation_error", invocation.metadata.fetch(:attempts).first.fetch(:error_code)
+  end
+
+  def test_safety_contract_rejects_reason_inconsistent_with_classification
+    invalid = valid_safety(classification: "normal", reason_code: "suicide_imminent")
+    transport = FakeTransport.new(openai_response(meaning: invalid), openai_response(meaning: invalid))
+    client, _telemetry, settings = external_safety_client(provider: "openai", transport: transport)
+
+    assert_raises(AiLineSelection::SchemaValidationError) do
+      client.call(:safety, { "entry_text" => "合成日記" }, settings: settings)
+    end
+    assert_equal 2, transport.requests.length
+  end
+
   def test_openai_line_evaluation_uses_structured_batch_without_hidden_line_metadata
     transport = FakeTransport.new(openai_response(meaning: valid_line_evaluation))
     client, _telemetry, settings = external_line_evaluation_client(provider: "openai", transport: transport)
@@ -168,12 +217,12 @@ class ExternalAdaptersTest < Minitest::Test
     assert_equal 2, transport.requests.length
   end
 
-  def test_external_adapter_rejects_non_meaning_operation
+  def test_external_structured_adapter_rejects_embedding_operation
     transport = FakeTransport.new(openai_response)
     client, _telemetry, settings = external_client(provider: "openai", transport: transport)
 
     assert_raises(AiLineSelection::ProviderContractError) do
-      client.call(:safety, { "entry_text" => "合成日記" }, settings: settings)
+      client.call(:embedding, { "texts" => ["合成日記"] }, settings: settings)
     end
     assert_empty transport.requests
   end

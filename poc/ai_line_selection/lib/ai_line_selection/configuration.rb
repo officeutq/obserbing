@@ -41,6 +41,16 @@ module AiLineSelection
       raise ConfigurationError.new("Unknown Meaning provider", details: { provider: name.to_s })
     end
 
+    def safety_provider(name)
+      @data.fetch("safety_providers").fetch(name.to_s)
+    rescue KeyError
+      raise ConfigurationError.new("Unknown SAFETY provider", details: { provider: name.to_s })
+    end
+
+    def safety_provider_names
+      @data.fetch("safety_providers").keys
+    end
+
     def meaning_provider_names
       @data.fetch("meaning_providers").keys
     end
@@ -98,7 +108,7 @@ module AiLineSelection
     private
 
     def validate!
-      %w[version random_seed external_api meaning_providers line_evaluation_providers embedding_providers operations search selection paths].each do |key|
+      %w[version random_seed external_api safety_providers meaning_providers line_evaluation_providers embedding_providers operations search selection paths].each do |key|
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
@@ -112,12 +122,40 @@ module AiLineSelection
         raise ConfigurationError.new("external_api.maximum_embedding_comparison_requests must be positive")
       end
 
+      unless external_api.fetch("maximum_safety_comparison_requests").to_i.positive?
+        raise ConfigurationError.new("external_api.maximum_safety_comparison_requests must be positive")
+      end
+
       unless external_api.fetch("maximum_line_evaluation_comparison_requests").to_i.positive?
         raise ConfigurationError.new("external_api.maximum_line_evaluation_comparison_requests must be positive")
       end
 
       if external_api.fetch("total_budget_jpy").to_f.negative?
         raise ConfigurationError.new("external_api.total_budget_jpy must not be negative")
+      end
+
+      safety_provider_names.each do |name|
+        provider = safety_provider(name)
+        %w[adapter provider model max_output_tokens timeout_seconds max_retries pricing].each do |key|
+          raise ConfigurationError.new("Missing SAFETY provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+        end
+        if provider.fetch("adapter") == "fixture"
+          unless provider.fetch("max_retries") == 0
+            raise ConfigurationError.new("Fixture SAFETY provider must not retry", details: { provider: name })
+          end
+        else
+          %w[endpoint api_key_env].each do |key|
+            raise ConfigurationError.new("Missing external SAFETY provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+          end
+          unless provider.fetch("max_retries") == 1
+            raise ConfigurationError.new("External SAFETY provider max_retries must be 1", details: { provider: name })
+          end
+        end
+      end
+
+      safety_output_values = safety_provider_names.map { |name| safety_provider(name).fetch("max_output_tokens") }.uniq
+      unless safety_output_values.length == 1
+        raise ConfigurationError.new("SAFETY providers must use the same max_output_tokens")
       end
 
 

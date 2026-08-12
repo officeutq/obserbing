@@ -2,7 +2,7 @@
 
 RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較検証するRuby CLIです。
 
-Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較に加え、Issue #8ではLine候補評価の比較CLI、OpenAI / Anthropic Adapter、AI推奨とRuby最終制御の差分集計を追加しています。SAFETYは引き続きFixture Adapterです。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
+Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Issue #8のLine候補評価比較に加え、Issue #9ではSAFETY判定の比較CLI、障害時の停止制御、見逃し・誤検知・判定不能の集計を追加しています。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
 ## 必要環境
 
@@ -26,7 +26,7 @@ bundle install
 bundle exec ruby bin\ai_line_selection doctor
 ```
 
-設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-meaning`、`compare-embedding`または`compare-line-evaluation`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
+設定ファイルの`external_api.enabled`は`false`のままです。実APIを呼べるのは`compare-safety`、`compare-meaning`、`compare-embedding`または`compare-line-evaluation`へ`--allow-external-api`を明示したときだけで、通常の`run`、`evaluate`、`prepare`、料金計画、テストからは呼べません。
 
 ## オフライン実行
 
@@ -48,6 +48,33 @@ bundle exec ruby bin\ai_line_selection prepare --entry-id E001 --operation meani
 ```powershell
 bundle exec ruby bin\ai_line_selection run --entry-id E001 --adapter pending_external
 ```
+
+## SAFETY判定比較
+
+合成12件（safety 5、normal 5、indeterminate 2）をOpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`で各3回比較します。モデルは分類、reason code、confidenceだけを返し、固定SAFETY応答本文はAIに生成させません。
+
+まず通信なしでリクエスト数と費用上限を確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-safety --providers openai,anthropic --repetitions 3
+```
+
+Fixtureで分類後の分岐と集計を確認できます。これはモデル品質評価には使いません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-safety --providers fixture --repetitions 3
+```
+
+実API比較は費用条件の確認と明示指示後だけ実行します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-safety `
+  --providers openai,anthropic `
+  --repetitions 3 `
+  --allow-external-api
+```
+
+`safety`はサーバー管理の`SAFETY_COPY_TBD`へ分岐し、それ以降のAI処理を止めます。`indeterminate`、不正JSON、timeout、API失敗も通常フローへ流さず停止します。詳細は[SAFETY判定 PoC比較](../../docs/SAFETY_PoC比較.md)を参照してください。
 
 ## Meaning実API比較
 
@@ -166,7 +193,7 @@ bundle exec ruby bin\ai_line_selection review-line-evaluation `
 
 ## 生成物
 
-実行結果は`results/meaning_<timestamp>_<suffix>/`へ作成され、Git管理されません。
+実行結果は`results/<operation>_<timestamp>_<suffix>/`へ作成され、Git管理されません。
 
 | ファイル | 内容 |
 |---|---|
@@ -178,6 +205,8 @@ bundle exec ruby bin\ai_line_selection review-line-evaluation `
 | `manifest.json` | 実験条件、料金表、Prompt / Schemaハッシュ |
 
 Line比較の`results/line_evaluation_<timestamp>_<suffix>/`には、固定候補の`candidate_sets.jsonl`、AIとRuby選択を分離した`provider_outputs.jsonl`、低確信確認用`human_evaluation.csv`、Provider対応を隔離した`blind_mapping.csv`も保存します。
+
+SAFETY比較の`provider_outputs.jsonl`にはケースID、期待・実判定、分岐、計測値だけを保存し、合成本文も含めません。`stopped.json`は不正JSONや外部障害を通常フローへ通さなかったことを記録します。
 
 人間評価票では、検索利用可能性（3段階）、診断、根拠のない感情・人物像の固定、不要な固有名詞を評価します。CLIは定量結果だけを集計し、人間評価前に勝者を決めません。
 

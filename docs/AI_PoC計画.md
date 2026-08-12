@@ -140,6 +140,8 @@ Issue #7ではEmbedding専用のHTTP Adapterを実装し、`plan-embedding`は�
 
 Issue #8ではIssue #7の採用候補で同一の上位20候補を固定し、OpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`へ4軸評価を依頼する。AI単独の推奨とRuby側の最終制御を分離し、候補IDの完全一致、数値範囲、SILENCE、3段階の閾値感度を検証する。各Providerの第1反復だけをBlind評価し、Codex一次評価の低確信ケースだけを人が対話確認する。詳細条件は[Line候補評価 PoC比較](Line評価_PoC比較.md)を参照する。
 
+Issue #9では独立SAFETYケース12件を各3回実行し、OpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`を比較する。モデルは分類・reason code・confidenceだけを返し、固定SAFETY応答本文を生成しない。`indeterminate`、不正JSON、timeout、API失敗は通常フローへ通さず、アプリ側の技術エラーとして停止する。詳細条件は[SAFETY判定 PoC比較](SAFETY_PoC比較.md)を参照する。
+
 Meaning比較の実Providerタイムアウトは両社30秒、同期再試行は最大1回とする。Fixtureの従来値3秒は維持する。3秒では構造化出力Schemaの初回処理や外部通信の揺らぎをモデル品質と誤認する可能性があるためであり、p50、p95、最大値を記録してPoC後に再評価する。
 
 ## 11. ログ・秘密情報・成果物

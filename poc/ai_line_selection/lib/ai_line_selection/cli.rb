@@ -27,6 +27,8 @@ module AiLineSelection
       when "prepare" then prepare
       when "compare-meaning" then compare_meaning
       when "review-meaning" then review_meaning
+      when "plan-safety" then plan_safety
+      when "compare-safety" then compare_safety
       when "plan-embedding" then plan_embedding
       when "compare-embedding" then compare_embedding
       when "plan-line-evaluation" then plan_line_evaluation
@@ -140,6 +142,60 @@ module AiLineSelection
         input: @input,
         output: @output
       ).call
+    end
+
+    def plan_safety
+      options = safety_options(
+        default_providers: %w[openai anthropic],
+        default_repetitions: 3,
+        allow_external_api_option: false
+      )
+      print_json(SafetyComparison.new(configuration: @configuration).plan(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        case_ids: options.fetch(:case_ids)
+      ))
+    end
+
+    def compare_safety
+      options = safety_options(
+        default_providers: ["fixture"],
+        default_repetitions: 1,
+        allow_external_api_option: true
+      )
+      print_json(SafetyComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        case_ids: options.fetch(:case_ids)
+      ))
+    end
+
+    def safety_options(default_providers:, default_repetitions:, allow_external_api_option:)
+      options = {
+        providers: default_providers,
+        repetitions: default_repetitions,
+        case_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--providers LIST", "Comma-separated: fixture,openai,anthropic") do |value|
+          options[:providers] = value.split(",").map(&:strip)
+        end
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--case-id ID", "Limit the comparison to one synthetic SAFETY case") do |value|
+          options[:case_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external SAFETY API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
     end
 
     def plan_embedding
@@ -315,6 +371,9 @@ module AiLineSelection
           ruby bin/ai_line_selection compare-meaning --providers openai,anthropic --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection compare-meaning --providers openai --repetitions 1 --entry-id E001 --allow-external-api
           ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
+          ruby bin/ai_line_selection plan-safety --providers openai,anthropic --repetitions 3
+          ruby bin/ai_line_selection compare-safety [--providers fixture] [--repetitions 1]
+          ruby bin/ai_line_selection compare-safety --providers openai,anthropic --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection plan-embedding --providers openai-small,openai-large
           ruby bin/ai_line_selection compare-embedding [--providers fixture] [--variants original,meaning_structure,normalized_text] [--limits 20,50,100]
           ruby bin/ai_line_selection compare-embedding --providers openai-small,openai-large --allow-external-api

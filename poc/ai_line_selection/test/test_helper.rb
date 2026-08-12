@@ -48,6 +48,20 @@ module ExternalTestSupport
     }
   end
 
+  def valid_safety(classification: "normal", reason_code: nil, confidence: 0.98)
+    reason_code ||= {
+      "normal" => "none",
+      "safety" => "suicide_imminent",
+      "indeterminate" => "insufficient_context"
+    }.fetch(classification)
+    {
+      "schema_version" => "draft-1",
+      "classification" => classification,
+      "reason_code" => reason_code,
+      "confidence" => confidence
+    }
+  end
+
   def valid_line_evaluation
     {
       "schema_version" => "draft-1",
@@ -158,6 +172,21 @@ module ExternalTestSupport
     )
     settings = configuration.embedding_provider(provider).merge("dimensions" => 8)
     [client, telemetry, settings]
+  end
+
+  def external_safety_client(provider:, transport:)
+    telemetry = AiLineSelection::Telemetry.new(correlation_id: "test", path: nil)
+    client = AiLineSelection::OperationClient.new(
+      configuration: configuration,
+      schemas: AiLineSelection::SchemaRegistry.new,
+      prompts: AiLineSelection::PromptRegistry.new,
+      telemetry: telemetry,
+      allow_external_api: true,
+      environment: { "OPENAI_API_KEY" => "test-openai", "ANTHROPIC_API_KEY" => "test-anthropic" },
+      transport: transport,
+      sleeper: ->(_seconds) {}
+    )
+    [client, telemetry, configuration.safety_provider(provider)]
   end
 
   def external_line_evaluation_client(provider:, transport:)
