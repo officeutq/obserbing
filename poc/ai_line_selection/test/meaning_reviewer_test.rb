@@ -45,6 +45,44 @@ class MeaningReviewerTest < Minitest::Test
     end
   end
 
+  def test_skips_codex_prefilled_pairs_and_preserves_judge_provenance
+    Dir.mktmpdir do |directory|
+      write_review_artifacts(directory, %w[E001 E002])
+      reviewer(directory, "/q\n", StringIO.new).call
+      path = File.join(directory, "interactive_human_evaluation.csv")
+      rows = CSV.read(path, headers: true).map(&:to_h)
+      rows.first.merge!(
+        "usability_a" => "3",
+        "usability_b" => "2",
+        "diagnosis_a" => "false",
+        "diagnosis_b" => "false",
+        "fixed_a" => "false",
+        "fixed_b" => "false",
+        "proper_noun_a" => "false",
+        "proper_noun_b" => "false",
+        "judge_a" => "codex",
+        "judge_b" => "codex",
+        "confidence_a" => "high",
+        "confidence_b" => "high",
+        "reason_a" => "中心的意味を保持",
+        "reason_b" => "大筋は利用可能",
+        "human_reviewed_a" => "false",
+        "human_reviewed_b" => "false"
+      )
+      CSV.open(path, "w:UTF-8", write_headers: true, headers: rows.first.keys) do |csv|
+        rows.each { |row| csv << row.values_at(*rows.first.keys) }
+      end
+
+      output = StringIO.new
+      summary = reviewer(directory, "3\n3\n\n\n", output).call
+
+      assert_includes output.string, "[2 / 2]"
+      refute_includes output.string, "[1 / 2]"
+      assert_equal({ "codex" => 2, "human" => 2 }, summary.fetch(:judge_counts))
+      assert_equal 2, summary.fetch(:human_reviewed_outputs)
+    end
+  end
+
   private
 
   def reviewer(directory, input, output)

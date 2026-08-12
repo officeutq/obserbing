@@ -13,6 +13,8 @@ module AiLineSelection
     STATE_HEADERS = %w[
       entry_id blind_id_a blind_id_b usability_a usability_b
       diagnosis_a diagnosis_b fixed_a fixed_b proper_noun_a proper_noun_b notes
+      judge_a judge_b confidence_a confidence_b reason_a reason_b
+      human_reviewed_a human_reviewed_b
     ].freeze
     FLAG_KEYS = {
       "d" => "diagnosis",
@@ -197,7 +199,15 @@ module AiLineSelection
         "fixed_b" => flags.fetch("fixed_b"),
         "proper_noun_a" => flags.fetch("proper_noun_a"),
         "proper_noun_b" => flags.fetch("proper_noun_b"),
-        "notes" => notes
+        "notes" => notes,
+        "judge_a" => "human",
+        "judge_b" => "human",
+        "confidence_a" => "human",
+        "confidence_b" => "human",
+        "reason_a" => notes,
+        "reason_b" => notes,
+        "human_reviewed_a" => "true",
+        "human_reviewed_b" => "true"
       )
       @output.puts("保存しました。")
       :saved
@@ -316,7 +326,10 @@ module AiLineSelection
             usability: Integer(row.fetch("usability_#{side}")),
             diagnosis: row.fetch("diagnosis_#{side}") == "true",
             fixed: row.fetch("fixed_#{side}") == "true",
-            proper_noun: row.fetch("proper_noun_#{side}") == "true"
+            proper_noun: row.fetch("proper_noun_#{side}") == "true",
+            judge: row["judge_#{side}"].to_s.empty? ? "unknown" : row.fetch("judge_#{side}"),
+            confidence: row["confidence_#{side}"],
+            human_reviewed: row["human_reviewed_#{side}"] == "true"
           }
         end
       end
@@ -331,6 +344,8 @@ module AiLineSelection
           diagnosis_count: items.count { |item| item.fetch(:diagnosis) },
           fixed_emotion_or_personality_count: items.count { |item| item.fetch(:fixed) },
           unnecessary_proper_noun_count: items.count { |item| item.fetch(:proper_noun) },
+          judge_counts: items.map { |item| item.fetch(:judge) }.tally.sort.to_h,
+          human_reviewed_count: items.count { |item| item.fetch(:human_reviewed) },
           meets_usability_target: ratio(usable, items.length) >= 0.85,
           meets_zero_red_flag_target: items.none? do |item|
             item.fetch(:diagnosis) || item.fetch(:fixed) || item.fetch(:proper_noun)
@@ -347,6 +362,8 @@ module AiLineSelection
           provider_names_hidden_until_completion: true,
           remaining_repetitions_used_for_automatic_stability_metrics: true
         },
+        judge_counts: evaluations.map { |item| item.fetch(:judge) }.tally.sort.to_h,
+        human_reviewed_outputs: evaluations.count { |item| item.fetch(:human_reviewed) },
         providers: provider_summaries,
         pairwise_usability: pairwise_summary(evaluations),
         automatic_winner_selected: false,

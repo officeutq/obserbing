@@ -132,6 +132,8 @@ bundle exec ruby bin\ai_line_selection review-meaning `
 
 回答は`interactive_human_evaluation.csv`へ1件ごとに保存されます。どちらも`results/`配下のためGit管理されません。集計は勝者を自動決定せず、定量性能と合わせて人が採用判断します。
 
+Codex等による事前評価を使う場合は、評価行へ`judge`、`confidence`、`reason`、`human_reviewed`を保存します。高確信の行は対話画面でスキップでき、低確信の行だけを人が評価できます。最終集計はProvider別の結果と併せて、Codex判定数と人間確認数も分離して表示し、AI判定を人間評価として扱いません。
+
 ## テスト
 
 ```powershell
