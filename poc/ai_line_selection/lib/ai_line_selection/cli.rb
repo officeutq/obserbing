@@ -5,14 +5,16 @@ require "optparse"
 
 module AiLineSelection
   class CLI
-    def self.start(argv, output: $stdout, error_output: $stderr)
-      new(argv, output: output, error_output: error_output).start
+    def self.start(argv, input: $stdin, output: $stdout, error_output: $stderr)
+      new(argv, input: input, output: output, error_output: error_output).start
     end
 
-    def initialize(argv, output:, error_output:)
+    def initialize(argv, input:, output:, error_output:)
       @argv = argv.dup
+      @input = input
       @output = output
       @error_output = error_output
+      EnvironmentLoader.load(root_dir: AiLineSelection::ROOT)
       @configuration = Configuration.load
     end
 
@@ -23,6 +25,8 @@ module AiLineSelection
       when "run" then run
       when "evaluate" then evaluate
       when "prepare" then prepare
+      when "compare-meaning" then compare_meaning
+      when "review-meaning" then review_meaning
       else
         @output.puts(help)
       end
@@ -79,6 +83,59 @@ module AiLineSelection
       print_json(report)
     end
 
+    def compare_meaning
+      options = {
+        providers: %w[openai anthropic],
+        repetitions: 3,
+        entry_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--providers LIST", "Comma-separated: openai,anthropic") do |value|
+          options[:providers] = value.split(",").map(&:strip)
+        end
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--entry-id ID", "Limit the comparison to one synthetic entry") do |value|
+          options[:entry_ids] = [value]
+        end
+        parser.on("--allow-external-api", "Acknowledge paid external API calls") do
+          options[:allow_external_api] = true
+        end
+      end.parse!(@argv)
+
+      raise ExternalApiDisabledError.new(:meaning) unless options[:allow_external_api]
+
+      report = MeaningComparison.new(
+        configuration: @configuration,
+        allow_external_api: options[:allow_external_api],
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        providers: options[:providers],
+        repetitions: options[:repetitions],
+        entry_ids: options[:entry_ids]
+      )
+      print_json(report)
+    end
+
+    def review_meaning
+      options = { results: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", "Meaning comparison results directory") do |value|
+          options[:results] = value
+        end
+      end.parse!(@argv)
+      unless options[:results]
+        raise ConfigurationError.new("review-meaning requires --results DIRECTORY")
+      end
+
+      MeaningReviewer.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        input: @input,
+        output: @output
+      ).call
+    end
+
     def print_json(value)
       @output.puts(JSON.pretty_generate(value))
     end
@@ -90,6 +147,9 @@ module AiLineSelection
           ruby bin/ai_line_selection run [--entry-id E001] [--adapter fixture|pending_external]
           ruby bin/ai_line_selection evaluate [--repetitions 1] [--adapter fixture|pending_external]
           ruby bin/ai_line_selection prepare [--entry-id E001] [--operation safety|meaning]
+          ruby bin/ai_line_selection compare-meaning --providers openai,anthropic --repetitions 3 --allow-external-api
+          ruby bin/ai_line_selection compare-meaning --providers openai --repetitions 1 --entry-id E001 --allow-external-api
+          ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
       TEXT
     end
   end

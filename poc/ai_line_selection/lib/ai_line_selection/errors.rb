@@ -76,6 +76,126 @@ module AiLineSelection
     end
   end
 
+  class AuthenticationError < Error
+    def initialize(provider, request_id: nil)
+      super(
+        "External AI authentication failed",
+        code: "authentication_error",
+        details: { provider: provider, request_id: request_id }.compact
+      )
+    end
+  end
+
+  class RateLimitError < Error
+    def initialize(provider, request_id: nil, retry_after: nil)
+      super(
+        "External AI rate limit was reached",
+        code: "rate_limit_error",
+        retryable: true,
+        details: { provider: provider, request_id: request_id, retry_after: retry_after }.compact
+      )
+    end
+  end
+
+  class ProviderServerError < Error
+    def initialize(provider, status:, request_id: nil)
+      super(
+        "External AI provider returned a server error",
+        code: "provider_server_error",
+        retryable: true,
+        details: { provider: provider, status: status, request_id: request_id }.compact
+      )
+    end
+  end
+
+  class ProviderHttpError < Error
+    def initialize(provider, status:, request_id: nil)
+      super(
+        "External AI provider returned an HTTP error",
+        code: "provider_http_error",
+        details: { provider: provider, status: status, request_id: request_id }.compact
+      )
+    end
+  end
+
+  class ProviderTimeoutError < Error
+    def initialize(provider)
+      super(
+        "External AI request timed out",
+        code: "provider_timeout_error",
+        retryable: true,
+        details: { provider: provider }
+      )
+    end
+  end
+
+  class ProviderNetworkError < Error
+    def initialize(provider, error_class:)
+      super(
+        "External AI network request failed",
+        code: "provider_network_error",
+        retryable: true,
+        details: { provider: provider, error_class: error_class }
+      )
+    end
+  end
+
+  class ResponseParseError < Error
+    def initialize(provider, request_id: nil, usage: nil)
+      super(
+        "External AI response was not valid JSON",
+        code: "response_parse_error",
+        retryable: true,
+        details: { provider: provider, request_id: request_id, usage: usage }.compact
+      )
+    end
+  end
+
+  class IncompleteResponseError < Error
+    def initialize(provider, request_id: nil, reason: nil, usage: nil)
+      super(
+        "External AI response was incomplete",
+        code: "incomplete_response_error",
+        retryable: true,
+        details: { provider: provider, request_id: request_id, reason: reason, usage: usage }.compact
+      )
+    end
+  end
+
+  class ProviderRefusalError < Error
+    def initialize(provider, request_id: nil)
+      super(
+        "External AI provider refused the request",
+        code: "provider_refusal_error",
+        details: { provider: provider, request_id: request_id }.compact
+      )
+    end
+  end
+
+  class BudgetExceededError < Error
+    def initialize(estimated_cost_jpy:, limit_jpy:)
+      super(
+        "External AI PoC budget limit would be exceeded",
+        code: "budget_exceeded_error",
+        details: { estimated_cost_jpy: estimated_cost_jpy, limit_jpy: limit_jpy }
+      )
+    end
+  end
+
+  class CostAnomalyError < Error
+    def initialize(provider, observed_cost_jpy:, expected_max_cost_jpy:)
+      super(
+        "External AI cost exceeded the per-request safety estimate",
+        code: "cost_anomaly_error",
+        details: {
+          provider: provider,
+          observed_cost_jpy: observed_cost_jpy,
+          expected_max_cost_jpy: expected_max_cost_jpy
+        }
+      )
+    end
+  end
+
   class SafetyIndeterminateError < Error
     def initialize
       super(

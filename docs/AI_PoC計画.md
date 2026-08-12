@@ -52,7 +52,7 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 
 ## 6. 比較対象
 
-リアルタイムLLM、Embedding、必要に応じたバッチLLMは独立して選定する。Provider・モデル名は未定とし、次を満たす候補だけを実験対象へ追加する。
+リアルタイムLLM、Embedding、必要に応じたバッチLLMは独立して選定する。Provider・モデルの正式採用は未定とし、次を満たす候補だけを実験対象へ追加する。Issue #6のMeaning Structure比較では、OpenAI Responses APIの`gpt-5.6-terra`とAnthropic Messages APIの`claude-sonnet-5`を候補として比較する。これはMeaning用途だけのPoC条件であり、他のAI処理や本番採用を確定しない。
 
 - 日本語入力と構造化出力を扱える。
 - API入力をモデル学習へ利用しない契約または設定を確認できる。
@@ -65,6 +65,8 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 
 - 温度等の生成パラメータ、プロンプト版、スキーマ版を処理別に固定する。
 - 各通常ケースを同条件で3回実行し、再現性を確認する。
+- Meaning Structureの人間評価は、各日記について各Providerの第1反復をProvider名を伏せてA/B評価し、残りの反復は自動の再現性指標へ使用する。これにより36画面・72出力を人間評価対象とする。
+- AIによるBlind一次評価を利用する場合は、判定主体、確信度、理由、人間による確認・上書きの有無を分離して記録する。低確信ケースだけを人へ回しても、AI判定を人間評価として集計しない。
 - Embeddingは原文、Meaning Structure、正規化テキストを比較する。
 - 候補取得件数は20、50、100、LLM投入件数は10、20、50を比較する。
 - CandidateとRetiredは検索対象外とし、LLMへ渡した許可ID以外を必ず拒否する。
@@ -115,7 +117,7 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 1. `doctor`で設定、スキーマ、データ件数、外部API無効状態を確認する。
 2. Fixture Adapterで通常、SAFETY、SILENCE、各種不正JSONを再現する。
 3. Provider候補、契約・保持条件、モデル、料金表、予算承認者を記録する。
-4. APIキーを環境変数だけに設定し、外部APIを明示的に有効化する。
+4. APIキーを環境変数またはGit管理外の`.env`に設定し、比較コマンドへ`--allow-external-api`を指定する。
 5. SAFETY、Meaning、Embedding、Line評価を個別に実行する。
 6. 基準を満たす候補だけで統合実行し、各ケースを3回計測する。
 7. モデル名を伏せた評価票で人間評価を行う。
@@ -126,17 +128,19 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 次がすべて満たされるまで外部AI APIを呼び出さない。
 
 - Provider、モデル、利用規約、学習利用、保持期間、リージョンを確認済み。
-- APIキーがリポジトリ外の環境変数へ設定済み。
+- APIキーがOS環境変数またはGit管理外の`.env`へ設定済み。
 - 送信する合成データとプロンプトをレビュー済み。
 - 料金表と5,000円の総予算上限を設定し、利用者が実行を明示承認済み。
-- `config/poc.yml`の`external_api.enabled`を意図的に変更済み。
-- `pending_external` Adapterを実Provider Adapterへ置換し、単体テスト済み。
+- `config/poc.yml`の`external_api.enabled`は安全な既定値`false`を維持し、実行時の`--allow-external-api`がある場合だけ通信する。
+- 対象Provider AdapterをFake Transportで単体テスト済み。
 
-現段階のCLIにはHTTPクライアントやProvider SDKを実装せず、`pending_external`は送信直前で必ず停止する。
+Issue #6ではMeaning専用のHTTP Adapterを実装する。`pending_external`は既存フローの接続直前境界として残し、従来どおり送信前に停止する。通常の`run`、`evaluate`、`prepare`とテストから実Provider Adapterを選択できない構成を維持する。
+
+Meaning比較の実Providerタイムアウトは両社30秒、同期再試行は最大1回とする。Fixtureの従来値3秒は維持する。3秒では構造化出力Schemaの初回処理や外部通信の揺らぎをモデル品質と誤認する可能性があるためであり、p50、p95、最大値を記録してPoC後に再評価する。
 
 ## 11. ログ・秘密情報・成果物
 
-- `.env`、APIキー、`tmp/`、実行結果はコミットしない。
+- `.env`、APIキー、`tmp/`、`results/`配下の実行結果とBlind mappingはコミットしない。
 - 通常ログへ日記本文、Meaning全文、プロンプト本文、AIレスポンス全文を出力しない。
 - Correlation ID、処理種別、Provider、モデル、版、時間、Token、費用、成功・共通エラーだけを記録する。
 - 人間評価用に本文を扱う成果物は合成データだけに限定し、通常ログと分離する。

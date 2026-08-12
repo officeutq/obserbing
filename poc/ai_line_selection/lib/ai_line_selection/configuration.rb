@@ -35,6 +35,16 @@ module AiLineSelection
       @data.fetch("external_api")
     end
 
+    def meaning_provider(name)
+      @data.fetch("meaning_providers").fetch(name.to_s)
+    rescue KeyError
+      raise ConfigurationError.new("Unknown Meaning provider", details: { provider: name.to_s })
+    end
+
+    def meaning_provider_names
+      @data.fetch("meaning_providers").keys
+    end
+
     def search
       @data.fetch("search")
     end
@@ -68,7 +78,7 @@ module AiLineSelection
     private
 
     def validate!
-      %w[version random_seed external_api operations search selection paths].each do |key|
+      %w[version random_seed external_api meaning_providers operations search selection paths].each do |key|
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
@@ -80,6 +90,22 @@ module AiLineSelection
 
       if external_api.fetch("total_budget_jpy").to_f.negative?
         raise ConfigurationError.new("external_api.total_budget_jpy must not be negative")
+      end
+
+
+      meaning_provider_names.each do |name|
+        provider = meaning_provider(name)
+        %w[adapter provider model endpoint api_key_env max_output_tokens timeout_seconds max_retries pricing].each do |key|
+          raise ConfigurationError.new("Missing Meaning provider setting", details: { provider: name, key: key }) unless provider.key?(key)
+        end
+        unless provider.fetch("max_retries") == 1
+          raise ConfigurationError.new("Meaning provider max_retries must be 1", details: { provider: name })
+        end
+      end
+
+      max_output_values = meaning_provider_names.map { |name| meaning_provider(name).fetch("max_output_tokens") }.uniq
+      unless max_output_values.length == 1
+        raise ConfigurationError.new("Meaning providers must use the same max_output_tokens")
       end
     end
   end

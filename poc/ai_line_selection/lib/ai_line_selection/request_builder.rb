@@ -8,19 +8,21 @@ module AiLineSelection
       @prompts = prompts
     end
 
-    def build(operation, input, fixture_context: nil)
-      settings = @configuration.operation(operation)
+    def build(operation, input, fixture_context: nil, settings: nil)
+      settings ||= @configuration.operation(operation)
+      operation_defaults = @configuration.operation(operation)
       PreparedRequest.new(
         operation: operation.to_sym,
         provider: settings.fetch("provider"),
         model: settings.fetch("model"),
-        prompt_version: settings["prompt_version"],
-        schema_version: settings.fetch("schema_version"),
+        prompt_version: settings.fetch("prompt_version", operation_defaults["prompt_version"]),
+        schema_version: settings.fetch("schema_version", operation_defaults.fetch("schema_version")),
         prompt: @prompts.fetch(operation),
         response_schema: @schemas.fetch(operation),
         input: input,
         fixture_context: fixture_context,
-        timeout_seconds: settings.fetch("timeout_seconds")
+        timeout_seconds: settings.fetch("timeout_seconds"),
+        settings: settings
       )
     end
 

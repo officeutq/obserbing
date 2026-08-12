@@ -107,6 +107,8 @@ module AiLineSelection
         Usage.new(
           input_units: (JSON.generate(input).length / 4.0).ceil,
           output_units: (JSON.generate(output).length / 4.0).ceil,
+          cached_input_units: 0,
+          estimated_cost_usd: 0.0,
           estimated_cost_jpy: 0.0
         )
       end
