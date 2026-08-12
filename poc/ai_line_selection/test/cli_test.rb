@@ -58,4 +58,17 @@ class CliTest < Minitest::Test
     assert_empty output.string
     assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
   end
+
+  def test_review_meaning_requires_results_directory
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["review-meaning"],
+      input: StringIO.new,
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "configuration_error", JSON.parse(errors.string).fetch("error")
+  end
 end

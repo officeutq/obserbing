@@ -65,6 +65,7 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 
 - 温度等の生成パラメータ、プロンプト版、スキーマ版を処理別に固定する。
 - 各通常ケースを同条件で3回実行し、再現性を確認する。
+- Meaning Structureの人間評価は、各日記について各Providerの第1反復をProvider名を伏せてA/B評価し、残りの反復は自動の再現性指標へ使用する。これにより36画面・72出力を人間評価対象とする。
 - Embeddingは原文、Meaning Structure、正規化テキストを比較する。
 - 候補取得件数は20、50、100、LLM投入件数は10、20、50を比較する。
 - CandidateとRetiredは検索対象外とし、LLMへ渡した許可ID以外を必ず拒否する。

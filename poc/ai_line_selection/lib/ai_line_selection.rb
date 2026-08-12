@@ -25,6 +25,7 @@ require_relative "ai_line_selection/final_selector"
 require_relative "ai_line_selection/runner"
 require_relative "ai_line_selection/evaluator"
 require_relative "ai_line_selection/meaning_comparison"
+require_relative "ai_line_selection/meaning_reviewer"
 require_relative "ai_line_selection/doctor"
 require_relative "ai_line_selection/cli"
 

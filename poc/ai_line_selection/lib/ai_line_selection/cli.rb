@@ -5,12 +5,13 @@ require "optparse"
 
 module AiLineSelection
   class CLI
-    def self.start(argv, output: $stdout, error_output: $stderr)
-      new(argv, output: output, error_output: error_output).start
+    def self.start(argv, input: $stdin, output: $stdout, error_output: $stderr)
+      new(argv, input: input, output: output, error_output: error_output).start
     end
 
-    def initialize(argv, output:, error_output:)
+    def initialize(argv, input:, output:, error_output:)
       @argv = argv.dup
+      @input = input
       @output = output
       @error_output = error_output
       EnvironmentLoader.load(root_dir: AiLineSelection::ROOT)
@@ -25,6 +26,7 @@ module AiLineSelection
       when "evaluate" then evaluate
       when "prepare" then prepare
       when "compare-meaning" then compare_meaning
+      when "review-meaning" then review_meaning
       else
         @output.puts(help)
       end
@@ -115,6 +117,25 @@ module AiLineSelection
       print_json(report)
     end
 
+    def review_meaning
+      options = { results: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY", "Meaning comparison results directory") do |value|
+          options[:results] = value
+        end
+      end.parse!(@argv)
+      unless options[:results]
+        raise ConfigurationError.new("review-meaning requires --results DIRECTORY")
+      end
+
+      MeaningReviewer.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        input: @input,
+        output: @output
+      ).call
+    end
+
     def print_json(value)
       @output.puts(JSON.pretty_generate(value))
     end
@@ -128,6 +149,7 @@ module AiLineSelection
           ruby bin/ai_line_selection prepare [--entry-id E001] [--operation safety|meaning]
           ruby bin/ai_line_selection compare-meaning --providers openai,anthropic --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection compare-meaning --providers openai --repetitions 1 --entry-id E001 --allow-external-api
+          ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
       TEXT
     end
   end
