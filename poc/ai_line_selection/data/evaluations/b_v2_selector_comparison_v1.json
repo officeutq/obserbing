@@ -1,0 +1,109 @@
+{
+  "version": "b-v2-selector-comparison-v1",
+  "issue": 45,
+  "completed": true,
+  "network_call_performed": false,
+  "external_api_calls": 0,
+  "realtime_line_evaluation_llm_calls": 0,
+  "entry_count": 36,
+  "repetitions": 3,
+  "outcome_slots": 108,
+  "comparison_input": {
+    "top_n": 20,
+    "a_min": 0.45,
+    "diagnostic_surface_proxy_max": 0.12,
+    "labeled_candidate_only": true,
+    "repetition_history_carried_between_independent_runs": false
+  },
+  "constraints": {
+    "similarity_weight_floor": 0.75,
+    "domain_weight_maximum": 1.2,
+    "domain_hard_include_or_exclude": false,
+    "empty_candidates": "silence"
+  },
+  "strategies": {
+    "uniform": {
+      "selected_count": 72,
+      "silence_count": 36,
+      "silence_rate": 0.3333,
+      "reproducibility_rate": 1.0,
+      "acceptable_count": 46,
+      "acceptable_rate": 0.6389,
+      "distance_counts": {
+        "just_right": 46,
+        "not_obserbing": 3,
+        "too_close": 14,
+        "too_far": 9
+      },
+      "relation_counts": {
+        "analogical_transfer": 29,
+        "direct_restatement": 14,
+        "same_domain": 17,
+        "unrelated": 3,
+        "weak_connection": 9
+      },
+      "acceptable_analogical_count": 29,
+      "all_three_same_line_entry_count": 11,
+      "rule_violation_count": 0
+    },
+    "abstraction_weighted": {
+      "selected_count": 72,
+      "silence_count": 36,
+      "silence_rate": 0.3333,
+      "reproducibility_rate": 1.0,
+      "acceptable_count": 46,
+      "acceptable_rate": 0.6389,
+      "distance_counts": {
+        "just_right": 46,
+        "not_obserbing": 3,
+        "too_close": 14,
+        "too_far": 9
+      },
+      "relation_counts": {
+        "analogical_transfer": 29,
+        "direct_restatement": 14,
+        "same_domain": 17,
+        "unrelated": 3,
+        "weak_connection": 9
+      },
+      "acceptable_analogical_count": 29,
+      "all_three_same_line_entry_count": 11,
+      "rule_violation_count": 0
+    },
+    "bounded_domain_diversity": {
+      "selected_count": 72,
+      "silence_count": 36,
+      "silence_rate": 0.3333,
+      "reproducibility_rate": 1.0,
+      "acceptable_count": 46,
+      "acceptable_rate": 0.6389,
+      "distance_counts": {
+        "just_right": 46,
+        "not_obserbing": 3,
+        "too_close": 14,
+        "too_far": 9
+      },
+      "relation_counts": {
+        "analogical_transfer": 29,
+        "direct_restatement": 14,
+        "same_domain": 17,
+        "unrelated": 3,
+        "weak_connection": 9
+      },
+      "acceptable_analogical_count": 29,
+      "all_three_same_line_entry_count": 11,
+      "rule_violation_count": 0
+    }
+  },
+  "source_hashes": {
+    "candidate_sets_sha256": "87f2dd1642175198d3afcae946ea650e07b482e33ec7f77190a82197842d33d6",
+    "policy_sha256": "8f0509cf4ea53d73f2cd34ef37850dc7096ebda83b5782130c383a07acd9688c",
+    "band_pass_criteria_sha256": "9140a4bc8fc8714c5d2bbf77cb5cf7338c49c21e95d378a6c59b10800ea960da"
+  },
+  "limitations": [
+    "Only candidates with frozen reflective-distance labels are used for offline outcome comparison",
+    "Labels are evaluation outputs and are never selector inputs",
+    "Independent repetitions share the same initial history by design",
+    "Line domain uses the existing reviewed theme mapped into the Issue 42 taxonomy for this offline comparison"
+  ]
+}

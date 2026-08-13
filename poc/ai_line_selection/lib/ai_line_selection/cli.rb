@@ -32,6 +32,7 @@ module AiLineSelection
       when "plan-b-v2-profile" then plan_b_v2_profile
       when "compare-b-v2-profile" then compare_b_v2_profile
       when "compare-b-v2-band-pass" then compare_b_v2_band_pass
+      when "compare-b-v2-selector" then compare_b_v2_selector
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -283,6 +284,22 @@ module AiLineSelection
         configuration: @configuration,
         abstraction_results_dir: options.fetch(:abstraction_results),
         surface_results_dir: options.fetch(:surface_results)
+      ).call(output_path: options.fetch(:output)))
+    end
+
+    def compare_b_v2_selector
+      options = { abstraction_results: nil, output: nil }
+      OptionParser.new do |parser|
+        parser.on("--abstraction-results DIRECTORY") { |value| options[:abstraction_results] = value }
+        parser.on("--output FILE") { |value| options[:output] = value }
+      end.parse!(@argv)
+      unless options[:abstraction_results]
+        raise ConfigurationError.new("compare-b-v2-selector requires --abstraction-results")
+      end
+
+      print_json(Bv2SelectorComparison.new(
+        configuration: @configuration,
+        abstraction_results_dir: options.fetch(:abstraction_results)
       ).call(output_path: options.fetch(:output)))
     end
 
