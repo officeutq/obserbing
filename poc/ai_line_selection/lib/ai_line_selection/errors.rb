@@ -87,12 +87,15 @@ module AiLineSelection
   end
 
   class RateLimitError < Error
-    def initialize(provider, request_id: nil, retry_after: nil)
+    def initialize(provider, request_id: nil, retry_after: nil, provider_error: nil)
       super(
         "External AI rate limit was reached",
         code: "rate_limit_error",
         retryable: true,
-        details: { provider: provider, request_id: request_id, retry_after: retry_after }.compact
+        details: {
+          provider: provider, request_id: request_id, retry_after: retry_after,
+          provider_error: provider_error
+        }.compact
       )
     end
   end

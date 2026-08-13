@@ -375,6 +375,17 @@ bundle exec ruby bin\ai_line_selection compare-ruby-selection
 
 結果と採用判断は [LLMなしLine選択 追加PoC比較](../../docs/LLMなしLine選択_追加PoC比較.md) を参照してください。
 
+### Abstraction Only統合追加PoC
+
+候補コンポーネントを診断チェーンとして接続し、Fixture、実API、既存実API出力の再現可能なリプレイを分離して実行します。実APIモードはSAFETY、abstraction、Entry Embeddingだけを投稿時に呼び、Line評価LLMは呼びません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-abstraction-only-integrated --mode diagnostic --repetitions 3
+bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode fixture --repetitions 3
+```
+
+結果と不採用判断は [Abstraction Only 統合PoC比較](../../docs/Abstraction_Only_統合PoC比較.md) を参照してください。
+
 ```powershell
 bundle exec rake test
 ```

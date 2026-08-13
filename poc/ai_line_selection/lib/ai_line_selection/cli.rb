@@ -45,6 +45,9 @@ module AiLineSelection
       when "export-selection-inputs" then export_selection_inputs
       when "plan-ruby-selection" then plan_ruby_selection
       when "compare-ruby-selection" then compare_ruby_selection
+      when "plan-abstraction-only-integrated" then plan_abstraction_only_integrated
+      when "run-abstraction-only-integrated" then run_abstraction_only_integrated
+      when "replay-abstraction-only-integrated" then replay_abstraction_only_integrated
       when "plan-line-evaluation" then plan_line_evaluation
       when "compare-line-evaluation" then compare_line_evaluation
       when "review-line-evaluation" then review_line_evaluation
@@ -615,6 +618,66 @@ module AiLineSelection
       ))
     end
 
+    def plan_abstraction_only_integrated
+      options = abstraction_only_integrated_options(default_mode: "diagnostic", allow_external_api_option: false)
+      print_json(AbstractionOnlyIntegratedComparison.new(configuration: @configuration).plan(
+        mode: options.fetch(:mode), repetitions: options.fetch(:repetitions),
+        entry_ids: options.fetch(:entry_ids), include_offline_quality: options.fetch(:include_offline_quality)
+      ))
+    end
+
+    def run_abstraction_only_integrated
+      options = abstraction_only_integrated_options(default_mode: "fixture", allow_external_api_option: true)
+      print_json(AbstractionOnlyIntegratedComparison.new(
+        configuration: @configuration, allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        mode: options.fetch(:mode), repetitions: options.fetch(:repetitions),
+        entry_ids: options.fetch(:entry_ids), include_offline_quality: options.fetch(:include_offline_quality),
+        output_dir: options.fetch(:results)
+      ))
+    end
+
+    def abstraction_only_integrated_options(default_mode:, allow_external_api_option:)
+      options = {
+        mode: default_mode, repetitions: 3, entry_ids: nil,
+        include_offline_quality: true, allow_external_api: false, results: nil
+      }
+      OptionParser.new do |parser|
+        parser.on("--mode NAME", AbstractionOnlyIntegratedComparison::MODES) { |value| options[:mode] = value }
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--entry-id ID") { |value| options[:entry_ids] = [value] }
+        parser.on("--results DIRECTORY", "Resume in an existing results directory") { |value| options[:results] = value }
+        parser.on("--skip-offline-quality") { options[:include_offline_quality] = false }
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external integrated API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def replay_abstraction_only_integrated
+      options = { safety: nil, abstraction: nil, embedding: nil, reviews: nil, results: nil, repetitions: 3 }
+      OptionParser.new do |parser|
+        parser.on("--safety-results DIRECTORY") { |value| options[:safety] = value }
+        parser.on("--abstraction-results DIRECTORY") { |value| options[:abstraction] = value }
+        parser.on("--embedding-results DIRECTORY") { |value| options[:embedding] = value }
+        parser.on("--reviews FILE") { |value| options[:reviews] = value }
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+      end.parse!(@argv)
+      unless options.values_at(:safety, :abstraction, :embedding).all?
+        raise ConfigurationError.new("replay-abstraction-only-integrated requires all three source result directories")
+      end
+      print_json(AbstractionOnlyIntegratedReplay.new(
+        configuration: @configuration, safety_results: options.fetch(:safety),
+        abstraction_results: options.fetch(:abstraction), embedding_results: options.fetch(:embedding),
+        reviews_path: options.fetch(:reviews)
+      ).call(repetitions: options.fetch(:repetitions), output_dir: options.fetch(:results)))
+    end
+
     def run_integrated
       options = integrated_options(default_mode: "fixture", allow_external_api_option: true)
       print_json(IntegratedComparison.new(
@@ -736,6 +799,10 @@ module AiLineSelection
           ruby bin/ai_line_selection export-selection-inputs --results results/abstraction_embedding_<timestamp>_<suffix> --export data/evaluations/ruby_selection_inputs_v1.json
           ruby bin/ai_line_selection plan-ruby-selection
           ruby bin/ai_line_selection compare-ruby-selection
+          ruby bin/ai_line_selection plan-abstraction-only-integrated --mode diagnostic --repetitions 3
+          ruby bin/ai_line_selection run-abstraction-only-integrated --mode fixture --repetitions 3
+          ruby bin/ai_line_selection run-abstraction-only-integrated --mode diagnostic --repetitions 3 --allow-external-api
+          ruby bin/ai_line_selection replay-abstraction-only-integrated --safety-results results/safety_<...> --abstraction-results results/abstraction_<...> --embedding-results results/abstraction_embedding_<...>
           ruby bin/ai_line_selection plan-line-evaluation --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-line-evaluation [--providers fixture] [--embedding-provider fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api
