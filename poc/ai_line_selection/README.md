@@ -131,6 +131,10 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-band-pass `
 
 #46前の固定値は`A_min=0.45`、`S_max=0.55`、`Top N=20`、Embeddingは`text-embedding-3-small` / 1536次元 / cosineです。raw-text保存成果物の制約と診断proxyの扱いは[B-v2 Band-passオフライン検証](../../docs/B-v2_Band-passオフライン検証.md)を参照してください。
 
+## B-v2 grounding / policy
+
+Issue #44では、Line承認時policyと投稿時guardを`b-v2-guard-policy-v1`へ分離しました。独立した一般表現・比喩・別具体例は、具体語がEntryにないだけでは除外しません。投稿時はstatus、版、承認policy、明示矛盾、ユーザー事実断定、履歴の順に適用し、正常処理後の候補0件だけをSILENCEにします。詳細は[B-v2 Grounding / Policy再設計](../../docs/B-v2_Grounding_Policy再設計.md)を参照してください。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
