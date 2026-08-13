@@ -1,0 +1,102 @@
+{
+  "version": "b-v2-line-pool-transition-v1",
+  "issue": 49,
+  "created_at": "2026-08-13",
+  "gate_a": {
+    "outcome": "architecture_rejected",
+    "decision_artifact": "b_v2_gate_a_decision_v1.json",
+    "criteria_id": "b-v2-pre-evaluation-criteria-v2",
+    "criteria_sha256": "36c790098bef202a44e10ae6cdc175785b6c3427668868e93f628f0d6e684648"
+  },
+  "transition": {
+    "line_pool_improvement_epic_allowed": false,
+    "line_pool_improvement_epic_created": false,
+    "gate_b_activated": false,
+    "decision": "do_not_proceed_to_line_pool_improvement",
+    "reason": "Gate A architecture_rejected forbids treating this method as a fixed baseline for Line-pool improvement."
+  },
+  "tested_configuration_snapshot": {
+    "status": "rejected_experiment_not_gate_b_baseline",
+    "profile_version": "b-v2-profile-primary-secondary-v1",
+    "embedding_version": "b-v2-openai-small-dual-cosine-v1",
+    "embedding_provider": "openai",
+    "embedding_model": "text-embedding-3-small",
+    "embedding_dimensions": 1536,
+    "normalization": "provider-normalized/cosine",
+    "a_min": 0.45,
+    "s_max": 0.55,
+    "top_n": 20,
+    "selector_version": "b-v2-selector-v1",
+    "selector_strategy": "uniform",
+    "selector_weight": null,
+    "selector_seed_rule": "first_64_bits_of_sha256(base_seed|entry_id|repetition)",
+    "domain_taxonomy_version": "b-v2-profile-primary-secondary-v1",
+    "guard_policy_version": "b-v2-guard-policy-v1",
+    "approved_line_count": 96,
+    "approved_line_canonical_sha256": "2f418244d710d1d2ce1853febc74c82f4817ee8b6d9c7d5e3e779465a7fcd9b9",
+    "approved_line_hash_algorithm": "Sort approved Lines by id; JSON.generate an array of objects with id,text,status keys in that order; SHA-256 UTF-8 bytes.",
+    "full_lines_file_sha256": "c2c4814d0f159daf989a21e17413b008a822533ee5c843fbda00d658cfff4232",
+    "line_pool_changed_in_epic_40": false
+  },
+  "gate_b": {
+    "evaluated": false,
+    "inactive_reason": "Gate A did not produce architecture_candidate.",
+    "criteria_preserved_for_future_design": {
+      "name": "product_quality_after_line_pool_improvement",
+      "applies_after_gate_a_outcome": "architecture_candidate",
+      "architecture_baseline_must_remain_fixed": true,
+      "acceptable_outcome_rate": {
+        "required_minimum": 0.8,
+        "required_minimum_count_for_108": 87,
+        "target": 0.9,
+        "target_minimum_count_for_108": 98
+      },
+      "all_three_repetitions_acceptable_entry_rate": {
+        "required_minimum": 0.6,
+        "required_minimum_count_for_36": 22,
+        "target": 0.75,
+        "target_minimum_count_for_36": 27
+      },
+      "semantic_silence_rate": {
+        "required_maximum": 0.2,
+        "target_maximum": 0.1
+      },
+      "required_zero_counts": {
+        "user_fact_assertion": 0,
+        "explicit_contradiction": 0,
+        "advice_or_diagnosis": 0,
+        "unresolved_low_confidence": 0,
+        "existing_normal_entry_safety_overblock": 0,
+        "completed_flow_technical_errors": 0
+      },
+      "operations": {
+        "end_to_end_p95_seconds": {
+          "required_maximum": 6.0,
+          "target_maximum": 5.0
+        },
+        "post_cost_jpy": {
+          "required_maximum": 1.0,
+          "target_maximum": 0.7
+        },
+        "normal_external_request_count_maximum": 3,
+        "realtime_line_evaluation_llm_calls": 0
+      }
+    }
+  },
+  "future_selection_poc": {
+    "required_before_any_line_pool_improvement_epic": true,
+    "reuse_current_rejected_version_as_baseline": false,
+    "minimum_conditions": [
+      "Create a separately versioned selection hypothesis and pre-register criteria before results.",
+      "Address acceptable improvement below the rejection floor and excess too-far/weak connections.",
+      "Address all-three-repetition consistency and end-to-end p95.",
+      "Keep selection-method changes separate from Line-pool changes.",
+      "Use the eight human-review candidates as rubric evidence without retrofitting reflective-distance-v1."
+    ],
+    "human_review_may_continue_as_evaluation_data": true,
+    "human_review_blocks_this_transition_decision": false
+  },
+  "production_adoption_decided": false,
+  "line_pool_modified": false,
+  "external_api_calls": 0
+}

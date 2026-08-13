@@ -181,6 +181,8 @@ bundle exec ruby bin\ai_line_selection evaluate-b-v2-gate-a `
 
 全25条件とrejection floorは[B-v2 Gate A判定](../../docs/B-v2_Gate_A判定.md)を参照してください。
 
+Gate Aが`architecture_rejected`のため、Issue #49では現方式をGate B用baselineとして固定せず、Lineプール改善Epicも作成しませんでした。再現用の構成snapshotとApproved 96 Lineのcanonical hashは`data/evaluations/b_v2_line_pool_transition_v1.json`、判断の詳細は[B-v2 Lineプール改善移行判断](../../docs/B-v2_Lineプール改善移行判断.md)を参照してください。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。

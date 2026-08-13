@@ -38,6 +38,7 @@ module AiLineSelection
       when "evaluate-b-v2-integrated" then evaluate_b_v2_integrated
       when "compare-b-v2-b-v1" then compare_b_v2_b_v1
       when "evaluate-b-v2-gate-a" then evaluate_b_v2_gate_a
+      when "decide-b-v2-line-pool-transition" then decide_b_v2_line_pool_transition
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -366,6 +367,14 @@ module AiLineSelection
         parser.on("--output FILE") { |value| options[:output] = value }
       end.parse!(@argv)
       print_json(Bv2GateAEvaluator.new(configuration: @configuration).call(output_path: options[:output]))
+    end
+
+    def decide_b_v2_line_pool_transition
+      options = { output: nil }
+      OptionParser.new do |parser|
+        parser.on("--output FILE") { |value| options[:output] = value }
+      end.parse!(@argv)
+      print_json(Bv2LinePoolTransition.new(configuration: @configuration).call(output_path: options[:output]))
     end
 
     def apply_abstraction_preliminary
