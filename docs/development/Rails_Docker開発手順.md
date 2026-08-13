@@ -133,3 +133,13 @@ docker compose --env-file .env.production.example -f compose.production.yml conf
 どちらも`backend`だけを出力する。実値を入れたenv fileに対して`docker compose config`を実行すると、展開された秘密値が標準出力へ表示され得るため、通常ログや共有端末へ出力しない。
 
 `BACKEND_IMAGE`には、環境へ昇格する同一成果物のimmutableなdigest参照を渡す。`DATABASE_URL`と`RAILS_MASTER_KEY`は実行環境から注入する。EC2上でComposeを最終採用するか、env fileを使うか、image registry、DNS/TLS、デプロイ、自動起動をどう構成するかはAWS詳細設計で決定する。
+
+## 8. 統合確認
+
+PowerShell 7を利用できる環境では、fresh clone相当の空volumeを使った一連の確認を次で実行できる。
+
+```powershell
+./scripts/verify-docker-environment.ps1
+```
+
+GitHub Actionsでも同じスクリプトをfresh checkoutから実行する。確認範囲と残課題は[Rails / Docker 統合確認結果](Rails_Docker統合確認結果.md)を参照する。
