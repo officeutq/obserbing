@@ -98,3 +98,9 @@ E029/L096,false,too_close,direct_restatement,false,false,false,false,high,順番
 E030/L093,true,just_right,same_domain,false,false,false,false,medium,予定表の十二枚へ縮んだ一年に折りたためない経験時間を対置して余白を作る
 E033/L102,true,just_right,analogical_transfer,false,false,false,false,high,具体的数量をユーザー事実として断定せず未達の一つが達成を上回る構造の例として示す
 E034/L111,true,just_right,same_domain,false,false,false,false,medium,乾いた洗濯物に一日の光が残るという像で小さな一日の充実を開いたまま照らす
+E019/L061,true,just_right,same_domain,false,false,false,false,high,新しい配置の使いやすさに古い身体の動きがぶつかる像で馴染まなさを開いたまま照らす
+E019/L062,false,too_close,direct_restatement,false,false,false,false,medium,便利になった場所にも馴染む時間が要るというEntryの緊張をほぼ直接説明する
+E025/L081,true,just_right,same_domain,false,false,false,false,high,一人の食卓に誰かへ渡したい言葉の場所が残る像で共有されない余韻を照らす
+E030/L094,true,just_right,same_domain,false,false,false,false,medium,均等な時計と異なる日の深さを対比し予定表に縮んだ一年の外へ経験時間を開く
+E033/L107,true,just_right,analogical_transfer,false,false,false,false,medium,実際の達成より先に期待が自己評価へ影を落とす構造としてもっとできたという声を照らす
+E033/L106,true,just_right,analogical_transfer,false,false,false,false,high,達成より未達が強く残る一般的な構造へ移し具体数量をユーザー事実として断定しない
