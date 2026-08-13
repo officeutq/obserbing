@@ -62,10 +62,15 @@ AIプロバイダーおよび使用モデルは未定です。
 日本語性能、SAFETY精度、構造化出力、Embedding精度、応答時間、費用、データ保持方針を比較評価したうえで決定します。
 Rails側では、AIプロバイダーおよびモデルを設定によって切り替えられる構成とします。
 
+一行選定は、SAFETY判定後にEntryの`abstraction + domain`を生成し、事前生成済みのLine profileと2種類のEmbeddingから「本質的には近く、表面は近すぎない」band-pass候補を作り、Railsのpolicy・履歴条件を適用して選択する方式を基本骨格とします。リアルタイムLine評価LLMは使用せず、候補がなければSILENCEとします。
+
+具体的な`A_min / S_max / Top N / selector`、本番Provider / model、domain taxonomy、`pgvector`設定およびLineプールは未確定です。次フェーズでLineプールをブラッシュアップし、その版を固定してからband-passとselectorを再キャリブレーションします。
+
 ## ドキュメント
 
 - [要件定義書](docs/要件定義_v1_0.md)
 - [AI基本設計](docs/AI基本設計.md)
+- [B-v2 AI選定基本設計](docs/B-v2_AI選定基本設計.md)
 - [AI一行選定 PoC計画](docs/AI_PoC計画.md)
 - [AI一行選定 PoC結果](docs/AI_PoC結果.md)
 - [AI追加PoC計画](docs/AI_追加PoC計画.md)

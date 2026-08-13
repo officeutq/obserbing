@@ -1,6 +1,6 @@
 # obserbing AI基本設計
 
-**文書ステータス：基本設計（Reflective Distance再評価・B-v2設計方針反映）**
+**文書ステータス：基本設計（B-v2 follow-up後の暫定採用方針反映）**
 
 **作成日：2026年8月12日（2026年8月13日更新）**
 
@@ -74,6 +74,8 @@ flowchart TB
 ```
 
 PostgreSQL上のベクトル検索には`pgvector`を有力候補とするが、採用はPoCおよび詳細設計で確定する。バックグラウンドジョブの実行基盤もRailsのジョブ抽象を介し、具体製品は本書では決定しない。
+
+Epic #40とfollow-up診断後の現行方針では、この処理骨格を暫定採用する。ただし、`A_min / S_max / Top N / selector`、Provider / model、domain taxonomy、`pgvector` index parameterおよび現96 Lineプールは本番仕様として固定しない。固定値はLineプールのブラッシュアップ後に再キャリブレーションする。
 
 ---
 
@@ -316,7 +318,7 @@ Entry AI profileとMeaning StructureはAI出力であっても個別ユーザー
 }
 ```
 
-診断、感情の断定、人物像の固定化、不要な固有名詞の保持を避ける。domainの固定enum、階層、単一・複数値、必須項目および最大長はIssue #42で比較する。
+診断、感情の断定、人物像の固定化、不要な固有名詞の保持を避ける。Issue #42の比較結果はPoC profileとして保持するが、domainの固定enum、階層、単一・複数値、必須項目および最大長は本番仕様として未確定である。
 
 ---
 
@@ -337,7 +339,7 @@ flowchart LR
     Rules -->|"適格候補0件"| Silence["SILENCE"]
 ```
 
-`A_min`、`S_max`およびTop Nは結果を見る前に版固定する。具体値はIssue #43でオフライン比較し、実API統合PoC前に確定する。
+Epic #40のライブPoCでは`A_min=0.45 / S_max=0.55 / Top N=20`を事前固定したが、この具体的構成は不採用である。Issue #59では`0.425 / 0.425 / Top 10`付近に改善を確認したものの安定領域が狭いため、本番値には採用しない。`A_min`、`S_max`およびTop Nは、Lineプールのブラッシュアップ後に結果閲覧前固定の手順で再キャリブレーションする。
 
 abstraction similarityは本質的な近さの下限、surface similarityはtoo-close除外の上限として扱う。両者を単一の「高いほど良い」スコアへ潰さず、適格候補0件でも閾値を自動緩和しない。
 
@@ -381,7 +383,7 @@ Top 20 Jaccardと最終Line完全一致率は診断として記録してよい�
 | abstraction weighted random | 本質が近い候補を有限範囲で優遇 | 最高得点1件へ収束させないweight上限が必要 |
 | domain-diversity assisted random | 直近domain偏りを有限範囲で緩和 | domain差を品質や適格性と誤認しない |
 
-いずれも同じ入力profile、候補集合、履歴snapshot、selector版、seedから同じ結果を再現できることを必須とする。採用方式とweight上限はIssue #45で比較する。適格候補がなければSILENCEとし、技術エラーをSILENCEへ置き換えない。
+いずれも同じ入力profile、候補集合、履歴snapshot、selector版、seedから同じ結果を再現できることを必須とする。Issue #45と#61の比較ではuniformを大きく上回る方式を確認できなかったため、採用方式とweight上限は未確定とする。Lineプール改善後に同じ候補集合で再比較する。適格候補がなければSILENCEとし、技術エラーをSILENCEへ置き換えない。
 
 ---
 
@@ -606,7 +608,7 @@ B-v2では、abstraction + domain、一括Embedding、abstraction下限、surfac
 ## 19.2 データセット
 
 - 固定合成Entry：現在の36件
-- Line：現在のApproved 96件（B-v1との方式比較が終わるまで変更しない）
+- Line：Epic #40ではApproved 96件を固定して比較した。現96件は本番Lineプールではなく、次フェーズで本文品質をブラッシュアップする
 - SAFETY評価用の独立したテストケース
 - 同じ入力を複数回試す再現性評価ケース
 
@@ -640,6 +642,14 @@ Gate Aは絶対acceptable率だけでなくB-v1からの改善幅、too-close減
 PoCでは実接続用の本番実装、正式契約、DB migration、アプリUI実装および本番プロンプト確定を行わない。
 
 初回PoCは[AI一行選定 PoC結果](AI_PoC結果.md)、追加PoCは[AI追加PoC結果](AI_追加PoC結果.md)、B-v2事前基準は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を参照する。
+
+## 19.6 follow-up診断と次フェーズ
+
+Epic #40の`architecture_rejected`は、固定済み`0.45 / 0.55 / Top 20 / uniform`構成に対する当時のGate A結果として維持する。Issue #59の正確な全pair再解析では`0.425 / 0.425 / Top 10`付近に品質改善があったが、良好な領域は狭かった。Issue #61の軽量selector比較でも、similarity、rank、domainによるbounded方式はuniformを大きく上回らなかった。
+
+この結果から、band-passの処理骨格は暫定採用する一方、具体的な閾値とselectorは現Lineプールでは正式決定しない。Blind人間評価を含む品質確認からはLine本文自体の品質差が結果へ影響している可能性が高いため、次フェーズはLineプールのブラッシュアップとする。
+
+改善後は、Line profile再生成、Line abstraction / text Embedding再生成、固定評価Entryとの全pair similarity再作成、`A_min × S_max × Top N`再スイープ、安定領域決定、selector再比較、Blind人間評価の順で最終条件を決める。Lineプール改善と選定ロジック変更を同時に評価しない。
 
 ---
 
@@ -708,6 +718,14 @@ Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と
 
 実験構成、全Gate条件、low-confidence感度、移行判断は[B-v2 Epic結果](B-v2_Epic結果.md)、[B-v2 Gate A判定](B-v2_Gate_A判定.md)、[B-v2 Lineプール改善移行判断](B-v2_Lineプール改善移行判断.md)を参照する。
 
+## 20.5 B-v2 follow-up後の仕様判断
+
+Issue #59の帯域感度追補は、固定値`0.45 / 0.55 / Top 20`が最良でなかったことと、`0.425 / 0.425 / Top 10`付近でacceptableが改善することを示した。ただし最良近傍は狭く、この値を本番仕様へ後付け採用する証拠にはならない。Issue #61の軽量selector比較は、主帯域で最良方式がuniformをacceptable 1件、既知acceptable候補の取り逃し1件だけ上回るに留まり、最終診断を`selector_gain_insufficient`とした。
+
+以上から、SAFETY、`abstraction + domain`、2種類のEmbedding、abstraction下限 + surface上限、Rails policy、適格候補selector、候補0件時SILENCEというB-v2骨格を暫定採用する。リアルタイムLine評価LLM 0回とLine側profileの事前生成も維持する。一方、具体的な閾値、selector、weight、Provider / model、domain taxonomy、`pgvector` index parameter、現96 Lineプールは未確定へ戻す。
+
+この仕様整理はEpic #40の`architecture_rejected`を変更せず、Issue #59・#61の実験結果も書き換えない。現在仕様とPoC前固定設計の関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。
+
 ---
 
 # 21. 未決定事項
@@ -722,6 +740,7 @@ Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と
 - Embedding Provider、モデル、次元、距離方式
 - abstraction下限`A_min`、surface上限`S_max`、Top N
 - selector方式、weight上限、同点・seed処理
+- 本番Lineプールの本文、構成、件数および承認版
 - Line承認時policy metadata、投稿時grounding guard、履歴windowの具体値
 - SAFETY分類スキーマ、判定閾値、固定応答文
 - SAFETY応答時のEntry / TRACE保存方式と投稿件数の扱い
@@ -738,19 +757,19 @@ Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と
 
 # 22. 詳細設計・PoCへ送る事項
 
-## 22.1 B-v2 Epicへ送る事項
+## 22.1 Lineプール改善フェーズへ送る事項
 
-- #42：abstraction + domainをオフライン比較し、preflight固定後に小規模実APIスモークを行う。
-- #43：abstraction下限 + surface too-close上限をオフライン検証する。
-- #44：独立した比喩・類推を許容するgrounding / 業務ルールを再設計する。
-- #45：適格帯域からのseed付き軽量selectorを比較する。
-- #46：現在のApproved 96 Lineを変えず、B-v2実API統合PoCを行う。
-- #47：B-v1と同じLineプール・同じReflective Distanceルーブリックで品質・速度・費用を比較する。
-- #48：`architecture_candidate / architecture_rejected / further_selection_poc_required`でGate Aを判断する。
-- #49：Gate A成立時にprofile、Embedding、閾値、selector、taxonomy、guard、現96 Line hashを固定し、Lineプール改善の別Epicへ接続する。
-- 実データ規模を想定した`pgvector`の性能評価
-- 不足領域抽出とCandidate生成を行うバッチLLMの独立評価
-- 外部API障害時に品質を損なわない代替方式の可否
+- 現96 Lineを本番プールとして固定せず、Blind人間評価で本文品質とobserbing適合を確認しながらブラッシュアップする。
+- 改善対象、評価票、合格条件、Line版を結果閲覧前に固定する。
+- 改善後のLine profileを再生成する。
+- Line abstraction / text Embeddingを同一版で再生成する。
+- 固定評価Entryとの全pair similarityを再作成する。
+- `A_min × S_max × Top N`を再スイープし、一点ではなく安定したband-pass領域を決定する。
+- Line版とband-passを固定してselectorを再比較する。
+- Blind人間評価を含めて最終閾値・selectorを確定する。
+- Lineプール改善と選定ロジック変更を同じ評価へ混ぜない。
+- 実データ規模を想定した`pgvector`の性能評価は、検索条件の再決定後に行う。
+- 不足領域抽出とCandidate生成を行うバッチLLM、外部API障害時の代替方式は独立して評価する。
 
 ## 22.2 詳細設計へ送る事項
 
