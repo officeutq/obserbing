@@ -4,9 +4,9 @@ RailsやReact Nativeへ依存せず、obserbingの一行選定フローを比較
 
 Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Issue #8のLine候補評価比較、Issue #9のSAFETY判定比較に加え、Issue #10では個別PoCの採用候補を一つのフローで評価する統合CLIを追加しています。Providerやモデルの正式採用、本番プロンプト、本番閾値を決める実装ではありません。
 
-Epic #27では、初回PoCを変更せず、日記とLineのEmbedding入力を`abstraction`だけにそろえてリアルタイムLine評価LLMを省略する実験候補`abstraction-only-v1`を追加比較します。事前条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、機械可読な固定値は`config/additional_poc.yml`を参照してください。
+Epic #27では、初回PoCを変更せず、日記とLineのEmbedding入力を`abstraction`だけにそろえてリアルタイムLine評価LLMを省略する実験候補`abstraction-only-v1`を追加比較します。事前条件と採用基準は[AI追加PoC計画](../../docs/research/ai/abstraction-only/AI_追加PoC計画.md)、機械可読な固定値は`config/additional_poc.yml`を参照してください。
 
-Epic #40では、Reflective Distance再評価を踏まえ、abstraction similarityを下限、surface similarityをtoo-close除外の上限とする`b-v2-band-pass-design-v2`を設計・検証します。domainは補助属性、structureは分析用途とし、投稿時Line評価LLMは使用しません。現96 Lineの方式改善を判定するGate Aと、方式固定・Line改善後の製品品質を判定するGate Bを分離します。Issue #42はオフライン絞り込み後に小規模な表現生成APIスモーク、Issue #46は36 Entry × 3反復の本統合ライブPoCです。基本設計は[B-v2 AI選定基本設計](../../docs/B-v2_AI選定基本設計.md)、現行の機械可読な基準は`data/evaluations/b_v2_design_criteria_v2.yml`を参照してください。`v1`成果物も改訂前の証拠として保持します。Issue #41では設計だけを扱い、外部API実行、Lineプール変更、DB migrationは行いません。
+Epic #40では、Reflective Distance再評価を踏まえ、abstraction similarityを下限、surface similarityをtoo-close除外の上限とする`b-v2-band-pass-design-v2`を設計・検証します。domainは補助属性、structureは分析用途とし、投稿時Line評価LLMは使用しません。現96 Lineの方式改善を判定するGate Aと、方式固定・Line改善後の製品品質を判定するGate Bを分離します。Issue #42はオフライン絞り込み後に小規模な表現生成APIスモーク、Issue #46は36 Entry × 3反復の本統合ライブPoCです。基本設計は[B-v2 AI選定基本設計](../../docs/design/ai/B-v2_AI選定基本設計.md)、現行の機械可読な基準は`data/evaluations/b_v2_design_criteria_v2.yml`を参照してください。`v1`成果物も改訂前の証拠として保持します。Issue #41では設計だけを扱い、外部API実行、Lineプール変更、DB migrationは行いません。
 
 ### follow-up後の仕様上の位置づけ
 
@@ -84,7 +84,7 @@ bundle exec ruby bin\ai_line_selection compare-safety `
   --allow-external-api
 ```
 
-`safety`はサーバー管理の`SAFETY_COPY_TBD`へ分岐し、それ以降のAI処理を止めます。`indeterminate`、不正JSON、timeout、API失敗も通常フローへ流さず停止します。詳細は[SAFETY判定 PoC比較](../../docs/SAFETY_PoC比較.md)を参照してください。
+`safety`はサーバー管理の`SAFETY_COPY_TBD`へ分岐し、それ以降のAI処理を止めます。`indeterminate`、不正JSON、timeout、API失敗も通常フローへ流さず停止します。詳細は[SAFETY判定 PoC比較](../../docs/research/ai/initial-poc/SAFETY_PoC比較.md)を参照してください。
 
 2026年8月12日の実API比較では、両Providerともsafety再現率100%、normal正分類率100%、想定外のnormal通過0件でした。OpenAI `gpt-5.6-terra`は3分類すべて36 / 36件正解、Anthropic `claude-sonnet-5`は曖昧2ケースを各3回とも安全側の`safety`へ分類して30 / 36件正解でした。速度と費用も含め、SAFETY用途のPoC採用候補はOpenAIとします。本番正式採用には境界ケースを増やした追加評価が必要です。
 
@@ -107,7 +107,7 @@ bundle exec ruby bin\ai_line_selection compare-safety-boundary `
   --allow-external-api
 ```
 
-`candidate-full`は既存36日記、初回12 SAFETY、追加24境界ケースの計72件です。`additional`は追加24件だけを比較します。2026年8月13日の実API比較では、`additional-v3`が72件×3回の216実行を全件正しく分類し、SAFETY見逃し、通常投稿の過剰遮断、曖昧ケースのnormal通過をすべて0件にしました。実行条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、結果は[SAFETY追加PoC比較](../../docs/SAFETY_追加PoC比較.md)を参照してください。
+`candidate-full`は既存36日記、初回12 SAFETY、追加24境界ケースの計72件です。`additional`は追加24件だけを比較します。2026年8月13日の実API比較では、`additional-v3`が72件×3回の216実行を全件正しく分類し、SAFETY見逃し、通常投稿の過剰遮断、曖昧ケースのnormal通過をすべて0件にしました。実行条件と採用基準は[AI追加PoC計画](../../docs/research/ai/abstraction-only/AI_追加PoC計画.md)、結果は[SAFETY追加PoC比較](../../docs/research/ai/abstraction-only/SAFETY_追加PoC比較.md)を参照してください。
 
 ## B-v2 abstraction + domainスモーク
 
@@ -120,7 +120,7 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-profile `
   --allow-external-api
 ```
 
-正規化結果は`results/b_v2_profile_<timestamp>_<suffix>`へ保存します。APIキー、認証ヘッダー、Provider生レスポンス、request IDは保存しません。設計と結果は[ B-v2 Profile表現比較](../../docs/B-v2_Profile表現比較.md)を参照してください。
+正規化結果は`results/b_v2_profile_<timestamp>_<suffix>`へ保存します。APIキー、認証ヘッダー、Provider生レスポンス、request IDは保存しません。設計と結果は[ B-v2 Profile表現比較](../../docs/research/ai/b-v2/B-v2_Profile表現比較.md)を参照してください。
 
 実APIスモークは60出力を26,006 token・12.1248円で完了し、#43へ渡す暫定版を`b-v2-profile-primary-secondary-v1`としました。追跡可能な正規化出力と集計は`data/evaluations/b_v2_profile_smoke_outputs_v1.jsonl`および`b_v2_profile_smoke_v1.yml`です。
 
@@ -135,15 +135,15 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-band-pass `
   --output data\evaluations\b_v2_band_pass_offline_v1.json
 ```
 
-#46前の固定値は`A_min=0.45`、`S_max=0.55`、`Top N=20`、Embeddingは`text-embedding-3-small` / 1536次元 / cosineです。raw-text保存成果物の制約と診断proxyの扱いは[B-v2 Band-passオフライン検証](../../docs/B-v2_Band-passオフライン検証.md)を参照してください。
+#46前の固定値は`A_min=0.45`、`S_max=0.55`、`Top N=20`、Embeddingは`text-embedding-3-small` / 1536次元 / cosineです。raw-text保存成果物の制約と診断proxyの扱いは[B-v2 Band-passオフライン検証](../../docs/research/ai/b-v2/B-v2_Band-passオフライン検証.md)を参照してください。
 
 ## B-v2 grounding / policy
 
-Issue #44では、Line承認時policyと投稿時guardを`b-v2-guard-policy-v1`へ分離しました。独立した一般表現・比喩・別具体例は、具体語がEntryにないだけでは除外しません。投稿時はstatus、版、承認policy、明示矛盾、ユーザー事実断定、履歴の順に適用し、正常処理後の候補0件だけをSILENCEにします。詳細は[B-v2 Grounding / Policy再設計](../../docs/B-v2_Grounding_Policy再設計.md)を参照してください。
+Issue #44では、Line承認時policyと投稿時guardを`b-v2-guard-policy-v1`へ分離しました。独立した一般表現・比喩・別具体例は、具体語がEntryにないだけでは除外しません。投稿時はstatus、版、承認policy、明示矛盾、ユーザー事実断定、履歴の順に適用し、正常処理後の候補0件だけをSILENCEにします。詳細は[B-v2 Grounding / Policy再設計](../../docs/research/ai/b-v2/B-v2_Grounding_Policy再設計.md)を参照してください。
 
 ## B-v2 selector
 
-Issue #45ではuniform、abstraction weighted、bounded domain diversityを保存成果物だけで比較し、同じ入力・候補・seedの再現率100%とrule違反0件を確認しました。#46前の固定selectorは`b-v2-selector-v1 / uniform`です。比較結果は`data/evaluations/b_v2_selector_comparison_v1.json`、条件とseed規則は`b_v2_selector_criteria_v1.yml`、判断は[B-v2 Selector比較](../../docs/B-v2_Selector比較.md)を参照してください。
+Issue #45ではuniform、abstraction weighted、bounded domain diversityを保存成果物だけで比較し、同じ入力・候補・seedの再現率100%とrule違反0件を確認しました。#46前の固定selectorは`b-v2-selector-v1 / uniform`です。比較結果は`data/evaluations/b_v2_selector_comparison_v1.json`、条件とseed規則は`b_v2_selector_criteria_v1.yml`、判断は[B-v2 Selector比較](../../docs/research/ai/b-v2/B-v2_Selector比較.md)を参照してください。
 
 ## B-v2本統合ライブPoC
 
@@ -159,7 +159,7 @@ bundle exec ruby bin\ai_line_selection run-b-v2-integrated `
 
 中断後は同じdirectoryへ`--resume`を付け、完了済みLine profileとoutcomeを再利用します。技術エラーをSILENCEへ変換しません。
 
-2026年8月13日の実行では108枠を完了し、Line表示105件、意味上のSILENCE 3件でした。`reflective-distance-v1`によるCodex暫定評価は51 / 108（47.22%）で、8種類はlow-confidenceとして人間確認対象に残しています。初回にSAFETYの旧既定prompt/schemaを参照した13枠は、履歴と費用を保存したうえで`additional-v3`により対象枠だけ再実行しました。詳細は[B-v2 本統合実API PoC](../../docs/B-v2_本統合実API_PoC.md)、正規化成果物は`data/evaluations/b_v2_integrated_*_v1.*`を参照してください。
+2026年8月13日の実行では108枠を完了し、Line表示105件、意味上のSILENCE 3件でした。`reflective-distance-v1`によるCodex暫定評価は51 / 108（47.22%）で、8種類はlow-confidenceとして人間確認対象に残しています。初回にSAFETYの旧既定prompt/schemaを参照した13枠は、履歴と費用を保存したうえで`additional-v3`により対象枠だけ再実行しました。詳細は[B-v2 本統合実API PoC](../../docs/research/ai/b-v2/B-v2_本統合実API_PoC.md)、正規化成果物は`data/evaluations/b_v2_integrated_*_v1.*`を参照してください。
 
 保存結果のReflective Distance評価は外部APIを呼ばず、次で再計算できます。
 
@@ -176,7 +176,7 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-b-v1 `
   --output data\evaluations\b_v2_vs_b_v1_comparison_v1.json
 ```
 
-比較結果と母数・実行時点の注意は[B-v2 / B-v1比較](../../docs/B-v2_B-v1比較.md)を参照してください。
+比較結果と母数・実行時点の注意は[B-v2 / B-v1比較](../../docs/research/ai/b-v2/B-v2_B-v1比較.md)を参照してください。
 
 固定済みGate Aは次で再評価できます。結果は`architecture_rejected`であり、製品品質80%未達だけを理由にした判定ではありません。
 
@@ -185,9 +185,9 @@ bundle exec ruby bin\ai_line_selection evaluate-b-v2-gate-a `
   --output data\evaluations\b_v2_gate_a_decision_v1.json
 ```
 
-全25条件とrejection floorは[B-v2 Gate A判定](../../docs/B-v2_Gate_A判定.md)を参照してください。
+全25条件とrejection floorは[B-v2 Gate A判定](../../docs/research/ai/b-v2/B-v2_Gate_A判定.md)を参照してください。
 
-Gate Aが`architecture_rejected`のため、Issue #49では現方式をGate B用baselineとして固定せず、Lineプール改善Epicも作成しませんでした。再現用の構成snapshotとApproved 96 Lineのcanonical hashは`data/evaluations/b_v2_line_pool_transition_v1.json`、判断の詳細は[B-v2 Lineプール改善移行判断](../../docs/B-v2_Lineプール改善移行判断.md)を参照してください。
+Gate Aが`architecture_rejected`のため、Issue #49では現方式をGate B用baselineとして固定せず、Lineプール改善Epicも作成しませんでした。再現用の構成snapshotとApproved 96 Lineのcanonical hashは`data/evaluations/b_v2_line_pool_transition_v1.json`、判断の詳細は[B-v2 Lineプール改善移行判断](../../docs/research/ai/b-v2/B-v2_Lineプール改善移行判断.md)を参照してください。
 
 ## B-v2帯域感度follow-up
 
@@ -224,7 +224,7 @@ bundle exec ruby bin\ai_line_selection compare-abstraction `
   --allow-external-api
 ```
 
-2026年8月13日の実API比較では、468生成がすべて初回Schema成功し、Codex一次評価の利用可能率と3反復の意味的同等率はいずれも100%、新事実・診断・感情固定・不要な固有名詞は0件でした。採用候補`abstraction-only-v2`のEntry 36件・Line 120件は`data/abstractions/abstraction_only_v2.yml`へ版付きで保存しています。詳細は[Abstraction追加PoC比較](../../docs/Abstraction_追加PoC比較.md)を参照してください。
+2026年8月13日の実API比較では、468生成がすべて初回Schema成功し、Codex一次評価の利用可能率と3反復の意味的同等率はいずれも100%、新事実・診断・感情固定・不要な固有名詞は0件でした。採用候補`abstraction-only-v2`のEntry 36件・Line 120件は`data/abstractions/abstraction_only_v2.yml`へ版付きで保存しています。詳細は[Abstraction追加PoC比較](../../docs/research/ai/abstraction-only/Abstraction_追加PoC比較.md)を参照してください。
 
 ## Abstraction Embedding追加比較
 
@@ -258,7 +258,7 @@ bundle exec ruby bin\ai_line_selection evaluate-candidate-quality `
   --allow-external-api
 ```
 
-評価はEntry単位で保存されます。timeoutやRate Limitで停止した場合、同じコマンドは完了済みEntryと費用を読み取り、未完了Entryだけを再開します。実測結果と判断は[Abstraction Embedding追加PoC比較](../../docs/Abstraction_Embedding_追加PoC比較.md)を参照してください。
+評価はEntry単位で保存されます。timeoutやRate Limitで停止した場合、同じコマンドは完了済みEntryと費用を読み取り、未完了Entryだけを再開します。実測結果と判断は[Abstraction Embedding追加PoC比較](../../docs/research/ai/abstraction-only/Abstraction_Embedding_追加PoC比較.md)を参照してください。
 
 ## Meaning実API比較
 
@@ -326,7 +326,7 @@ bundle exec ruby bin\ai_line_selection compare-embedding `
   --allow-external-api
 ```
 
-比較結果にはRecall@20 / 50 / 100、期待候補順位、Top 1 Theme不一致、Candidate / Retired混入、API時間、検索時間、利用token、費用、次元数、`pgvector`保存量を記録します。条件と採用基準は[Embedding候補検索 PoC比較](../../docs/Embedding_PoC比較.md)を参照してください。
+比較結果にはRecall@20 / 50 / 100、期待候補順位、Top 1 Theme不一致、Candidate / Retired混入、API時間、検索時間、利用token、費用、次元数、`pgvector`保存量を記録します。条件と採用基準は[Embedding候補検索 PoC比較](../../docs/research/ai/initial-poc/Embedding_PoC比較.md)を参照してください。
 
 2026年8月12日の実API比較では、`text-embedding-3-small`・1,536次元・Meaning Structure入力をPoC採用候補としました。Recall@20は95.14%、Recall@50は98.96%、Candidate / Retired混入は0件です。候補取得件数は50件、後段のLLM投入上限は20件を維持します。本番正式採用は統合PoCと`pgvector`性能試験後に判断します。
 
@@ -371,7 +371,7 @@ bundle exec ruby bin\ai_line_selection review-line-evaluation `
   --results results\line_evaluation_<timestamp>_<suffix>
 ```
 
-詳細は[Line候補評価 PoC比較](../../docs/Line評価_PoC比較.md)を参照してください。
+詳細は[Line候補評価 PoC比較](../../docs/research/ai/initial-poc/Line評価_PoC比較.md)を参照してください。
 
 2026年8月12日の実API比較では、`claude-sonnet-5`をLine評価のPoC採用候補としました。Blind評価は許容36 / 36件、致命的違反0件、3回の最終選択一致率94.44%でした。`gpt-5.6-terra`は許容35 / 36件、致命的違反1件、最終選択一致率47.22%で採用基準未達でした。両モデルともLine評価だけでp95が6秒を超えたため、本番正式採用、同期処理設計、閾値、重みは未確定です。
 
@@ -404,9 +404,9 @@ bundle exec ruby bin\ai_line_selection run-integrated `
   --allow-external-api
 ```
 
-外部障害や不正出力は技術エラーとして停止し、意味上のSILENCEへ変換しません。実行条件、採用基準、人間評価手順は[統合PoC比較](../../docs/統合_PoC比較.md)を参照してください。
+外部障害や不正出力は技術エラーとして停止し、意味上のSILENCEへ変換しません。実行条件、採用基準、人間評価手順は[統合PoC比較](../../docs/research/ai/initial-poc/統合_PoC比較.md)を参照してください。
 
-2026年8月13日の実API評価では、独立SAFETY再現率100%、Recall@50 95.60%、Blind許容率96.88%、1投稿あたり2.2756円を達成しました。一方、通常日記4 / 36件のSAFETY過剰遮断、Recall@20 79.46%、最終選択一致率72.22%、全体p95 15.09秒、致命的なLine誤選定1件により、`selected-v1`の現状採用は見送ります。詳細は[統合PoC比較](../../docs/統合_PoC比較.md)、全体の採用判断と追加検証項目は[AI一行選定 PoC結果](../../docs/AI_PoC結果.md)に記録しています。
+2026年8月13日の実API評価では、独立SAFETY再現率100%、Recall@50 95.60%、Blind許容率96.88%、1投稿あたり2.2756円を達成しました。一方、通常日記4 / 36件のSAFETY過剰遮断、Recall@20 79.46%、最終選択一致率72.22%、全体p95 15.09秒、致命的なLine誤選定1件により、`selected-v1`の現状採用は見送ります。詳細は[統合PoC比較](../../docs/research/ai/initial-poc/統合_PoC比較.md)、全体の採用判断と追加検証項目は[AI一行選定 PoC結果](../../docs/research/ai/initial-poc/AI_PoC結果.md)に記録しています。
 
 ## 生成物
 
@@ -469,7 +469,7 @@ bundle exec ruby bin\ai_line_selection apply-b-v2-band-sweep-codex-review --resu
 bundle exec ruby bin\ai_line_selection evaluate-b-v2-band-sweep --results results\b_v2_integrated_live_20260813_issue46 --completion-results results\b_v2_band_sensitivity_20260813_issue59 --output-dir data\evaluations\b_v2_band_sensitivity_v1
 ```
 
-外部APIを使うのは2行目のEntry Embedding補完だけです。以後の825設定スイープ、uniform選択、Codex暫定品質評価、ヒートマップ集計は完全オフラインです。結果と`selector_review_needed`の判断は[B-v2 帯域感度追補診断](../../docs/B-v2_帯域感度追補診断.md)を参照してください。既存Gate AとEpic #40の判断は変更しません。
+外部APIを使うのは2行目のEntry Embedding補完だけです。以後の825設定スイープ、uniform選択、Codex暫定品質評価、ヒートマップ集計は完全オフラインです。結果と`selector_review_needed`の判断は[B-v2 帯域感度追補診断](../../docs/research/ai/b-v2/B-v2_帯域感度追補診断.md)を参照してください。既存Gate AとEpic #40の判断は変更しません。
 
 ### B-v2軽量selectorオフライン比較
 
@@ -481,7 +481,7 @@ bundle exec ruby bin\ai_line_selection prepare-b-v2-lightweight-selector --outpu
 bundle exec ruby bin\ai_line_selection evaluate-b-v2-lightweight-selector --output-dir data\evaluations\b_v2_lightweight_selector_v1
 ```
 
-比較criteriaは結果集計前に固定し、Entry単位6-fold CV、neighbor順位、low-confidence感度、Blind人間評価packetを保存します。最終診断は`selector_gain_insufficient`で、特定のselectorは本番採用していません。結果は[B-v2 軽量selectorオフライン比較](../../docs/B-v2_軽量selectorオフライン比較.md)を参照してください。全工程で外部APIは0回です。
+比較criteriaは結果集計前に固定し、Entry単位6-fold CV、neighbor順位、low-confidence感度、Blind人間評価packetを保存します。最終診断は`selector_gain_insufficient`で、特定のselectorは本番採用していません。結果は[B-v2 軽量selectorオフライン比較](../../docs/research/ai/b-v2/B-v2_軽量selectorオフライン比較.md)を参照してください。全工程で外部APIは0回です。
 
 ### 事実整合ガード追加PoC
 
@@ -492,7 +492,7 @@ bundle exec ruby bin\ai_line_selection plan-grounding-guard
 bundle exec ruby bin\ai_line_selection compare-grounding-guard
 ```
 
-結果と採用判断は [Line事実整合ガード 追加PoC比較](../../docs/Line事実整合ガード_追加PoC比較.md) を参照してください。
+結果と採用判断は [Line事実整合ガード 追加PoC比較](../../docs/research/ai/abstraction-only/Line事実整合ガード_追加PoC比較.md) を参照してください。
 
 ### LLMなしLine選択追加PoC
 
@@ -503,7 +503,7 @@ bundle exec ruby bin\ai_line_selection plan-ruby-selection
 bundle exec ruby bin\ai_line_selection compare-ruby-selection
 ```
 
-結果と採用判断は [LLMなしLine選択 追加PoC比較](../../docs/LLMなしLine選択_追加PoC比較.md) を参照してください。
+結果と採用判断は [LLMなしLine選択 追加PoC比較](../../docs/research/ai/abstraction-only/LLMなしLine選択_追加PoC比較.md) を参照してください。
 
 ### Abstraction Only統合追加PoC
 
@@ -515,7 +515,7 @@ bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode fi
 bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode diagnostic --repetitions 3 --results results\abstraction_only_integrated_live_<run-id> --allow-external-api
 ```
 
-リプレイ結果は [Abstraction Only 統合PoC比較](../../docs/Abstraction_Only_統合PoC比較.md)、ライブ実測と不採用判断の追補は [Abstraction Only ライブ統合追補](../../docs/Abstraction_Only_ライブ統合追補.md) を参照してください。同じ`--results`を指定すると完了済みEntryとLine事前Embeddingを再利用し、再開前の成功API利用量もテレメトリ台帳から費用へ含めます。
+リプレイ結果は [Abstraction Only 統合PoC比較](../../docs/research/ai/abstraction-only/Abstraction_Only_統合PoC比較.md)、ライブ実測と不採用判断の追補は [Abstraction Only ライブ統合追補](../../docs/research/ai/abstraction-only/Abstraction_Only_ライブ統合追補.md) を参照してください。同じ`--results`を指定すると完了済みEntryとLine事前Embeddingを再利用し、再開前の成功API利用量もテレメトリ台帳から費用へ含めます。
 
 ### Reflective Distanceオフライン再評価
 
@@ -525,7 +525,7 @@ Issue #36と`selected-v1`の保存済み表示ペアを、別領域への類推�
 ruby script\generate_reflective_distance_reassessment.rb
 ```
 
-基準は [Reflective Distance 評価ルーブリック](../../docs/Reflective_Distance_評価ルーブリック.md)、結果は [Reflective Distance 再評価](../../docs/Reflective_Distance_再評価.md) を参照してください。
+基準は [Reflective Distance 評価ルーブリック](../../docs/evaluation/Reflective_Distance_評価ルーブリック.md)、結果は [Reflective Distance 再評価](../../docs/research/ai/abstraction-only/Reflective_Distance_再評価.md) を参照してください。
 
 ```powershell
 bundle exec rake test
@@ -541,4 +541,4 @@ bundle exec rake test
 - APIキーやAuthorization Headerはログ、生成物、CLI出力へ出しません。
 - `provider_outputs.jsonl`と人間評価票は合成データだけを扱い、通常ログから分離します。
 
-上位の実験条件と採用基準は[AI PoC計画](../../docs/AI_PoC計画.md)を参照してください。
+上位の実験条件と採用基準は[AI PoC計画](../../docs/research/ai/initial-poc/AI_PoC計画.md)を参照してください。

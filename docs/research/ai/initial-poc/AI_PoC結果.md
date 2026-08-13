@@ -54,7 +54,7 @@ OpenAI `gpt-5.6-terra`とAnthropic `claude-sonnet-5`を比較した。両者と�
 | 応答時間p95 | 4.68秒 | 5.78秒 |
 | 1投稿あたり推定費用 | 0.2380円 | 0.3317円 |
 
-実行条件と操作方法は[PoC CLI READMEのMeaning実API比較](../poc/ai_line_selection/README.md#meaning実api比較)を参照する。
+実行条件と操作方法は[PoC CLI READMEのMeaning実API比較](../../../../poc/ai_line_selection/README.md#meaning実api比較)を参照する。
 
 ### 3.2 Embedding候補検索
 

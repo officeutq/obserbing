@@ -68,16 +68,10 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 
 ## ドキュメント
 
-- [要件定義書](docs/要件定義_v1_0.md)
-- [AI基本設計](docs/AI基本設計.md)
-- [B-v2 AI選定基本設計](docs/B-v2_AI選定基本設計.md)
-- [AI一行選定 PoC計画](docs/AI_PoC計画.md)
-- [AI一行選定 PoC結果](docs/AI_PoC結果.md)
-- [AI追加PoC計画](docs/AI_追加PoC計画.md)
-- [SAFETY追加PoC比較](docs/SAFETY_追加PoC比較.md)
-- [Abstraction追加PoC比較](docs/Abstraction_追加PoC比較.md)
-- [Abstraction Embedding追加PoC比較](docs/Abstraction_Embedding_追加PoC比較.md)
-- [統合PoC比較](docs/統合_PoC比較.md)
-- [B-v2 Epic結果](docs/B-v2_Epic結果.md)
-- [B-v2 帯域感度追補診断](docs/B-v2_帯域感度追補診断.md)
-- [B-v2 軽量selectorオフライン比較](docs/B-v2_軽量selectorオフライン比較.md)
+- [ドキュメント索引](docs/README.md)
+- [要件定義書](docs/requirements/要件定義_v1_0.md)
+- [AI基本設計](docs/design/AI基本設計.md)
+- [B-v2 AI選定基本設計](docs/design/ai/B-v2_AI選定基本設計.md)
+- [Reflective Distance 評価ルーブリック](docs/evaluation/Reflective_Distance_評価ルーブリック.md)
+
+PoC、比較、診断、Gate判定、Epic結果などの調査・意思決定履歴は[ドキュメント索引](docs/README.md)に集約する。

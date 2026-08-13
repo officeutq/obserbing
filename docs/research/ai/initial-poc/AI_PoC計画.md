@@ -12,7 +12,7 @@
 
 obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding候補検索、Line候補評価、アプリケーション側の最終制御を組み合わせて成立するか検証する。
 
-この計画は、結果を確認する前に実験条件と採用基準を固定するためのものである。上位方針は[AI基本設計](AI基本設計.md)と[要件定義書](要件定義_v1_0.md)を正とする。
+この計画は、結果を確認する前に実験条件と採用基準を固定するためのものである。上位方針は[AI基本設計](../../../design/AI基本設計.md)と[要件定義書](../../../requirements/要件定義_v1_0.md)を正とする。
 
 ## 2. 検証仮説
 
@@ -123,7 +123,7 @@ obserbingの一行選定が、SAFETY判定、Meaning Structure抽出、Embedding
 5. SAFETY、Meaning、Embedding、Line評価を個別に実行する。
 6. 基準を満たす候補だけで統合実行し、各ケースを3回計測する。
 7. モデル名を伏せた評価票で人間評価を行う。
-8. `docs/AI_PoC結果.md`へ比較、失敗例、採否、未決定事項を記録する。
+8. `docs/research/ai/initial-poc/AI_PoC結果.md`へ比較、失敗例、採否、未決定事項を記録する。
 
 ## 10. 外部API実行前ゲート
 

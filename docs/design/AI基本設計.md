@@ -20,8 +20,8 @@ AIの目的は、ユーザーへ自由文章を生成することではなく、
 
 本書の上位仕様は次の2文書とする。
 
-- [README](../README.md)：プロジェクト概要と技術構成の方針
-- [要件定義書](要件定義_v1_0.md)：プロダクトが実現すること、守る要件および制約
+- [README](../../README.md)：プロジェクト概要と技術構成の方針
+- [要件定義書](../requirements/要件定義_v1_0.md)：プロダクトが実現すること、守る要件および制約
 
 要件と本書の役割は次のとおり分離する。
 
@@ -641,7 +641,7 @@ Gate Aは絶対acceptable率だけでなくB-v1からの改善幅、too-close減
 
 PoCでは実接続用の本番実装、正式契約、DB migration、アプリUI実装および本番プロンプト確定を行わない。
 
-初回PoCは[AI一行選定 PoC結果](AI_PoC結果.md)、追加PoCは[AI追加PoC結果](AI_追加PoC結果.md)、B-v2事前基準は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を参照する。
+初回PoCは[AI一行選定 PoC結果](../research/ai/initial-poc/AI_PoC結果.md)、追加PoCは[AI追加PoC結果](../research/ai/abstraction-only/AI_追加PoC結果.md)、B-v2事前基準は[B-v2 AI選定基本設計](ai/B-v2_AI選定基本設計.md)を参照する。
 
 ## 19.6 follow-up診断と次フェーズ
 
@@ -679,7 +679,7 @@ Providerおよびモデル名は本書では確定しない。入力データが
 
 これらを接続した`selected-v1`は、通常日記のSAFETY過剰遮断、Recall@20、選択安定性、同期レイテンシおよび致命的なLine誤選定が事前基準を満たさなかった。そのため、各候補は本番正式採用とせず、追加PoC後に再判定する。Adapter分離、構造化出力の二重検証、状態分離、ログ制限、Line Embeddingの事前計算とバージョン管理は維持する。
 
-評価条件、計測値、失敗例、追加検証項目は[AI一行選定 PoC結果](AI_PoC結果.md)を正とする。
+評価条件、計測値、失敗例、追加検証項目は[AI一行選定 PoC結果](../research/ai/initial-poc/AI_PoC結果.md)を正とする。
 
 ## 20.2 追加PoC結果に基づく判断
 
@@ -689,7 +689,7 @@ APIクレジット追加後のライブ診断統合では、既存通常日記�
 
 Provider、モデル、契約、プロンプトおよび本番閾値は引き続き未決定とする。追加PoCで有効だった3要素は次方式の部品候補として保持するが、正式採用を意味しない。次方式を検証する場合は、候補集合の上流安定化と、低遅延のgroundedness / obserbing distance評価を別Epicで事前定義する。
 
-評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](AI_追加PoC結果.md)、ライブ実測の詳細は[Abstraction Only ライブ統合追補](Abstraction_Only_ライブ統合追補.md)を正とする。
+評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](../research/ai/abstraction-only/AI_追加PoC結果.md)、ライブ実測の詳細は[Abstraction Only ライブ統合追補](../research/ai/abstraction-only/Abstraction_Only_ライブ統合追補.md)を正とする。
 
 ## 20.3 Reflective Distance再評価とB-v2設計
 
@@ -708,7 +708,7 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と、固定合成Entry 6件・Line 4件を各3反復するPhase 2の小規模APIスモークに分ける。通常最大60、retry込み120リクエスト、50,000 token、500円を上限とし、Provider、model、単価、送信・保存データ等を実行前のpreflightコミットで固定する。#46は現96 Line・36 Entry × 3反復の本統合ライブPoCとして分離する。
 
-固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。機械可読な現行基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v2.yml`に保存し、`v1`も履歴として保持する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
+固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](ai/B-v2_AI選定基本設計.md)を正とする。機械可読な現行基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v2.yml`に保存し、`v1`も履歴として保持する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
 
 ## 20.4 B-v2 Gate A実測結果
 
@@ -716,7 +716,7 @@ Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と
 
 事前固定済みGate Aでは、acceptable改善が棄却下限の+10ポイント未満（実測-2.78ポイント）であり、p95も6秒上限を超えたため、最終判定を`architecture_rejected`とした。これはGate Bの絶対80%未達だけによる判断ではない。現方式をGate B用baselineとしてLineプール改善へ移行せず、Lineプール改善Epicも作成しない。本番Provider、モデル、閾値等の正式採用判断も引き続き未定である。
 
-実験構成、全Gate条件、low-confidence感度、移行判断は[B-v2 Epic結果](B-v2_Epic結果.md)、[B-v2 Gate A判定](B-v2_Gate_A判定.md)、[B-v2 Lineプール改善移行判断](B-v2_Lineプール改善移行判断.md)を参照する。
+実験構成、全Gate条件、low-confidence感度、移行判断は[B-v2 Epic結果](../research/ai/b-v2/B-v2_Epic結果.md)、[B-v2 Gate A判定](../research/ai/b-v2/B-v2_Gate_A判定.md)、[B-v2 Lineプール改善移行判断](../research/ai/b-v2/B-v2_Lineプール改善移行判断.md)を参照する。
 
 ## 20.5 B-v2 follow-up後の仕様判断
 
@@ -724,7 +724,7 @@ Issue #59の帯域感度追補は、固定値`0.45 / 0.55 / Top 20`が最良で�
 
 以上から、SAFETY、`abstraction + domain`、2種類のEmbedding、abstraction下限 + surface上限、Rails policy、適格候補selector、候補0件時SILENCEというB-v2骨格を暫定採用する。リアルタイムLine評価LLM 0回とLine側profileの事前生成も維持する。一方、具体的な閾値、selector、weight、Provider / model、domain taxonomy、`pgvector` index parameter、現96 Lineプールは未確定へ戻す。
 
-この仕様整理はEpic #40の`architecture_rejected`を変更せず、Issue #59・#61の実験結果も書き換えない。現在仕様とPoC前固定設計の関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。
+この仕様整理はEpic #40の`architecture_rejected`を変更せず、Issue #59・#61の実験結果も書き換えない。現在仕様とPoC前固定設計の関係は[B-v2 AI選定基本設計](ai/B-v2_AI選定基本設計.md)を正とする。
 
 ---
 

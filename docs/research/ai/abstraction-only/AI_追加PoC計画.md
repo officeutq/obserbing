@@ -26,15 +26,15 @@
 
 初回PoCの条件と結果は次を正とし、本追加PoCから書き換えない。
 
-- [AI一行選定 PoC計画](AI_PoC計画.md)
-- [AI一行選定 PoC結果](AI_PoC結果.md)
-- [Embedding候補検索 PoC比較](Embedding_PoC比較.md)
-- [Line候補評価 PoC比較](Line評価_PoC比較.md)
-- [SAFETY判定 PoC比較](SAFETY_PoC比較.md)
+- [AI一行選定 PoC計画](../initial-poc/AI_PoC計画.md)
+- [AI一行選定 PoC結果](../initial-poc/AI_PoC結果.md)
+- [Embedding候補検索 PoC比較](../initial-poc/Embedding_PoC比較.md)
+- [Line候補評価 PoC比較](../initial-poc/Line評価_PoC比較.md)
+- [SAFETY判定 PoC比較](../initial-poc/SAFETY_PoC比較.md)
 - [SAFETY追加PoC比較](SAFETY_追加PoC比較.md)
 - [Abstraction追加PoC比較](Abstraction_追加PoC比較.md)
 - [Abstraction Embedding追加PoC比較](Abstraction_Embedding_追加PoC比較.md)
-- [統合PoC比較](統合_PoC比較.md)
+- [統合PoC比較](../initial-poc/統合_PoC比較.md)
 
 ## 3. 検証仮説
 
