@@ -22,7 +22,7 @@
 - baseline：初回PoC `selected-v1`
 - 追加方式：不適格要素を含むため正式候補ではなく、`abstraction-only-v1-diagnostic`
 - 主基準：Issue #19で結果閲覧前に固定したBlind許容性、非劣性、事実整合、安全性、安定性、性能および費用
-- baseline値：[統合PoC比較](統合_PoC比較.md)の公表済み結果
+- baseline値：[統合PoC比較](../initial-poc/統合_PoC比較.md)の公表済み結果
 - 追加方式値：[Abstraction Only 統合PoC比較](Abstraction_Only_統合PoC比較.md)、[Abstraction Only ライブ統合追補](Abstraction_Only_ライブ統合追補.md)と版付き集計
 
 Issue #25時点では追加方式の全段階を一から再実行する試行がOpenAIの`credit_balance_exhausted`で停止したため、#20〜#22の保存済み実Provider出力を接続して評価した。その後APIクレジットを追加し、Issue #36で同じ36件×3反復をライブ統合した。以下の追加方式欄はライブ結果を正とし、リプレイとの差と実行経過は[Abstraction Only ライブ統合追補](Abstraction_Only_ライブ統合追補.md)に記録する。
@@ -139,7 +139,7 @@ baselineのコード・設定・結果は削除・上書きしない。追加方
 
 | 対象 | SHA-256 |
 |---|---|
-| `docs/統合_PoC比較.md` | `f164799d3d0221a05a9d55239ef25d55012a116e93edb6f4ed954b65bde0ca39` |
-| `docs/Abstraction_Only_統合PoC比較.md` | `d9b0dc2ecf9b56d73f1e81823bf51c9f38addb26e9258ffbc500215793d39219` |
+| `docs/research/ai/initial-poc/統合_PoC比較.md` | `f164799d3d0221a05a9d55239ef25d55012a116e93edb6f4ed954b65bde0ca39` |
+| `docs/research/ai/abstraction-only/Abstraction_Only_統合PoC比較.md` | `d9b0dc2ecf9b56d73f1e81823bf51c9f38addb26e9258ffbc500215793d39219` |
 | `data/evaluations/abstraction_only_integrated_v1.yml` | `1216d804be44515e807b84690a21096ba423faccb9dbb62ed31a590d7b98b577` |
 | Issue #36ライブ`summary.json` | `44fdd76935be0ae4dbb5bfc26f168f8db16b1411a9a443c82bf488315bda2f56` |
