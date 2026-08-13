@@ -35,6 +35,7 @@ module AiLineSelection
       when "compare-b-v2-selector" then compare_b_v2_selector
       when "plan-b-v2-integrated" then plan_b_v2_integrated
       when "run-b-v2-integrated" then run_b_v2_integrated
+      when "evaluate-b-v2-integrated" then evaluate_b_v2_integrated
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -328,6 +329,25 @@ module AiLineSelection
         resume: options.fetch(:resume),
         repair_safety_overblocks: options.fetch(:repair_safety_overblocks)
       ))
+    end
+
+    def evaluate_b_v2_integrated
+      options = { results: nil, judgments: nil, output: nil, outcomes: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--judgments FILE") { |value| options[:judgments] = value }
+        parser.on("--output FILE") { |value| options[:output] = value }
+        parser.on("--outcomes FILE") { |value| options[:outcomes] = value }
+      end.parse!(@argv)
+      unless options[:results] && options[:judgments]
+        raise ConfigurationError.new("evaluate-b-v2-integrated requires --results and --judgments")
+      end
+
+      print_json(Bv2IntegratedEvaluator.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        judgments_path: options.fetch(:judgments)
+      ).call(output_path: options[:output], outcomes_path: options[:outcomes]))
     end
 
     def apply_abstraction_preliminary

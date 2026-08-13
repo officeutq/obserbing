@@ -153,6 +153,16 @@ bundle exec ruby bin\ai_line_selection run-b-v2-integrated `
 
 中断後は同じdirectoryへ`--resume`を付け、完了済みLine profileとoutcomeを再利用します。技術エラーをSILENCEへ変換しません。
 
+2026年8月13日の実行では108枠を完了し、Line表示105件、意味上のSILENCE 3件でした。`reflective-distance-v1`によるCodex暫定評価は51 / 108（47.22%）で、8種類はlow-confidenceとして人間確認対象に残しています。初回にSAFETYの旧既定prompt/schemaを参照した13枠は、履歴と費用を保存したうえで`additional-v3`により対象枠だけ再実行しました。詳細は[B-v2 本統合実API PoC](../../docs/B-v2_本統合実API_PoC.md)、正規化成果物は`data/evaluations/b_v2_integrated_*_v1.*`を参照してください。
+
+保存結果のReflective Distance評価は外部APIを呼ばず、次で再計算できます。
+
+```powershell
+bundle exec ruby bin\ai_line_selection evaluate-b-v2-integrated `
+  --results results\b_v2_integrated_live_20260813_issue46 `
+  --judgments data\evaluations\b_v2_integrated_codex_judgments_v1.csv
+```
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。

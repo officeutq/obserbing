@@ -1,0 +1,81 @@
+pair_id,acceptable,distance,relation_type,user_fact_assertion,explicit_contradiction,advice_or_diagnosis,clearly_unrelated,confidence,reason
+E001/L105,true,just_right,analogical_transfer,false,false,false,false,medium,The full vessel still looking for another drop maps the chosen option and attention to what remains.
+E001/L005,false,too_close,direct_restatement,false,false,false,false,high,It nearly restates that the act of choosing leaves a remainder.
+E001/L101,false,too_far,weak_connection,false,false,false,false,medium,Unowned expectation and the unchosen alternative share only a broad sense of weight.
+E002/L014,true,just_right,same_domain,false,false,false,false,medium,Imagining the future revealing the present self connects to uncertainty about one's actual preference.
+E002/L101,true,just_right,same_domain,false,false,false,false,medium,An expectation without a clear owner maps to pressure that obscures the writer's own wish.
+E004/L011,false,too_far,weak_connection,false,false,false,false,medium,A recurring morning does not give a discoverable bridge to fear of an overlooked preparation item.
+E005/L065,false,too_far,weak_connection,false,false,false,false,medium,Delayed adaptation to change only loosely connects to anticipating cascading schedule disruption.
+E005/L012,true,just_right,same_domain,false,false,false,false,medium,An unfinished shape gives useful space around uncertainty before anything has happened.
+E006/L055,true,just_right,same_domain,false,false,false,false,medium,One negative changing the count illuminates how equally balanced evidence can still feel uneven.
+E006/L023,true,just_right,analogical_transfer,false,false,false,false,medium,Two views from the same seat map different readings of the same evidence.
+E007/L066,true,just_right,analogical_transfer,false,false,false,false,low,The residual shape after release may illuminate warmth without wanting another appointment but the bridge is ambiguous.
+E007/L031,true,just_right,same_domain,false,false,false,false,high,It opens reflection on a distance present even during an enjoyable meeting.
+E007/L091,false,not_obserbing,unrelated,false,false,false,true,high,Turning today into a calendar page does not connect to enjoying a meeting without seeking the next one.
+E008/L064,false,too_far,weak_connection,false,false,false,false,medium,Both involve later reconsideration but the Line's changed desired form lacks a clear conversational bridge.
+E008/L107,false,too_far,weak_connection,false,false,false,false,low,Expectation might map to waiting for one's turn but the ownership and structural connection remain ambiguous.
+E008/L112,false,not_obserbing,unrelated,false,false,false,true,high,A missing light changing road length has no discoverable bridge to mistaking turn-waiting for listening.
+E009/L034,true,just_right,same_domain,false,false,false,false,high,A variable measure of closeness directly opens the Entry's tension without completing it.
+E009/L038,true,just_right,same_domain,false,false,false,false,high,A pause distinguishing continuity from rupture meaningfully reframes uncertainty about staying close.
+E010/L007,true,just_right,analogical_transfer,false,false,false,false,medium,A closing door whose sound remains maps withdrawal and the lingering meaning of an unanswered message.
+E010/L082,false,too_close,direct_restatement,false,false,false,false,medium,Quiet revealing the distance of one's voice closely paraphrases the Entry's quiet distance.
+E010/L031,true,just_right,same_domain,false,false,false,false,medium,It broadens the stated distance beyond simple physical separation without prescribing an answer.
+E011/L021,false,too_far,weak_connection,false,false,false,false,medium,Voices remaining after conversation only loosely connect to concern about saying nothing.
+E011/L085,true,just_right,analogical_transfer,false,false,false,false,low,Empty seats not equaling loneliness may map comfortable intimacy and a troubling silence but the connection is ambiguous.
+E011/L032,false,too_close,direct_restatement,false,false,false,false,high,Unreturned words creating quiet closely restates the unspoken communication in the Entry.
+E012/L082,true,just_right,same_domain,false,false,false,false,medium,Quiet revealing voice-distance offers a reflective angle on whether the relationship was far or too close.
+E012/L035,true,just_right,same_domain,false,false,false,false,high,An empty seat speaking distance makes absence concrete without deciding which distance was correct.
+E012/L008,false,not_obserbing,unrelated,false,false,false,true,high,Half-decided words do not connect to reassessing distance after separation.
+E013/L101,false,too_far,weak_connection,false,false,false,false,medium,Weight from an ownerless expectation does not explain busy activity that leaves no articulable progress.
+E015/L037,true,just_right,analogical_transfer,false,false,false,false,high,A boundary as two named places maps the unclear transition between working and leaving the desk.
+E015/L004,false,too_far,weak_connection,false,false,false,false,medium,A persistent fork is too generic to illuminate the missing stopping point after tasks decrease.
+E015/L088,false,not_obserbing,unrelated,false,false,false,true,high,An unshared event retaining a day's weight is unrelated to not knowing when to stop work.
+E016/L004,false,too_far,weak_connection,false,false,false,false,medium,A past fork does not illuminate why ordinary speech after a mistake is more memorable.
+E016/L106,false,too_far,weak_connection,false,false,false,false,medium,The Line contrasts successes and failures while the Entry focuses on a normal response after failure.
+E017/L107,false,too_far,weak_connection,false,false,false,false,medium,An expectation's shadow only loosely connects to wanting to return to the time before an unnoticed correction.
+E018/L118,false,too_far,weak_connection,false,false,false,false,medium,Accumulating differences in a repeated view does not clearly map refusal to count successes after one failure.
+E019/L052,true,just_right,analogical_transfer,false,false,false,false,medium,A small disruption becoming prominent within a broadly improved whole maps usability alongside alienation.
+E019/L013,true,just_right,analogical_transfer,false,false,false,false,low,Fog making near things seem far can illuminate a familiar room feeling alien but the bridge is somewhat fragile.
+E020/L042,true,just_right,analogical_transfer,false,false,false,false,high,A desk retaining posture after finished work maps the old object's lingering presence after its function ends.
+E020/L053,false,too_far,weak_connection,false,false,false,false,medium,Irreversible time and repaired things do not clearly connect to retaining a replaced object.
+E020/L115,true,just_right,analogical_transfer,false,false,false,false,medium,A closed shop remaining part of a route maps an obsolete object remaining part of one's environment.
+E021/L036,false,too_far,weak_connection,false,false,false,false,medium,Hearing a formerly close sound after distance does not clearly map reluctance to show change to a past self.
+E021/L022,false,not_obserbing,unrelated,false,false,false,true,high,A breathing interval in intimacy does not connect to the relation between past and present selves.
+E021/L031,true,just_right,same_domain,false,false,false,false,low,Distance that exists without physical separation may map distance from a former self but the reading is ambiguous.
+E022/L057,false,too_far,weak_connection,false,false,false,false,medium,A found mistake and the person who found it share discovery but not the irretrievable search time.
+E022/L048,true,just_right,analogical_transfer,false,false,false,false,high,Used time leaving a trace despite no progress maps the two search hours that remain after the key is found.
+E022/L007,false,too_far,weak_connection,false,false,false,false,medium,A closing sound lingering is too generic to illuminate recovered property and unrecovered time.
+E024/L092,true,just_right,same_domain,false,false,false,false,medium,Waiting changing at the edge of an ending reflects how naming an ending can close what still continued.
+E024/L032,false,not_obserbing,unrelated,false,false,false,true,high,Unreturned words creating silence does not connect to naming an ending.
+E024/L004,true,just_right,analogical_transfer,false,false,false,false,low,A fork remaining after it is passed may map residual continuation after naming an end but the direction is ambiguous.
+E025/L052,true,just_right,analogical_transfer,false,false,false,false,high,A small missing part shining within a satisfactory whole maps the absent act of sharing an enjoyable meal.
+E025/L066,false,too_far,weak_connection,false,false,false,false,medium,A hand-shape left at a released place does not clearly map the unshared comment after eating alone.
+E025/L101,false,too_far,weak_connection,false,false,false,false,medium,Ownerless expectation and its weight do not provide a discoverable bridge to wanting to share taste.
+E026/L114,true,just_right,same_domain,false,false,false,false,high,A small event glowing at the bottom of a day reframes the significance of a quiet day heard only by oneself.
+E026/L007,false,too_far,weak_connection,false,false,false,false,medium,A closing sound lingering only weakly connects to a silent day without social contact.
+E026/L043,false,too_far,weak_connection,false,false,false,false,medium,A seat discovered after a meeting is too remote from noticing that only oneself heard the day's voice.
+E028/L091,false,too_close,direct_restatement,false,false,false,false,high,Future calendar pages turning today into a page closely paraphrases the Entry.
+E029/L036,true,just_right,analogical_transfer,false,false,false,false,medium,Hearing former closeness after moving away maps valuing the wait only after it ends.
+E029/L117,true,just_right,analogical_transfer,false,false,false,false,medium,Time flowing while steam disappears reframes waiting as lived time rather than an empty delay.
+E029/L033,true,just_right,analogical_transfer,false,false,false,false,medium,A contour visible from afar maps recognizing the value of waiting once the turn arrives.
+E030/L107,false,too_far,weak_connection,false,false,false,false,medium,Expectation casting a shadow does not connect clearly to a year's changing perceived length.
+E031/L105,true,just_right,analogical_transfer,false,false,false,false,high,A full vessel still seeking another drop maps feeling insufficient despite no actual request.
+E032/L043,true,just_right,analogical_transfer,false,false,false,false,low,A seat found only after a meeting may map the unstarted fourth task appearing at departure but the bridge is ambiguous.
+E032/L008,false,too_far,weak_connection,false,false,false,false,medium,Unfinished wording and remaining room do not clearly map fixation on an unstarted extra task.
+E033/L005,false,too_far,weak_connection,false,false,false,false,medium,The fact of choosing that remains does not illuminate the automatic thought that more should have been done.
+E033/L055,false,too_close,direct_restatement,false,false,false,false,high,One undone thing changing the count closely paraphrases the ready thought that more could have been done.
+E034/L054,false,not_obserbing,unrelated,false,false,false,true,high,Ordinary speech after failure has no connection to a modestly satisfying day marked by dry laundry.
+E035/L072,false,too_far,weak_connection,false,false,false,false,medium,A deleted record leaving a record of deletion only loosely connects to a closed shop changing a familiar road.
+E035/L095,true,just_right,analogical_transfer,false,false,false,false,low,Time becoming longer afterward may map a familiar road changing length after a closure but the direction is ambiguous.
+E035/L111,true,just_right,analogical_transfer,false,false,false,false,medium,Light remaining in dried cloth maps the usual shop light continuing to shape the road after it is gone.
+E036/L117,true,just_right,analogical_transfer,false,false,false,false,medium,Time passing through vanishing steam gives an ordinary interval a form worth noticing.
+E036/L114,false,too_close,direct_restatement,false,false,false,false,high,A small event glowing through the day nearly supplies the Entry's intended meaning.
+E036/L068,false,too_far,weak_connection,false,false,false,false,medium,An update highlighting unchanged parts does not clearly connect to deliberately remembering an uneventful day.
+E003/L004,true,just_right,same_domain,false,false,false,false,high,A fork remaining after it is passed preserves the residual uncertainty in a tentative decision.
+E003/L012,false,too_close,direct_restatement,false,false,false,false,high,An unfinished shape of uncertainty closely paraphrases the tentative decision.
+E003/L005,false,too_close,direct_restatement,false,false,false,false,high,The fact of having chosen remaining nearly restates the short tentative declaration.
+E004/L046,false,too_far,weak_connection,false,false,false,false,medium,Completed checklist items hiding the day's shape does not expose the fear of an overlooked preparation item.
+E004/L091,false,too_far,weak_connection,false,false,false,false,medium,Future schedule pages and today's passage only loosely connect to last-minute doubt about preparation.
+E023/L072,false,too_close,direct_restatement,false,false,false,false,high,A deleted record leaving a deletion record directly restates the Entry's central observation.
+E027/L031,true,just_right,same_domain,false,false,false,false,high,It opens the distinction between desired solitude and the felt distance one keeps checking.
+E027/L023,false,too_far,weak_connection,false,false,false,false,medium,Different views from the same seat do not clearly map wanting and then monitoring solitude.
