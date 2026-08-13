@@ -11,14 +11,15 @@ module AiLineSelection
       line_evaluation: "line_evaluation.json"
     }.freeze
 
-    def initialize(root_dir: AiLineSelection::ROOT)
+    def initialize(root_dir: AiLineSelection::ROOT, files: {})
       @root_dir = root_dir
+      @files = FILES.merge(files.transform_keys(&:to_sym))
       @cache = {}
     end
 
     def fetch(operation)
       @cache[operation.to_sym] ||= begin
-        filename = FILES.fetch(operation.to_sym)
+        filename = @files.fetch(operation.to_sym)
         JSON.parse(File.read(File.join(@root_dir, "schemas", filename), encoding: "UTF-8"))
       end
     rescue KeyError
@@ -28,7 +29,7 @@ module AiLineSelection
     end
 
     def operations
-      FILES.keys
+      @files.keys
     end
   end
 end

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "obserbing://schemas/safety/additional-v2",
+  "type": "object",
+  "required": ["schema_version", "classification", "reason_code", "confidence"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["additional-v2"] },
+    "classification": { "type": "string", "enum": ["normal", "safety", "indeterminate"] },
+    "reason_code": { "type": "string", "enum": ["none", "self_harm_imminent", "suicide_imminent", "harm_to_others_imminent", "insufficient_context"] },
+    "confidence": { "type": "number" }
+  }
+}

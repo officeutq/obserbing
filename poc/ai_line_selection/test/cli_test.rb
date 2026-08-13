@@ -114,6 +114,33 @@ class CliTest < Minitest::Test
     assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
   end
 
+  def test_safety_boundary_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-safety-boundary", "--dataset", "candidate-full", "--providers", "openai"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal "safety_boundary_additional_v3_candidate_full", document.fetch("operation")
+    assert_equal false, document.fetch("network_call_performed")
+    assert_equal 216, document.fetch("total_requests")
+  end
+
+  def test_external_safety_boundary_comparison_requires_explicit_flag
+    errors = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["compare-safety-boundary", "--boundary", "additional-v1", "--dataset", "additional", "--providers", "openai", "--case-id", "B001"],
+      output: StringIO.new,
+      error_output: errors
+    )
+
+    assert_equal 2, status
+    assert_equal "external_api_disabled", JSON.parse(errors.string).fetch("error")
+  end
+
   def test_external_embedding_comparison_requires_explicit_flag
     errors = StringIO.new
     status = AiLineSelection::CLI.start(
