@@ -1,0 +1,79 @@
+version: grounding-guard-cases-v1
+description: >-
+  初回データを変更せず、具体的事実不整合ガードを回帰検証する対データ。
+  negative はLine側の具体的主張がEntryに存在しないケース、positiveは対応事実が存在するケース。
+cases:
+  - id: G001
+    category: quantity
+    polarity: negative
+    entry_id: E033
+    line_id: L102
+    expected_compatible: false
+    required_regression: true
+  - id: G002
+    category: quantity
+    polarity: positive
+    entry_id: E032
+    line_id: L102
+    expected_compatible: true
+  - id: G003
+    category: object
+    polarity: negative
+    entry_id: E024
+    line_id: L077
+    expected_compatible: false
+    required_regression: true
+  - id: G004
+    category: object
+    polarity: positive
+    entry_id: E020
+    line_id: L077
+    expected_compatible: true
+  - id: G005
+    category: person
+    polarity: negative
+    entry_text: "返事を書いたが、送らずに閉じた。"
+    line_text: "友人の返事を待つ時間にも、形がある。"
+    expected_compatible: false
+  - id: G006
+    category: person
+    polarity: positive
+    entry_text: "友人に返事を書いたが、送らずに閉じた。"
+    line_text: "友人の返事を待つ時間にも、形がある。"
+    expected_compatible: true
+  - id: G007
+    category: event
+    polarity: negative
+    entry_text: "いつも通り話しかけられたことを何度も思い出す。"
+    line_text: "失敗のあとに普通の声がすると、世界の続きが見える。"
+    expected_compatible: false
+  - id: G008
+    category: event
+    polarity: positive
+    entry_id: E016
+    line_id: L054
+    expected_compatible: true
+  - id: G009
+    category: place_time
+    polarity: negative
+    entry_text: "部屋の灯りを消すと、時間が少し長く感じた。"
+    line_text: "閉じた店の暗さも、帰り道の一部になる。"
+    expected_compatible: false
+  - id: G010
+    category: place_time
+    polarity: positive
+    entry_id: E035
+    line_id: L115
+    expected_compatible: true
+  - id: G011
+    category: strong_causality
+    polarity: negative
+    entry_text: "朝は雨だった。会議では黙っていた。"
+    line_text: "雨だったから、会議で言葉を選べなかった。"
+    expected_compatible: false
+  - id: G012
+    category: strong_causality
+    polarity: positive
+    entry_text: "雨の音が大きかったので、会議で言葉を選べなかった。"
+    line_text: "雨だったから、会議で言葉を選べなかった。"
+    expected_compatible: true

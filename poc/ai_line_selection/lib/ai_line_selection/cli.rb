@@ -40,6 +40,8 @@ module AiLineSelection
       when "compare-abstraction-embedding" then compare_abstraction_embedding
       when "plan-candidate-quality" then plan_candidate_quality
       when "evaluate-candidate-quality" then evaluate_candidate_quality
+      when "plan-grounding-guard" then plan_grounding_guard
+      when "compare-grounding-guard" then compare_grounding_guard
       when "plan-line-evaluation" then plan_line_evaluation
       when "compare-line-evaluation" then compare_line_evaluation
       when "review-line-evaluation" then review_line_evaluation
@@ -470,6 +472,14 @@ module AiLineSelection
       options
     end
 
+    def plan_grounding_guard
+      print_json(GroundingGuardComparison.new(configuration: @configuration).plan)
+    end
+
+    def compare_grounding_guard
+      print_json(GroundingGuardComparison.new(configuration: @configuration).call)
+    end
+
     def plan_line_evaluation
       options = line_evaluation_options(
         default_providers: %w[openai anthropic],
@@ -699,6 +709,8 @@ module AiLineSelection
           ruby bin/ai_line_selection compare-abstraction-embedding --provider openai-small --allow-external-api
           ruby bin/ai_line_selection plan-candidate-quality --provider openai --results results/abstraction_embedding_<timestamp>_<suffix>
           ruby bin/ai_line_selection evaluate-candidate-quality --provider openai --results results/abstraction_embedding_<timestamp>_<suffix> --allow-external-api
+          ruby bin/ai_line_selection plan-grounding-guard
+          ruby bin/ai_line_selection compare-grounding-guard
           ruby bin/ai_line_selection plan-line-evaluation --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-line-evaluation [--providers fixture] [--embedding-provider fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api

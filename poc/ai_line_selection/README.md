@@ -353,6 +353,17 @@ Codex等による事前評価を使う場合は、評価行へ`judge`、`confide
 
 ## テスト
 
+### 事実整合ガード追加PoC
+
+元の日記・Lineを変更せず、数量・人物・物・出来事・場所/時刻・強い因果の不整合を、影版・事前属性・静的検出・組み合わせで比較します。外部APIは呼びません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-grounding-guard
+bundle exec ruby bin\ai_line_selection compare-grounding-guard
+```
+
+結果と採用判断は [Line事実整合ガード 追加PoC比較](../../docs/Line事実整合ガード_追加PoC比較.md) を参照してください。
+
 ```powershell
 bundle exec rake test
 ```

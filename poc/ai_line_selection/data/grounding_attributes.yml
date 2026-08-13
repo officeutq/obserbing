@@ -1,0 +1,49 @@
+version: grounding-attributes-v1
+rule_version: grounding-guard-v1
+description: >-
+  Lineの具体的主張とEntry側の対応事実を、人手レビュー済みの意味タグとして分離管理する。
+  値は事実の存在を示すもので、感情や意味の近さを表さない。
+shadow_lines:
+  L077: "手放さなかったものは、まだ決めていない時間を守る。"
+  L102: "終えたことより、始めなかったことは声が大きい。"
+lines:
+  L043:
+    event: [meeting_completed]
+  L054:
+    event: [failure_occurred]
+  L055:
+    quantity: [one_uncompleted]
+  L062:
+    place_time: [place_became_convenient]
+  L077:
+    object: [box]
+    event: [object_kept]
+  L102:
+    quantity: [three_completed, one_unstarted]
+    event: [completion_and_unstarted]
+  L112:
+    object: [usual_light]
+    place_time: [route]
+  L115:
+    object: [store]
+    event: [store_closed]
+    place_time: [route]
+entries:
+  E014:
+    event: [meeting_completed]
+  E016:
+    event: [failure_occurred]
+  E019:
+    place_time: [place_became_convenient]
+  E020:
+    object: [box]
+    event: [object_kept]
+  E024: {}
+  E032:
+    quantity: [three_completed, one_unstarted]
+    event: [completion_and_unstarted]
+  E033: {}
+  E035:
+    object: [usual_light, store]
+    event: [store_closed]
+    place_time: [route]
