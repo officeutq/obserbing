@@ -24,10 +24,15 @@ config/master.key
 # Only include if you have production secrets in this file, which is no longer a Rails default
 # config/secrets.yml
 
-# dotenv, dotenv-rails
-# TODO Comment out these rules if environment variables can be committed
+# Environment files may contain credentials. Commit templates only.
 .env
-.env*.local
+.env.*
+!.env.example
+!.env.*.example
+
+# Rails decryption keys are always supplied outside Git.
+**/config/master.key
+**/config/credentials/*.key
 
 ## Environment normalization:
 /.bundle
