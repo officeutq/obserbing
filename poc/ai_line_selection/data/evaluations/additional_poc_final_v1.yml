@@ -42,35 +42,35 @@ candidate:
   semantic_silence_count: 0
   technical_error_count: 0
   blind_evaluation_count: 108
-  blind_acceptable_count: 76
-  blind_acceptable_rate: 0.7037
-  not_obserbing_count: 2
-  clearly_unrelated_count: 6
-  clearly_unrelated_rate: 0.0556
-  fatal_grounding_mismatch_count: 2
+  blind_acceptable_count: 80
+  blind_acceptable_rate: 0.7407
+  not_obserbing_count: 1
+  clearly_unrelated_count: 4
+  clearly_unrelated_rate: 0.037
+  fatal_grounding_mismatch_count: 1
   normal_entry_overblock_count: 0
-  top20_pairwise_jaccard_average: 0.6397
+  top20_pairwise_jaccard_average: 0.672
   across_repetition_selection_stability: 0.0278
   same_seed_ruby_reproducibility: 1.0
-  p50_latency_estimate_ms: 2643.09
-  p95_latency_estimate_ms: 5129.91
-  maximum_latency_estimate_ms: 6980.13
-  latency_is_single_post_end_to_end_measurement: false
+  p50_latency_estimate_ms: 3062.31
+  p95_latency_estimate_ms: 5487.68
+  maximum_latency_estimate_ms: 7357.67
+  latency_is_single_post_end_to_end_measurement: true
   basic_external_api_stages_per_post: 3
   realtime_line_evaluation_llm_calls_per_post: 0
-  estimated_cost_per_post_jpy: 0.55
+  estimated_cost_per_post_jpy: 0.551
 
 comparison:
-  blind_acceptable_rate_delta_percentage_points: -26.51
+  blind_acceptable_rate_delta_percentage_points: -22.81
   noninferiority_minimum_delta_percentage_points: -7.0
   noninferiority_met: false
-  estimated_cost_reduction_percent: 75.83
-  estimated_p95_latency_reduction_percent: 66.0
+  estimated_cost_reduction_percent: 75.79
+  estimated_p95_latency_reduction_percent: 63.63
   candidate_absolute_quality_met: false
   candidate_fatal_grounding_requirement_met: false
   candidate_safety_requirement_met: true
   candidate_candidate_set_stability_met: false
-  candidate_performance_measurement_conclusive: false
+  candidate_performance_measurement_conclusive: true
   candidate_cost_requirement_met: true
 
 decision:
@@ -88,12 +88,27 @@ decision:
     - grounding-guard/combined_v1
 
 cost:
-  epic_actual_external_api_cost_jpy: 547.8733
+  epic_actual_external_api_cost_jpy: 636.0074
   epic_limit_jpy: 5000.0
   within_limit: true
   issue_25_failed_live_attempt_cost_jpy: 0.0
+  issue_36_live_followup_cost_jpy: 88.1341
+
+live_followup:
+  issue: 36
+  completed: true
+  summary: abstraction_only_integrated_live_v1.yml
+  reviewed_acceptable_rate: 0.7407
+  selected_v1_delta_percentage_points: -22.81
+  top20_pairwise_jaccard_average: 0.672
+  fatal_grounding_mismatch_count: 1
+  end_to_end_p95_ms: 5487.68
+  normal_flow_cost_per_post_jpy: 0.551
+  previous_rejection_confirmed: true
 
 source_hashes:
   selected_v1_document_sha256: f164799d3d0221a05a9d55239ef25d55012a116e93edb6f4ed954b65bde0ca39
-  abstraction_only_document_sha256: 9eca3785f6c7d9b11d465a2e29cb695aaa8094027f82c138f82ed92c89225032
+  abstraction_only_document_sha256: d9b0dc2ecf9b56d73f1e81823bf51c9f38addb26e9258ffbc500215793d39219
   abstraction_only_summary_sha256: 1216d804be44515e807b84690a21096ba423faccb9dbb62ed31a590d7b98b577
+  abstraction_only_live_summary_sha256: 44fdd76935be0ae4dbb5bfc26f168f8db16b1411a9a443c82bf488315bda2f56
+  abstraction_only_live_review_sha256: 2edc215696692827ac9ea6445c5b7fecaf0639cc1818720e314ef86c0e1624ef

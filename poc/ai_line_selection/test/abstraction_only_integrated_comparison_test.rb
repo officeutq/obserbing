@@ -67,4 +67,81 @@ class AbstractionOnlyIntegratedComparisonTest < Minitest::Test
     assert reviews.all? { |review| [true, false].include?(review.fetch("acceptable")) }
     assert reviews.none? { |review| review.fetch("confidence") == "low" }
   end
+
+  def test_external_integrated_flow_sends_abstraction_as_text
+    safety = {
+      "schema_version" => "additional-v3", "classification" => "normal",
+      "reason_code" => "none", "confidence" => 0.98
+    }
+    abstraction = {
+      "schema_version" => "abstraction-only-v2", "abstraction" => "選択前のためらい"
+    }
+    transport = FakeTransport.new(
+      openai_embedding_response(count: 96, dimensions: 1536),
+      openai_response(meaning: safety),
+      openai_response(meaning: abstraction),
+      openai_embedding_response(count: 1, dimensions: 1536)
+    )
+
+    Dir.mktmpdir do |directory|
+      summary = AiLineSelection::AbstractionOnlyIntegratedComparison.new(
+        configuration: configuration,
+        allow_external_api: true,
+        environment: { "OPENAI_API_KEY" => "test-openai" },
+        transport: transport
+      ).call(
+        mode: "diagnostic", repetitions: 1, entry_ids: ["E001"],
+        include_offline_quality: false, output_dir: directory
+      )
+
+      abstraction_request = JSON.parse(transport.requests.fetch(2).fetch(:body))
+      assert_equal data_loader.entry("E001").fetch("body"), abstraction_request.fetch("input")
+      assert_equal 1, summary.dig(:selection, :selected_count)
+      assert_equal 0, summary.dig(:errors_and_silence, :technical_error_count)
+    end
+  end
+
+  def test_resume_includes_successful_orphan_request_in_usage_ledger
+    safety = {
+      "schema_version" => "additional-v3", "classification" => "normal",
+      "reason_code" => "none", "confidence" => 0.98
+    }
+    abstraction = {
+      "schema_version" => "abstraction-only-v2", "abstraction" => "選択前のためらい"
+    }
+    transport = FakeTransport.new(
+      openai_embedding_response(count: 96, dimensions: 1536),
+      openai_response(meaning: safety),
+      RuntimeError.new("abstraction transport failed"),
+      openai_response(meaning: safety),
+      openai_response(meaning: abstraction),
+      openai_embedding_response(count: 1, dimensions: 1536)
+    )
+
+    Dir.mktmpdir do |directory|
+      comparison = AiLineSelection::AbstractionOnlyIntegratedComparison.new(
+        configuration: configuration,
+        allow_external_api: true,
+        environment: { "OPENAI_API_KEY" => "test-openai" },
+        transport: transport
+      )
+      assert_raises(AiLineSelection::Error) do
+        comparison.call(
+          mode: "diagnostic", repetitions: 1, entry_ids: ["E001"],
+          include_offline_quality: false, output_dir: directory
+        )
+      end
+
+      summary = comparison.call(
+        mode: "diagnostic", repetitions: 1, entry_ids: ["E001"],
+        include_offline_quality: false, output_dir: directory
+      )
+
+      assert_equal 5, summary.dig(:api, :total_requests_including_retries)
+      assert_equal 4, summary.dig(:api, :logical_completed_request_count)
+      assert_equal 1, summary.dig(:api, :resumed_orphan_request_count)
+      assert_operator summary.dig(:api, :usage, :estimated_cost_jpy), :>, summary.dig(:api, :normal_flow_usage, :estimated_cost_jpy)
+      refute_path_exists File.join(directory, "stopped.json")
+    end
+  end
 end

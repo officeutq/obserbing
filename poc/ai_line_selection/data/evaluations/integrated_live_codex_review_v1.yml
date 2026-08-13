@@ -1,0 +1,13 @@
+version: 1
+created_at: "2026-08-13"
+judge: codex_critical_review
+scope: contradictory_fatal_evaluations_only
+reviews:
+  - entry_id: E001
+    line_id: L083
+    acceptable: false
+    distance: not_obserbing
+    clearly_unrelated: false
+    fatal_grounding_mismatch: true
+    confidence: high
+    reason: "日記は二つの案について述べているが、Lineは選んだ一人・選ばなかった誰かという具体的人物を持ち込む。"

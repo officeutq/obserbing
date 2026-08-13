@@ -382,9 +382,10 @@ bundle exec ruby bin\ai_line_selection compare-ruby-selection
 ```powershell
 bundle exec ruby bin\ai_line_selection plan-abstraction-only-integrated --mode diagnostic --repetitions 3
 bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode fixture --repetitions 3
+bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode diagnostic --repetitions 3 --results results\abstraction_only_integrated_live_<run-id> --allow-external-api
 ```
 
-結果と不採用判断は [Abstraction Only 統合PoC比較](../../docs/Abstraction_Only_統合PoC比較.md) を参照してください。
+リプレイ結果は [Abstraction Only 統合PoC比較](../../docs/Abstraction_Only_統合PoC比較.md)、ライブ実測と不採用判断の追補は [Abstraction Only ライブ統合追補](../../docs/Abstraction_Only_ライブ統合追補.md) を参照してください。同じ`--results`を指定すると完了済みEntryとLine事前Embeddingを再利用し、再開前の成功API利用量もテレメトリ台帳から費用へ含めます。
 
 ```powershell
 bundle exec rake test
