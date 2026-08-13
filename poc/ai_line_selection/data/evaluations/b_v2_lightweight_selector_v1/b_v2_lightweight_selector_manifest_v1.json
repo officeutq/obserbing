@@ -1,0 +1,51 @@
+{
+  "version": "b-v2-lightweight-selector-comparison-v1",
+  "issue": 61,
+  "completed_mechanical_selection": true,
+  "quality_aggregation_performed": true,
+  "network_call_performed": false,
+  "external_api_calls": 0,
+  "outcome_slots_per_selector_band": 108,
+  "band_count": 2,
+  "selector_count": 6,
+  "selection_row_count": 1296,
+  "selected_unique_pair_count": 122,
+  "new_pair_review": {
+    "selected_unique_pair_count": 122,
+    "already_labeled_pair_count": 122,
+    "new_codex_provisional_review_required_count": 0,
+    "quality_labels_used_during_selection": false
+  },
+  "uniform_reproduction": {
+    "primary": {
+      "exact": true,
+      "mismatch_count": 0,
+      "examples": []
+    },
+    "neighbor": {
+      "exact": true,
+      "mismatch_count": 0,
+      "examples": []
+    }
+  },
+  "selector_input_includes_quality_labels": false,
+  "source_hashes": {
+    "pair_similarities": "ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6",
+    "pair_judgments": "64b701367f40776441704e9f4002817c707411c70b8b81e64db346150cf995d1",
+    "policy": "b5a0136919bbce7b2d9d69341748bbc8565f6b9b8d6f6a136183b8a79a6c6230",
+    "entries": "7805ce5cdc05bafa25ed730d9b24fcaed982f22270b3d48cfa71286a2326f9c5",
+    "lines": "79810d6a46dbaf30aec15afa5f7b637c24ece9815008c2fa04a15f660dd26eac"
+  },
+  "artifact_hashes": {
+    "selections_sha256": "a7ab79b75db88edab8958400dc89c4b667da0f75d84d8834c678f5741e2c2dd4",
+    "missing_review_sha256": "137524c4c09d32aafc00038eda2620b8185cc4bc2477b4f04b74be173020a6d8",
+    "timing_sha256": "893c4a8d41f7b9ecf5ac5bc56c33cace9baf097aff16a09a46802ca6e65898a3",
+    "comparison_sha256": "c7eb75a2b1e9597305be617c38771ee263e733546780508d69e53846e189c505",
+    "cross_validation_sha256": "484162d14188748d1c8d16a433b5d146ca6d3d93c941cd65bcc06bb95524ef29",
+    "conclusion_sha256": "95b0d0da1ea6054d7555b0da236b345ee31aa707fd522e2624c03e3af0905fe2",
+    "blind_packet_sha256": "21b176c663e653617b067a895b057982bf3db69562d40442f9fbf9187305f8e7",
+    "blind_mapping_sha256": "61de69bacdae14eda2b3c8e4da274bb830da27de27c88f401370e7857e70a61e"
+  },
+  "selected_pair_label_coverage_rate": 1.0,
+  "diagnosis": "selector_gain_insufficient"
+}

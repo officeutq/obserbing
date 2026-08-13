@@ -1,0 +1,610 @@
+---
+version: b-v2-lightweight-selector-blind-mapping-v1
+issue: 61
+do_not_distribute_with_blind_packet: true
+hidden_fields:
+- selector_name
+- line_id
+- similarity
+- codex_judgment
+- existing_label
+top_selectors:
+- bounded_domain_diversity
+- uniform
+- rank_fusion
+cases:
+- blind_case_id: S001
+  entry_id: E023
+  repetition: 3
+  acceptability_disagreement: true
+  contains_low_confidence: true
+  options:
+  - blind_label: A
+    line_id: L048
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.43255274
+    surface_similarity: 0.35975242
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L051
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.42603783
+    surface_similarity: 0.42254639
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: low
+      low_confidence: true
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S002
+  entry_id: E005
+  repetition: 2
+  acceptability_disagreement: true
+  contains_low_confidence: true
+  options:
+  - blind_label: A
+    line_id: L067
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.47496179
+    surface_similarity: 0.35715443
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L055
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.47846763
+    surface_similarity: 0.3950313
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: low
+      low_confidence: true
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S003
+  entry_id: E022
+  repetition: 1
+  acceptability_disagreement: true
+  contains_low_confidence: true
+  options:
+  - blind_label: A
+    line_id: L063
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.53175611
+    surface_similarity: 0.23077668
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: low
+      low_confidence: true
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L054
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.50542412
+    surface_similarity: 0.24516813
+    quality_label:
+      acceptable: false
+      distance: not_obserbing
+      relation_type: unrelated
+      confidence: high
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S004
+  entry_id: E016
+  repetition: 2
+  acceptability_disagreement: true
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L095
+    selectors:
+    - bounded_domain_diversity
+    - rank_fusion
+    abstraction_similarity: 0.48255012
+    surface_similarity: 0.34405922
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L106
+    selectors:
+    - uniform
+    abstraction_similarity: 0.4740658
+    surface_similarity: 0.35841907
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S005
+  entry_id: E025
+  repetition: 2
+  acceptability_disagreement: true
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L066
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.46094501
+    surface_similarity: 0.27486681
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L052
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.49822684
+    surface_similarity: 0.2156296
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: high
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S006
+  entry_id: E029
+  repetition: 3
+  acceptability_disagreement: true
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L017
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.55317611
+    surface_similarity: 0.10202789
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L033
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.45852667
+    surface_similarity: 0.20041477
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S007
+  entry_id: E004
+  repetition: 2
+  acceptability_disagreement: true
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L091
+    selectors:
+    - bounded_domain_diversity
+    - rank_fusion
+    abstraction_similarity: 0.49872228
+    surface_similarity: 0.40571526
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L015
+    selectors:
+    - uniform
+    abstraction_similarity: 0.42634336
+    surface_similarity: 0.33712419
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S008
+  entry_id: E003
+  repetition: 2
+  acceptability_disagreement: true
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L012
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.45609141
+    surface_similarity: 0.1963141
+    quality_label:
+      acceptable: false
+      distance: too_close
+      relation_type: direct_restatement
+      confidence: high
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L057
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.43294838
+    surface_similarity: 0.23557381
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S009
+  entry_id: E035
+  repetition: 2
+  acceptability_disagreement: false
+  contains_low_confidence: true
+  options:
+  - blind_label: A
+    line_id: L111
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.43628085
+    surface_similarity: 0.38032982
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L095
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.46443512
+    surface_similarity: 0.37298217
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: low
+      low_confidence: true
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S010
+  entry_id: E001
+  repetition: 3
+  acceptability_disagreement: false
+  contains_low_confidence: true
+  options:
+  - blind_label: A
+    line_id: L077
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.47823804
+    surface_similarity: 0.34014468
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: low
+      low_confidence: true
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L102
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.67227799
+    surface_similarity: 0.28345473
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S011
+  entry_id: E023
+  repetition: 2
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L068
+    selectors:
+    - bounded_domain_diversity
+    - rank_fusion
+    abstraction_similarity: 0.43495556
+    surface_similarity: 0.34937521
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L057
+    selectors:
+    - uniform
+    abstraction_similarity: 0.4348515
+    surface_similarity: 0.26819181
+    quality_label:
+      acceptable: false
+      distance: not_obserbing
+      relation_type: unrelated
+      confidence: high
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S012
+  entry_id: E012
+  repetition: 2
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L082
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.64541229
+    surface_similarity: 0.36664174
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L035
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.56304561
+    surface_similarity: 0.36599469
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      confidence: high
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S013
+  entry_id: E009
+  repetition: 1
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L045
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.45764067
+    surface_similarity: 0.33597565
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: high
+      low_confidence: false
+      judge: codex_reassessment
+      provisional: true
+  - blind_label: B
+    line_id: L036
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.57557845
+    surface_similarity: 0.35841569
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      confidence: medium
+      low_confidence: false
+      judge: codex_reassessment
+      provisional: true
+- blind_case_id: S014
+  entry_id: E006
+  repetition: 2
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L045
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.57768486
+    surface_similarity: 0.29981392
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: high
+      low_confidence: false
+      judge: codex_reassessment
+      provisional: true
+  - blind_label: B
+    line_id: L023
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.49999514
+    surface_similarity: 0.35435937
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S015
+  entry_id: E004
+  repetition: 1
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L054
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.46068049
+    surface_similarity: 0.28640041
+    quality_label:
+      acceptable: false
+      distance: not_obserbing
+      relation_type: unrelated
+      confidence: high
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+  - blind_label: B
+    line_id: L046
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.46008485
+    surface_similarity: 0.4008016
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+- blind_case_id: S016
+  entry_id: E030
+  repetition: 1
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L065
+    selectors:
+    - bounded_domain_diversity
+    abstraction_similarity: 0.58475348
+    surface_similarity: 0.27529016
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: human_confirmed
+      low_confidence: false
+      judge: human_review
+      provisional: false
+  - blind_label: B
+    line_id: L044
+    selectors:
+    - rank_fusion
+    - uniform
+    abstraction_similarity: 0.45699288
+    surface_similarity: 0.24722714
+    quality_label:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      confidence: medium
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true
+- blind_case_id: S017
+  entry_id: E036
+  repetition: 3
+  acceptability_disagreement: false
+  contains_low_confidence: false
+  options:
+  - blind_label: A
+    line_id: L068
+    selectors:
+    - bounded_domain_diversity
+    - uniform
+    abstraction_similarity: 0.56108366
+    surface_similarity: 0.34173912
+    quality_label:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      confidence: medium
+      low_confidence: false
+      judge: codex_integrated_v1
+      provisional: true
+  - blind_label: B
+    line_id: L065
+    selectors:
+    - rank_fusion
+    abstraction_similarity: 0.45793521
+    surface_similarity: 0.29351281
+    quality_label:
+      acceptable: false
+      distance: not_obserbing
+      relation_type: unrelated
+      confidence: high
+      low_confidence: false
+      judge: codex_provisional
+      provisional: true

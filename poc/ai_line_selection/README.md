@@ -465,6 +465,18 @@ bundle exec ruby bin\ai_line_selection evaluate-b-v2-band-sweep --results result
 
 外部APIを使うのは2行目のEntry Embedding補完だけです。以後の825設定スイープ、uniform選択、Codex暫定品質評価、ヒートマップ集計は完全オフラインです。結果と`selector_review_needed`の判断は[B-v2 帯域感度追補診断](../../docs/B-v2_帯域感度追補診断.md)を参照してください。既存Gate AとEpic #40の判断は変更しません。
 
+### B-v2軽量selectorオフライン比較
+
+Issue #61では、Issue #59の保存済み10,368 pairを使い、主帯域とneighbor帯域を固定して6種類のbounded selectorを比較します。Reflective Distanceラベルは評価専用であり、selectorへ品質キーを渡すと停止します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-b-v2-lightweight-selector
+bundle exec ruby bin\ai_line_selection prepare-b-v2-lightweight-selector --output-dir data\evaluations\b_v2_lightweight_selector_v1
+bundle exec ruby bin\ai_line_selection evaluate-b-v2-lightweight-selector --output-dir data\evaluations\b_v2_lightweight_selector_v1
+```
+
+比較criteriaは結果集計前に固定し、Entry単位6-fold CV、neighbor順位、low-confidence感度、Blind人間評価packetを保存します。結果は[B-v2 軽量selectorオフライン比較](../../docs/B-v2_軽量selectorオフライン比較.md)を参照してください。全工程で外部APIは0回です。
+
 ### 事実整合ガード追加PoC
 
 元の日記・Lineを変更せず、数量・人物・物・出来事・場所/時刻・強い因果の不整合を、影版・事前属性・静的検出・組み合わせで比較します。外部APIは呼びません。

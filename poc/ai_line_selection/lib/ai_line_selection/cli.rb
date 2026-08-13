@@ -45,6 +45,8 @@ module AiLineSelection
       when "apply-b-v2-band-sweep-codex-review" then apply_b_v2_band_sweep_codex_review
       when "evaluate-b-v2-band-sweep" then evaluate_b_v2_band_sweep
       when "plan-b-v2-lightweight-selector" then plan_b_v2_lightweight_selector
+      when "prepare-b-v2-lightweight-selector" then prepare_b_v2_lightweight_selector
+      when "evaluate-b-v2-lightweight-selector" then evaluate_b_v2_lightweight_selector
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -471,6 +473,26 @@ module AiLineSelection
 
     def plan_b_v2_lightweight_selector
       print_json(Bv2LightweightSelectorComparison.new(configuration: @configuration).plan)
+    end
+
+    def prepare_b_v2_lightweight_selector
+      options = { output_dir: nil }
+      OptionParser.new do |parser|
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+      end.parse!(@argv)
+      raise ConfigurationError.new("prepare-b-v2-lightweight-selector requires --output-dir") unless options[:output_dir]
+
+      print_json(Bv2LightweightSelectorComparison.new(configuration: @configuration).prepare(output_dir: options.fetch(:output_dir)))
+    end
+
+    def evaluate_b_v2_lightweight_selector
+      options = { output_dir: nil }
+      OptionParser.new do |parser|
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+      end.parse!(@argv)
+      raise ConfigurationError.new("evaluate-b-v2-lightweight-selector requires --output-dir") unless options[:output_dir]
+
+      print_json(Bv2LightweightSelectorComparison.new(configuration: @configuration).evaluate(output_dir: options.fetch(:output_dir)))
     end
 
     def apply_abstraction_preliminary

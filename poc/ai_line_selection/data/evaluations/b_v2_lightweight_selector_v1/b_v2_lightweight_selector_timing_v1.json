@@ -1,0 +1,86 @@
+[
+  {
+    "band": "neighbor",
+    "selector": "abstraction_bounded_weighted",
+    "calls": 108,
+    "elapsed_milliseconds": 2.2645,
+    "milliseconds_per_selection": 0.020968
+  },
+  {
+    "band": "neighbor",
+    "selector": "bounded_domain_diversity",
+    "calls": 108,
+    "elapsed_milliseconds": 2.5278,
+    "milliseconds_per_selection": 0.023406
+  },
+  {
+    "band": "neighbor",
+    "selector": "dual_margin_band_center",
+    "calls": 108,
+    "elapsed_milliseconds": 2.7454,
+    "milliseconds_per_selection": 0.02542
+  },
+  {
+    "band": "neighbor",
+    "selector": "rank_fusion",
+    "calls": 108,
+    "elapsed_milliseconds": 4.1605,
+    "milliseconds_per_selection": 0.038523
+  },
+  {
+    "band": "neighbor",
+    "selector": "surface_band_center",
+    "calls": 108,
+    "elapsed_milliseconds": 2.1268,
+    "milliseconds_per_selection": 0.019693
+  },
+  {
+    "band": "neighbor",
+    "selector": "uniform",
+    "calls": 108,
+    "elapsed_milliseconds": 1.8961,
+    "milliseconds_per_selection": 0.017556
+  },
+  {
+    "band": "primary",
+    "selector": "abstraction_bounded_weighted",
+    "calls": 108,
+    "elapsed_milliseconds": 2.6412,
+    "milliseconds_per_selection": 0.024456
+  },
+  {
+    "band": "primary",
+    "selector": "bounded_domain_diversity",
+    "calls": 108,
+    "elapsed_milliseconds": 2.9998,
+    "milliseconds_per_selection": 0.027776
+  },
+  {
+    "band": "primary",
+    "selector": "dual_margin_band_center",
+    "calls": 108,
+    "elapsed_milliseconds": 2.663,
+    "milliseconds_per_selection": 0.024657
+  },
+  {
+    "band": "primary",
+    "selector": "rank_fusion",
+    "calls": 108,
+    "elapsed_milliseconds": 4.2021,
+    "milliseconds_per_selection": 0.038908
+  },
+  {
+    "band": "primary",
+    "selector": "surface_band_center",
+    "calls": 108,
+    "elapsed_milliseconds": 2.1879,
+    "milliseconds_per_selection": 0.020258
+  },
+  {
+    "band": "primary",
+    "selector": "uniform",
+    "calls": 108,
+    "elapsed_milliseconds": 2.3534,
+    "milliseconds_per_selection": 0.021791
+  }
+]

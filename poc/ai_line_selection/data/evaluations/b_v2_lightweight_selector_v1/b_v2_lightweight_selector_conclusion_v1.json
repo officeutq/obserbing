@@ -1,0 +1,52 @@
+{
+  "value": "selector_gain_insufficient",
+  "evaluated_selector": "bounded_domain_diversity",
+  "evidence_complete": true,
+  "provisional_promising": false,
+  "paired_non_low_confidence_gain_positive": false,
+  "checks": {
+    "primary_acceptable_gain_points": {
+      "observed": 0.9259,
+      "required": 5.0,
+      "pass": false
+    },
+    "primary_missed_reduction": {
+      "observed": 1,
+      "required": 10,
+      "pass": false
+    },
+    "neighbor_acceptable_gain_points": {
+      "observed": 1.8519,
+      "required": 3.0,
+      "pass": false
+    },
+    "neighbor_missed_reduction": {
+      "observed": 2,
+      "required": 7,
+      "pass": false
+    },
+    "winner_neighbor_rank": {
+      "observed": 1,
+      "required_maximum": 2,
+      "pass": true
+    },
+    "holdout_positive_gain_folds": {
+      "observed": 2,
+      "required": 4,
+      "pass": false
+    },
+    "holdout_nonworse_missed_folds": {
+      "observed": 5,
+      "required": 4,
+      "pass": true
+    },
+    "maximum_line_share_increase_points": {
+      "observed": 0.0,
+      "required_maximum": 5.0,
+      "pass": true
+    }
+  },
+  "existing_gate_a_or_epic_40_changed": false,
+  "human_review_required_before_adoption": true,
+  "external_api_calls": 0
+}

@@ -1,0 +1,307 @@
+{
+  "method": "fixed_six_fold_entry_cross_validation",
+  "parameter_tuning_from_labels": false,
+  "candidate_selector": "bounded_domain_diversity",
+  "folds": [
+    {
+      "fold": "fold_1",
+      "holdout_entries": [
+        "E001",
+        "E007",
+        "E013",
+        "E019",
+        "E025",
+        "E031"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "uniform",
+            "rank_fusion",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.611111,
+          "holdout_uniform_acceptable_rate": 0.555556,
+          "holdout_acceptable_gain_points": 5.5555,
+          "holdout_candidate_missed_count": 4,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": 1
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "uniform",
+            "surface_band_center",
+            "abstraction_bounded_weighted",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.555556,
+          "holdout_uniform_acceptable_rate": 0.5,
+          "holdout_acceptable_gain_points": 5.5556,
+          "holdout_candidate_missed_count": 5,
+          "holdout_uniform_missed_count": 6,
+          "holdout_missed_count_reduction": 1
+        }
+      }
+    },
+    {
+      "fold": "fold_2",
+      "holdout_entries": [
+        "E002",
+        "E008",
+        "E014",
+        "E020",
+        "E026",
+        "E032"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "uniform",
+            "rank_fusion",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.611111,
+          "holdout_uniform_acceptable_rate": 0.611111,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 3,
+          "holdout_uniform_missed_count": 3,
+          "holdout_missed_count_reduction": 0
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "uniform",
+            "surface_band_center",
+            "abstraction_bounded_weighted",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.611111,
+          "holdout_uniform_acceptable_rate": 0.611111,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 3,
+          "holdout_uniform_missed_count": 3,
+          "holdout_missed_count_reduction": 0
+        }
+      }
+    },
+    {
+      "fold": "fold_3",
+      "holdout_entries": [
+        "E003",
+        "E009",
+        "E015",
+        "E021",
+        "E027",
+        "E033"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "uniform",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.722222,
+          "holdout_uniform_acceptable_rate": 0.722222,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 5,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": 0
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "rank_fusion",
+            "bounded_domain_diversity",
+            "uniform",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "rank_fusion",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.722222,
+          "holdout_uniform_acceptable_rate": 0.722222,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 5,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": 0
+        }
+      }
+    },
+    {
+      "fold": "fold_4",
+      "holdout_entries": [
+        "E004",
+        "E010",
+        "E016",
+        "E022",
+        "E028",
+        "E034"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "uniform",
+            "rank_fusion",
+            "surface_band_center",
+            "abstraction_bounded_weighted",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.722222,
+          "holdout_uniform_acceptable_rate": 0.666667,
+          "holdout_acceptable_gain_points": 5.5555,
+          "holdout_candidate_missed_count": 5,
+          "holdout_uniform_missed_count": 6,
+          "holdout_missed_count_reduction": 1
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "uniform",
+            "surface_band_center",
+            "abstraction_bounded_weighted",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.833333,
+          "holdout_uniform_acceptable_rate": 0.722222,
+          "holdout_acceptable_gain_points": 11.1111,
+          "holdout_candidate_missed_count": 3,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": 2
+        }
+      }
+    },
+    {
+      "fold": "fold_5",
+      "holdout_entries": [
+        "E005",
+        "E011",
+        "E017",
+        "E023",
+        "E029",
+        "E035"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "surface_band_center",
+            "uniform",
+            "abstraction_bounded_weighted",
+            "rank_fusion",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.555556,
+          "holdout_uniform_acceptable_rate": 0.611111,
+          "holdout_acceptable_gain_points": -5.5555,
+          "holdout_candidate_missed_count": 8,
+          "holdout_uniform_missed_count": 7,
+          "holdout_missed_count_reduction": -1
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "surface_band_center",
+            "uniform",
+            "abstraction_bounded_weighted",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.5,
+          "holdout_uniform_acceptable_rate": 0.555556,
+          "holdout_acceptable_gain_points": -5.5556,
+          "holdout_candidate_missed_count": 6,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": -1
+        }
+      }
+    },
+    {
+      "fold": "fold_6",
+      "holdout_entries": [
+        "E006",
+        "E012",
+        "E018",
+        "E024",
+        "E030",
+        "E036"
+      ],
+      "bands": {
+        "primary": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "uniform",
+            "rank_fusion",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.666667,
+          "holdout_uniform_acceptable_rate": 0.666667,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 5,
+          "holdout_uniform_missed_count": 5,
+          "holdout_missed_count_reduction": 0
+        },
+        "neighbor": {
+          "dev_ranking": [
+            "bounded_domain_diversity",
+            "rank_fusion",
+            "uniform",
+            "abstraction_bounded_weighted",
+            "surface_band_center",
+            "dual_margin_band_center"
+          ],
+          "dev_winner": "bounded_domain_diversity",
+          "holdout_candidate_selector": "bounded_domain_diversity",
+          "holdout_candidate_acceptable_rate": 0.611111,
+          "holdout_uniform_acceptable_rate": 0.611111,
+          "holdout_acceptable_gain_points": 0.0,
+          "holdout_candidate_missed_count": 6,
+          "holdout_uniform_missed_count": 6,
+          "holdout_missed_count_reduction": 0
+        }
+      }
+    }
+  ],
+  "primary_holdout_folds_with_positive_acceptable_gain": 2,
+  "primary_holdout_folds_with_nonworse_missed_count": 5,
+  "primary_dev_winner_counts": {
+    "bounded_domain_diversity": 6
+  },
+  "generalization_proven": false
+}
