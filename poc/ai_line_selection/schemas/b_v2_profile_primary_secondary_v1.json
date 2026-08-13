@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "obserbing://schemas/profile/b-v2-profile-primary-secondary-v1",
+  "type": "object",
+  "required": ["schema_version", "abstraction", "domain"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["b-v2-profile-primary-secondary-v1"] },
+    "abstraction": { "type": "string", "minLength": 2, "maxLength": 60 },
+    "domain": {
+      "type": "object",
+      "required": ["primary", "secondary"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": {
+          "type": "string",
+          "enum": [
+            "choice", "relationship", "work", "time", "place", "object",
+            "self", "expectation", "change", "loss", "failure", "daily_life",
+            "uncertainty", "other", "unknown"
+          ]
+        },
+        "secondary": {
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "choice", "relationship", "work", "time", "place", "object",
+              "self", "expectation", "change", "loss", "failure", "daily_life",
+              "uncertainty", "other", "unknown"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

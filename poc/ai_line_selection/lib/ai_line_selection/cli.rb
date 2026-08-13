@@ -29,6 +29,8 @@ module AiLineSelection
       when "review-meaning" then review_meaning
       when "plan-abstraction" then plan_abstraction
       when "compare-abstraction" then compare_abstraction
+      when "plan-b-v2-profile" then plan_b_v2_profile
+      when "compare-b-v2-profile" then compare_b_v2_profile
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -214,6 +216,50 @@ module AiLineSelection
         end
         if allow_external_api_option
           parser.on("--allow-external-api", "Acknowledge paid abstraction and Embedding API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def plan_b_v2_profile
+      options = b_v2_profile_options(allow_external_api_option: false)
+      print_json(Bv2ProfileComparison.new(configuration: @configuration).plan(
+        provider: options.fetch(:provider),
+        versions: options.fetch(:versions),
+        repetitions: options.fetch(:repetitions)
+      ))
+    end
+
+    def compare_b_v2_profile
+      options = b_v2_profile_options(allow_external_api_option: true)
+      print_json(Bv2ProfileComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        provider: options.fetch(:provider),
+        versions: options.fetch(:versions),
+        repetitions: options.fetch(:repetitions)
+      ))
+    end
+
+    def b_v2_profile_options(allow_external_api_option:)
+      options = {
+        provider: "openai",
+        versions: Bv2ProfileComparison::VERSIONS.keys,
+        repetitions: Bv2ProfileComparison::REPETITIONS,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--provider NAME", @configuration.meaning_provider_names) { |value| options[:provider] = value }
+        parser.on("--versions LIST", "Comma-separated B-v2 profile versions") do |value|
+          options[:versions] = value.split(",").map(&:strip)
+        end
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid profile API calls") do
             options[:allow_external_api] = true
           end
         end
