@@ -116,6 +116,8 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-profile `
 
 正規化結果は`results/b_v2_profile_<timestamp>_<suffix>`へ保存します。APIキー、認証ヘッダー、Provider生レスポンス、request IDは保存しません。設計と結果は[ B-v2 Profile表現比較](../../docs/B-v2_Profile表現比較.md)を参照してください。
 
+実APIスモークは60出力を26,006 token・12.1248円で完了し、#43へ渡す暫定版を`b-v2-profile-primary-secondary-v1`としました。追跡可能な正規化出力と集計は`data/evaluations/b_v2_profile_smoke_outputs_v1.jsonl`および`b_v2_profile_smoke_v1.yml`です。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。

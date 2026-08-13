@@ -35,4 +35,25 @@ taxonomyは両候補で共通の固定enumとする。`unknown`は判断材料�
 - domain追加前の保存済みabstractionからの劣化
 - latency、token、cost
 
-実行結果と#43へ渡す暫定profile版は、API実行後に版付き評価成果物へ追記する。固定済みGate A、Lineプール、既存のabstraction成果物は変更しない。
+## 実行結果
+
+2候補を各30件、計60件取得した。Provider requestは、互換性エラー1件を含む61回、実使用26,006 token、推定12.1248円である。成功した60件はすべて初回Schema成功で、retry成功は0件だった。全成功件のp95は2,809.81msである。
+
+| 指標 | 単一domain | primary + secondary |
+|---|---:|---:|
+| 成功出力 | 30 | 30 |
+| 初回Schema成功率 | 100% | 100% |
+| abstraction完全一致率（対象単位） | 10% | 10% |
+| primary完全一致率（対象単位） | 90% | 80% |
+| primary / secondary入替 | 0 | 2対象 |
+| unknown / other | 0% | 0% |
+| p95 | 2,389.56ms | 3,697.52ms |
+| 推定費用 | 5.3757円 | 6.7491円 |
+
+完全一致率が低いのは、同じ構造を異なる短文で表したケースが多いためであり、それだけで品質不良とはしない。Codex一次評価では60出力すべてのdomainを許容し、元文外の事実追加と重大なabstraction劣化はいずれも0件とした。一方、`E023`と`L102`はprimary / secondaryの順序が反復内で入れ替わり、主従判断をlow confidenceとして残した。
+
+## #43へ渡す暫定決定
+
+`b-v2-profile-primary-secondary-v1`を#43用の暫定profileとする。primaryが10対象中8対象で一致し、補助領域をselectorのdomain diversityへ渡せるためである。この判断は本番Provider、model、taxonomyの正式採用ではない。`E023`と`L102`の人間判断によっては単一domain方式へ戻す余地があるが、後続PoCは停止しない。
+
+全60件の正規化出力は`b_v2_profile_smoke_outputs_v1.jsonl`、集計と一次判断は`b_v2_profile_smoke_v1.yml`に保存した。固定済みGate A、Lineプール、既存abstraction成果物は変更していない。

@@ -1,0 +1,94 @@
+version: b-v2-profile-smoke-v1
+issue: 42
+executed_at: "2026-08-13"
+preflight_versions:
+  - b-v2-profile-preflight-v1
+  - b-v2-profile-preflight-v1.1
+provider:
+  name: openai
+  model: gpt-5.6-terra
+  api: responses
+  reasoning_effort: low
+inputs:
+  item_ids: [E001, E003, E008, E023, E032, E035, L021, L083, L102, L118]
+  repetitions: 3
+  candidate_versions: 2
+execution:
+  successful_outcomes: 60
+  provider_requests: 61
+  first_attempt_schema_successful_outcomes: 60
+  compatibility_rejection_requests: 1
+  retry_successful_outcomes: 0
+  total_input_and_output_tokens: 26006
+  total_estimated_cost_jpy: 12.1248
+  latency_ms:
+    p95_all_successful_outcomes: 2809.81
+  within_limits:
+    retry_inclusive_request_limit_120: true
+    token_limit_50000: true
+    issue_budget_500_jpy: true
+    epic_budget_2000_jpy: true
+versions:
+  b-v2-profile-single-v1:
+    executions: 30
+    first_attempt_schema_success_rate: 1.0
+    abstraction_exact_stability_rate: 0.1
+    domain_primary_exact_stability_rate: 0.9
+    primary_secondary_swap_item_count: 0
+    unknown_or_other_rate: 0.0
+    tokens: 11384
+    estimated_cost_jpy: 5.3757
+    latency_ms: { p50: 1563.80, p95: 2389.56 }
+    domain_primary_counts:
+      choice: 10
+      relationship: 6
+      change: 9
+      daily_life: 3
+      expectation: 2
+  b-v2-profile-primary-secondary-v1:
+    executions: 30
+    first_attempt_schema_success_rate: 1.0
+    abstraction_exact_stability_rate: 0.1
+    domain_primary_exact_stability_rate: 0.8
+    primary_secondary_swap_item_count: 2
+    primary_secondary_swap_item_ids: [E023, L102]
+    unknown_or_other_rate: 0.0
+    tokens: 14622
+    estimated_cost_jpy: 6.7491
+    latency_ms: { p50: 1594.23, p95: 3697.52 }
+    domain_primary_counts:
+      choice: 11
+      relationship: 6
+      change: 6
+      work: 3
+      expectation: 1
+      loss: 2
+      place: 1
+codex_preliminary_review:
+  judge: codex_preliminary
+  reviewer_role: automated_review
+  unsupported_fact_addition_count: 0
+  material_abstraction_regression_count: 0
+  domain_acceptable_outcome_count: 60
+  domain_acceptable_outcome_total: 60
+  low_confidence_item_ids: [E023, L102]
+  low_confidence_reason: primaryとsecondaryの順序が3反復で入れ替わり、両領域の主従は人間判断の余地がある
+decision:
+  selected_for_issue_43: b-v2-profile-primary-secondary-v1
+  status: provisional_poc_profile
+  reasons:
+    - primaryだけでなく補助領域を保持でき、analogical transfer用selector比較へ情報を渡せる
+    - 10対象中8対象でprimaryが3反復一致した
+    - unknown / otherは0件で、全60出力に元文外の事実追加や重大なabstraction劣化を認めなかった
+  caveats:
+    - 本番Provider、model、taxonomyの正式採用ではない
+    - E023とL102の主従判断はlow confidenceであり、人間確認によって単一domain方式へ戻す可能性がある
+artifacts:
+  normalized_outputs: b_v2_profile_smoke_outputs_v1.jsonl
+  normalized_outputs_sha256: f8fe6d4f31ba6f450ad4f18f145028ea1dbc1d0479578ca1ec72cdd9d8b0f2a4
+external_api:
+  openai_api_requests: 61
+  anthropic_api_requests: 0
+  embedding_api_requests: 0
+  safety_api_requests: 0
+  line_selection_api_requests: 0
