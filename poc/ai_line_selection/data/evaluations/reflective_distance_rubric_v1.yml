@@ -1,0 +1,155 @@
+version: 1
+rubric_id: reflective-distance-v1
+status: frozen
+frozen_before_reassessment: true
+created_at: "2026-08-13"
+issue: 38
+judge: codex_reassessment
+purpose: >-
+  Evaluate whether a displayed Line creates a small, discoverable reflective distance
+  from an Entry without asserting facts about the user, contradicting the Entry, or
+  replacing reflection with advice, diagnosis, or a completed answer.
+
+evaluation_input:
+  visible_fields:
+    - entry_id
+    - line_id
+    - entry_text
+    - line_text
+  hidden_until_reassessment_complete:
+    - old_acceptable
+    - old_distance
+    - fatal_grounding_mismatch
+    - theme
+    - embedding_similarity
+    - provider
+    - model
+    - old_judge
+
+output_schema:
+  acceptable: [true, false]
+  distance: [too_close, just_right, too_far, not_obserbing]
+  relation_type:
+    - same_domain
+    - analogical_transfer
+    - direct_restatement
+    - weak_connection
+    - unrelated
+  user_fact_assertion: [true, false]
+  explicit_contradiction: [true, false]
+  advice_or_diagnosis: [true, false]
+  clearly_unrelated: [true, false]
+  confidence: [high, medium, low]
+  reason: free_text
+
+core_question: >-
+  Can the reader initially feel a small difference, then discover a meaningful
+  structural connection to the Entry through reflection?
+
+relation_types:
+  same_domain:
+    definition: >-
+      The Line remains in the Entry's concrete domain and has a meaningful connection,
+      but is not a near-restatement.
+    default_distance: just_right
+  analogical_transfer:
+    definition: >-
+      The Line moves to a different concrete domain while preserving a discoverable
+      structure, relation, tension, contrast, change, reservation, repetition,
+      absence, or choice from the Entry.
+    default_distance: just_right
+    principle: >-
+      Different people, objects, quantities, places, or events are not errors by
+      themselves. A generic or self-contained concrete example may illuminate the
+      Entry without claiming that the example happened to the user.
+  direct_restatement:
+    definition: >-
+      The Line mostly paraphrases the Entry, completes its meaning, or removes the
+      reader's opportunity to discover a connection.
+    default_distance: too_close
+  weak_connection:
+    definition: >-
+      A possible connection can be named only with substantial interpretive repair,
+      and the Line does not offer a reasonably discoverable reflective bridge.
+    default_distance: too_far
+  unrelated:
+    definition: >-
+      No reasonable semantic or structural connection is discoverable after brief
+      reflection.
+    default_distance: not_obserbing
+
+disqualifiers:
+  user_fact_assertion:
+    definition: >-
+      The Line asserts or presupposes a concrete person, event, quantity, feeling,
+      motive, trait, or situation as part of the user's actual life when the Entry
+      does not support it.
+    clarification: >-
+      Concrete language in a generic, aphoristic, hypothetical, or analogical Line is
+      not a user fact assertion unless the wording attaches it to the user or treats it
+      as the user's actual situation.
+  explicit_contradiction:
+    definition: The Line conflicts with a fact explicitly stated in the Entry.
+  advice_or_diagnosis:
+    definition: >-
+      The Line gives advice or instructions, diagnoses the user, asserts personality
+      or emotion, encourages, praises, preaches, persuades, or strongly directs an
+      interpretation.
+  clearly_unrelated:
+    definition: >-
+      No reasonable connection exists in structure, relation, tension, contrast,
+      change, reservation, repetition, absence, choice, or another articulable axis.
+
+decision_procedure:
+  - step: 1
+    action: Read only the Entry text and Line text; do not consult previous labels or model metadata.
+  - step: 2
+    action: Check user_fact_assertion, explicit_contradiction, and advice_or_diagnosis independently.
+  - step: 3
+    action: Identify the Entry's relation or tension, then identify the Line's relation or tension.
+  - step: 4
+    action: >-
+      If roles can be mapped across domains without treating the Line's concrete facts
+      as the user's facts, classify analogical_transfer.
+  - step: 5
+    action: >-
+      If the Line is essentially a paraphrase or completed interpretation, classify
+      direct_restatement and too_close.
+  - step: 6
+    action: >-
+      If a meaningful bridge is discoverable with a small amount of thought and some
+      interpretive space remains, classify just_right.
+  - step: 7
+    action: >-
+      If the bridge requires substantial repair, classify weak_connection and too_far;
+      if no bridge exists, classify unrelated, not_obserbing, and clearly_unrelated.
+  - step: 8
+    action: Assign confidence from the text alone and give a concise reason naming the connection or failure.
+
+acceptability_rules:
+  acceptable_when:
+    - distance is just_right
+    - relation_type is same_domain or analogical_transfer
+    - user_fact_assertion is false
+    - explicit_contradiction is false
+    - advice_or_diagnosis is false
+    - clearly_unrelated is false
+  unacceptable_when:
+    - distance is too_close, too_far, or not_obserbing
+    - relation_type is direct_restatement, weak_connection, or unrelated
+    - any disqualifier is true
+  invariant: >-
+    user_fact_assertion, explicit_contradiction, advice_or_diagnosis, or
+    clearly_unrelated always makes acceptable false and distance not_obserbing,
+    except clearly_unrelated also requires relation_type unrelated.
+
+confidence_rules:
+  high: The connection or violation is explicit and the classification is unlikely to change.
+  medium: A reasonable alternative classification exists, but one reading is better supported.
+  low: The pair is genuinely ambiguous and requires human confirmation rather than forced automation.
+
+reporting:
+  acceptance_threshold: 0.90
+  low_confidence_handling: list_for_human_review
+  preserve_old_artifacts: true
+  external_api_calls_allowed: false
