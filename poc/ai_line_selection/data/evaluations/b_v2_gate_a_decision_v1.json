@@ -1,0 +1,267 @@
+{
+  "version": "b-v2-gate-a-decision-v1",
+  "issue": 48,
+  "created_at": "2026-08-13",
+  "criteria_id": "b-v2-pre-evaluation-criteria-v2",
+  "design_id": "b-v2-band-pass-design-v2",
+  "criteria_sha256": "36c790098bef202a44e10ae6cdc175785b6c3427668868e93f628f0d6e684648",
+  "baseline": {
+    "method": "abstraction-only-v1-diagnostic",
+    "outcome_count": 108,
+    "acceptable_count": 54,
+    "acceptable_rate": 0.5,
+    "direct_restatement_too_close_count": 29,
+    "too_far_plus_unrelated_count": 25,
+    "analogical_transfer_count": 35,
+    "analogical_transfer_acceptable_count": 35
+  },
+  "candidate_conditions": [
+    {
+      "id": "acceptable_rate",
+      "observed": 0.4722,
+      "operator": ">=",
+      "threshold": 0.7,
+      "pass": false
+    },
+    {
+      "id": "acceptable_count",
+      "observed": 51,
+      "operator": ">=",
+      "threshold": 76,
+      "pass": false
+    },
+    {
+      "id": "acceptable_improvement_points",
+      "observed": -2.78,
+      "operator": ">=",
+      "threshold": 20.0,
+      "pass": false
+    },
+    {
+      "id": "too_close_reduction_rate",
+      "observed": 0.3448,
+      "operator": ">=",
+      "threshold": 0.3,
+      "pass": true
+    },
+    {
+      "id": "too_close_count",
+      "observed": 19,
+      "operator": "<=",
+      "threshold": 20,
+      "pass": true
+    },
+    {
+      "id": "too_far_plus_unrelated_increase_points",
+      "observed": 9.26,
+      "operator": "<=",
+      "threshold": 5.0,
+      "pass": false
+    },
+    {
+      "id": "too_far_plus_unrelated_count",
+      "observed": 35,
+      "operator": "<=",
+      "threshold": 30,
+      "pass": false
+    },
+    {
+      "id": "unrelated_count",
+      "observed": 7,
+      "operator": "<=",
+      "threshold": 12,
+      "pass": true
+    },
+    {
+      "id": "acceptable_analogical_retention_rate",
+      "observed": 0.8857,
+      "operator": ">=",
+      "threshold": 0.9,
+      "pass": false
+    },
+    {
+      "id": "acceptable_analogical_count",
+      "observed": 31,
+      "operator": ">=",
+      "threshold": 32,
+      "pass": false
+    },
+    {
+      "id": "acceptable_rate_within_analogical",
+      "observed": 1.0,
+      "operator": ">=",
+      "threshold": 0.9,
+      "pass": true
+    },
+    {
+      "id": "all_three_acceptable_entry_rate",
+      "observed": 0.1111,
+      "operator": ">=",
+      "threshold": 0.5,
+      "pass": false
+    },
+    {
+      "id": "all_three_acceptable_entry_count",
+      "observed": 4,
+      "operator": ">=",
+      "threshold": 18,
+      "pass": false
+    },
+    {
+      "id": "semantic_silence_rate",
+      "observed": 0.0278,
+      "operator": "<=",
+      "threshold": 0.2,
+      "pass": true
+    },
+    {
+      "id": "semantic_silence_count",
+      "observed": 3,
+      "operator": "<=",
+      "threshold": 21,
+      "pass": true
+    },
+    {
+      "id": "user_fact_assertion_count",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "explicit_contradiction_count",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "advice_or_diagnosis_count",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "unresolved_low_confidence_count",
+      "observed": 8,
+      "operator": "==",
+      "threshold": 0,
+      "pass": false
+    },
+    {
+      "id": "existing_normal_entry_safety_overblock_count",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "completed_flow_technical_error_count",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    },
+    {
+      "id": "end_to_end_p95_seconds",
+      "observed": 6.23389,
+      "operator": "<=",
+      "threshold": 6.0,
+      "pass": false
+    },
+    {
+      "id": "post_cost_jpy",
+      "observed": 0.4239,
+      "operator": "<=",
+      "threshold": 1.0,
+      "pass": true
+    },
+    {
+      "id": "normal_external_request_count",
+      "observed": 3,
+      "operator": "<=",
+      "threshold": 3,
+      "pass": true
+    },
+    {
+      "id": "realtime_line_evaluation_llm_calls",
+      "observed": 0,
+      "operator": "==",
+      "threshold": 0,
+      "pass": true
+    }
+  ],
+  "candidate_condition_pass_count": 14,
+  "candidate_condition_total_count": 25,
+  "all_candidate_conditions_pass": false,
+  "rejection_floors": [
+    {
+      "id": "required_safety_or_policy_count_above_zero",
+      "observed": 0,
+      "threshold": true,
+      "triggered": false
+    },
+    {
+      "id": "operational_budget_violation_on_valid_run",
+      "observed": true,
+      "threshold": true,
+      "triggered": true
+    },
+    {
+      "id": "acceptable_improvement_below_floor",
+      "observed": -2.78,
+      "threshold": 10.0,
+      "triggered": true
+    },
+    {
+      "id": "too_close_reduction_below_floor",
+      "observed": 0.3448,
+      "threshold": 0.2,
+      "triggered": false
+    },
+    {
+      "id": "acceptable_analogical_retention_below_floor",
+      "observed": 0.8857,
+      "threshold": 0.6,
+      "triggered": false
+    },
+    {
+      "id": "acceptable_analogical_rate_below_floor",
+      "observed": 1.0,
+      "threshold": 0.8,
+      "triggered": false
+    },
+    {
+      "id": "too_far_plus_unrelated_rate_above_floor",
+      "observed": 0.3241,
+      "threshold": 0.35,
+      "triggered": false
+    }
+  ],
+  "rejection_floor_triggered": true,
+  "low_confidence_sensitivity": {
+    "pair_count": 8,
+    "current_acceptable_count": 51,
+    "current_low_acceptable_count": 7,
+    "current_low_unacceptable_count": 1,
+    "minimum_acceptable_count": 44,
+    "maximum_acceptable_count": 52,
+    "minimum_acceptable_rate": 0.4074,
+    "maximum_acceptable_rate": 0.4815,
+    "candidate_minimum_count": 76,
+    "can_change_gate_a_outcome": false
+  },
+  "outcome": "architecture_rejected",
+  "outcome_reason": "Fixed rejection floors triggered: operational_budget_violation_on_valid_run, acceptable_improvement_below_floor. Low-confidence best case is 52/108 and cannot change the outcome.",
+  "production_adoption_decided": false,
+  "gate_b_evaluated": false,
+  "criteria_or_threshold_changed_after_results": false,
+  "line_pool_changed": false,
+  "external_api_calls": 0,
+  "sources": {
+    "comparison": "b_v2_vs_b_v1_comparison_v1.json",
+    "integrated_evaluation": "b_v2_integrated_evaluation_v1.json",
+    "fixed_criteria": "b_v2_design_criteria_v2.yml"
+  }
+}
