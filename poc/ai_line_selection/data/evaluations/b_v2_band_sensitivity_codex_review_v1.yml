@@ -1,0 +1,200 @@
+version: b-v2-band-sensitivity-codex-review-v1
+issue: 59
+rubric: reflective-distance-v1
+judge: codex_provisional
+reviewer_role: codex
+provisional: true
+external_api_calls: 0
+scope: 444 previously-unlabeled Entry/Line pairs selected by at least one of the 825 sweep settings
+method:
+  similarity_used_as_quality_label: false
+  default_for_reviewed_unlisted_pairs:
+    acceptable: false
+    distance: too_far
+    relation_type: weak_connection
+  acceptable_relation_rule: same_domain when the Line theme is an Entry expected theme; otherwise analogical_transfer
+  notes:
+    - Every previously-unlabeled pair was reviewed Entry by Entry against its text, expected structure, and Line text/meaning.
+    - Lists below record exceptions to weak_connection; low_confidence may include either an exception or the default.
+    - These are Codex provisional labels, not human-review labels.
+decisions:
+  E001:
+    acceptable: [L004, L008, L055, L066, L068, L072, L077, L096, L102]
+    too_close: []
+    unrelated: [L113]
+    low_confidence: [L006, L077]
+  E002:
+    acceptable: [L002, L013, L033, L077]
+    too_close: []
+    unrelated: []
+    low_confidence: [L002, L077]
+  E003:
+    acceptable: [L001, L047, L057, L077]
+    too_close: []
+    unrelated: [L022]
+    low_confidence: [L001, L077]
+  E004:
+    acceptable: [L014, L015, L057, L105, L107]
+    too_close: []
+    unrelated: [L035, L054, L065, L066, L078]
+    low_confidence: [L057, L105]
+  E005:
+    acceptable: [L013, L014, L055, L068, L091]
+    too_close: []
+    unrelated: [L035]
+    low_confidence: [L055, L068]
+  E006:
+    acceptable: [L014, L017]
+    too_close: []
+    unrelated: [L085, L104, L118]
+    low_confidence: [L017]
+  E007:
+    acceptable: [L022, L036, L071]
+    too_close: []
+    unrelated: [L025, L062, L075, L093]
+    low_confidence: [L071, L076]
+  E008:
+    acceptable: [L015, L033, L082, L084]
+    too_close: []
+    unrelated: [L054, L067]
+    low_confidence: [L015, L084]
+  E009:
+    acceptable: [L022, L024, L031, L037, L076, L077]
+    too_close: []
+    unrelated: [L062]
+    low_confidence: [L077]
+  E010:
+    acceptable: [L013, L022, L033, L034, L035, L036, L037, L074, L076, L085]
+    too_close: []
+    unrelated: [L025]
+    low_confidence: [L013, L074]
+  E011:
+    acceptable: [L022, L038, L045, L081, L082]
+    too_close: [L024]
+    unrelated: []
+    low_confidence: [L045, L081]
+  E012:
+    acceptable: [L001, L004, L012, L022, L037, L066, L078]
+    too_close: []
+    unrelated: [L093, L118]
+    low_confidence: [L001, L004]
+  E013:
+    acceptable: [L093]
+    too_close: []
+    unrelated: [L032, L054, L096]
+    low_confidence: [L093]
+  E014:
+    acceptable: [L006, L081, L083]
+    too_close: []
+    unrelated: [L085]
+    low_confidence: [L083]
+  E015:
+    acceptable: [L008, L038, L066, L076, L093]
+    too_close: []
+    unrelated: [L006, L016, L023, L031, L058, L075]
+    low_confidence: [L038, L068]
+  E016:
+    acceptable: [L024, L066, L068, L071, L095, L113, L114]
+    too_close: []
+    unrelated: [L015]
+    low_confidence: [L068, L071]
+  E017:
+    acceptable: [L058, L066, L068, L072, L095, L106]
+    too_close: [L053]
+    unrelated: [L078, L092]
+    low_confidence: [L068, L072]
+  E018:
+    acceptable: [L046, L101, L103, L105]
+    too_close: [L055, L102]
+    unrelated: [L023, L053, L081, L097]
+    low_confidence: [L046, L103]
+  E019:
+    acceptable: [L068]
+    too_close: []
+    unrelated: [L021, L043, L055, L085, L096]
+    low_confidence: [L068]
+  E020:
+    acceptable: [L066, L068]
+    too_close: [L063]
+    unrelated: [L043, L046, L102]
+    low_confidence: [L068]
+  E021:
+    acceptable: [L014, L023, L033, L065, L082]
+    too_close: []
+    unrelated: [L024, L044]
+    low_confidence: [L014, L023]
+  E022:
+    acceptable: [L042, L046, L047, L051, L063, L093]
+    too_close: [L075]
+    unrelated: [L008, L024, L027, L037, L043, L054]
+    low_confidence: [L041, L063]
+  E023:
+    acceptable: [L005, L007, L051, L063, L066]
+    too_close: []
+    unrelated: [L043, L057, L102]
+    low_confidence: [L051, L063]
+  E024:
+    acceptable: [L005, L007, L008, L037, L042, L044, L078, L083]
+    too_close: []
+    unrelated: [L025, L043, L062, L097]
+    low_confidence: [L037, L083]
+  E025:
+    acceptable: [L032, L055, L076, L078, L085, L105]
+    too_close: []
+    unrelated: [L057]
+    low_confidence: [L055, L076]
+  E026:
+    acceptable: [L032, L086, L111, L116]
+    too_close: [L085]
+    unrelated: [L047, L101]
+    low_confidence: [L111, L116]
+  E027:
+    acceptable: [L082, L085]
+    too_close: []
+    unrelated: []
+    low_confidence: [L082, L085]
+  E028:
+    acceptable: [L015, L098]
+    too_close: []
+    unrelated: [L027, L035]
+    low_confidence: [L098]
+  E029:
+    acceptable: [L013, L031, L034, L038]
+    too_close: []
+    unrelated: [L023, L041]
+    low_confidence: [L013, L038]
+  E030:
+    acceptable: [L034, L038, L044, L091, L097, L117]
+    too_close: []
+    unrelated: [L035, L103, L108]
+    low_confidence: [L034, L038]
+  E031:
+    acceptable: [L014, L052, L055, L082, L102]
+    too_close: [L107]
+    unrelated: [L054, L078, L085, L091, L092, L116, L117]
+    low_confidence: [L014, L082]
+  E032:
+    acceptable: [L042, L046, L047, L068, L103, L105]
+    too_close: [L106]
+    unrelated: [L037, L092]
+    low_confidence: [L046, L068]
+  E033:
+    acceptable: [L105]
+    too_close: []
+    unrelated: [L011, L035]
+    low_confidence: [L105]
+  E034:
+    acceptable: [L046, L048, L098, L113]
+    too_close: [L114, L116]
+    unrelated: [L015, L057, L065]
+    low_confidence: [L046, L098]
+  E035:
+    acceptable: [L013, L068, L078]
+    too_close: []
+    unrelated: [L054, L085, L092]
+    low_confidence: [L013, L068]
+  E036:
+    acceptable: [L046, L111]
+    too_close: []
+    unrelated: [L054, L064, L065]
+    low_confidence: [L046, L111]
