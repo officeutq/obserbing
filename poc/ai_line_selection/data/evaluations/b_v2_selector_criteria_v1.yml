@@ -1,0 +1,58 @@
+version: b-v2-selector-criteria-v1
+issue: 45
+status: frozen_before_issue_46_live_results
+created_at: "2026-08-13"
+selector:
+  version: b-v2-selector-v1
+  strategy: uniform
+  candidate_order_before_sampling: line_id_ascending
+  random_source: ruby_random
+  seed_rule: sha256_first_64_bits
+  seed_components:
+    - configured_base_seed
+    - entry_id
+    - repetition
+  configured_base_seed: 20260812
+  no_candidate_outcome: silence
+  realtime_line_evaluation_llm_calls: 0
+alternatives_compared:
+  uniform:
+    weight: 1.0
+  abstraction_weighted:
+    similarity_weight_floor: 0.75
+    similarity_weight_ceiling: 1.0
+  bounded_domain_diversity:
+    similarity_weight_floor: 0.75
+    domain_weight_maximum: 1.20
+    domain_hard_include_or_exclude: false
+offline_result:
+  source: b_v2_selector_comparison_v1.json
+  source_canonical_json_sha256: 6a38b4a73f6e38195f6f224ecbae0c759486b1e16342f8d431d78a6c92af115d
+  external_api_calls: 0
+  outcome_slots: 108
+  common_results:
+    selected_count: 72
+    silence_count: 36
+    acceptable_count: 46
+    acceptable_rate: 0.6389
+    acceptable_analogical_count: 29
+    reproducibility_rate: 1.0
+    rule_violation_count: 0
+decision:
+  selected: uniform
+  reasons:
+    - 3方式の保存ラベル範囲内結果が同一で、重み付けによる品質改善を確認できなかった
+    - 最も近い候補への偏りを増やさず、B-v2の適格帯域という設計意図に最も単純に一致する
+    - domainを適格条件や単調スコアにせず、将来の選択分布診断へ残せる
+  production_adoption: false
+limitations:
+  - 比較はreflective-distanceラベルを持つ候補だけに限定したため、SILENCE率は本統合予測に使わない
+  - ラベルは評価にだけ使い、selector入力には含めていない
+  - 各反復は同一の初期履歴からの独立実行で、反復間をユーザー履歴として扱わない
+invariants:
+  status_policy_history_must_pass_before_selector: true
+  same_input_candidates_seed_reproducible: true
+  thresholds_relaxed_on_empty: false
+  external_api_calls: 0
+  gate_criteria_changes: 0
+  line_pool_changes: 0
