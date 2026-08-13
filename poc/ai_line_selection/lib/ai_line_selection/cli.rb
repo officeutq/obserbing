@@ -44,6 +44,7 @@ module AiLineSelection
       when "prepare-b-v2-band-sweep" then prepare_b_v2_band_sweep
       when "apply-b-v2-band-sweep-codex-review" then apply_b_v2_band_sweep_codex_review
       when "evaluate-b-v2-band-sweep" then evaluate_b_v2_band_sweep
+      when "plan-b-v2-lightweight-selector" then plan_b_v2_lightweight_selector
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -466,6 +467,10 @@ module AiLineSelection
         issue_46_results_dir: options.fetch(:results),
         completion_results_dir: options.fetch(:completion_results)
       ).evaluate(output_dir: options.fetch(:output_dir)))
+    end
+
+    def plan_b_v2_lightweight_selector
+      print_json(Bv2LightweightSelectorComparison.new(configuration: @configuration).plan)
     end
 
     def apply_abstraction_preliminary
