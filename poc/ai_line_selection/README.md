@@ -389,7 +389,7 @@ bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode di
 
 ### Reflective Distanceオフライン再評価
 
-Issue #36と`selected-v1`の保存済み表示ペアを、別領域への類推とユーザー事実断定を分離する`reflective-distance-v1`で再集計します。既存結果を読み取るだけで、外部AI API、Embedding、SAFETY、abstraction、Line再選定は実行しません。不足する生成果物をAPIで補完せず停止します。
+Issue #36と`selected-v1`の保存済み表示ペアを、別領域への類推とユーザー事実断定を分離する`reflective-distance-v1`で再集計します。Codex低確信10種類は`reflective_distance_human_review_v1.yml`のプロダクトオーナー判定を重ね、Codex一次判断と人間確定結果を分離して保持します。既存結果を読み取るだけで、外部AI API、Embedding、SAFETY、abstraction、Line再選定は実行しません。不足する生成果物をAPIで補完せず停止します。
 
 ```powershell
 ruby script\generate_reflective_distance_reassessment.rb

@@ -10,12 +10,14 @@ class ReflectiveDistanceReassessmentArtifactTest < Minitest::Test
     @evaluation_dir = File.join(configuration.root_dir, "data", "evaluations")
     @rubric_path = File.join(@evaluation_dir, "reflective_distance_rubric_v1.yml")
     @judgments_path = File.join(@evaluation_dir, "reflective_distance_codex_judgments_v1.csv")
+    @human_review_path = File.join(@evaluation_dir, "reflective_distance_human_review_v1.yml")
     @display_path = File.join(@evaluation_dir, "reflective_distance_display_pairs_v1.csv")
     @previous_path = File.join(@evaluation_dir, "reflective_distance_previous_labels_v1.csv")
     @summary_path = File.join(@evaluation_dir, "reflective_distance_reassessment_v1.yml")
 
     @rubric = YAML.safe_load_file(@rubric_path, permitted_classes: [], aliases: false)
     @judgments = CSV.read(@judgments_path, headers: true, encoding: "UTF-8")
+    @human_review = YAML.safe_load_file(@human_review_path, permitted_classes: [], aliases: false)
     @displays = CSV.read(@display_path, headers: true, encoding: "UTF-8")
     @summary = YAML.safe_load_file(@summary_path, permitted_classes: [], aliases: false)
   end
@@ -65,11 +67,73 @@ class ReflectiveDistanceReassessmentArtifactTest < Minitest::Test
     assert_equal 0.5, result.fetch("acceptable_rate")
     assert_equal 35, result.fetch("analogical_transfer_count")
     assert_equal 1.0, result.fetch("analogical_transfer_acceptable_rate")
-    assert_equal 13, result.fetch("low_confidence_count")
+    assert_equal 13, result.fetch("codex_low_confidence_count")
+    assert_equal 13, result.fetch("human_reviewed_count")
+    assert_equal 7, result.fetch("human_reviewed_acceptable_count")
+    assert_equal 0, result.fetch("unresolved_low_confidence_count")
+    assert_equal({"just_right" => 54, "not_obserbing" => 9, "too_close" => 29, "too_far" => 16}, result.fetch("distance_counts"))
+    assert_equal({"analogical_transfer" => 35, "direct_restatement" => 29, "same_domain" => 19, "unrelated" => 9, "weak_connection" => 16}, result.fetch("relation_type_counts"))
     assert_equal 5, transitions.fetch("old_too_close_to_new_acceptable_count")
     assert_equal 0, transitions.fetch("old_too_far_to_new_acceptable_count")
     assert_equal 1, transitions.fetch("old_fatal_to_new_analogical_transfer_count")
     assert_equal 28, transitions.fetch("old_acceptable_to_new_unacceptable_count")
+  end
+
+  def test_product_owner_review_is_complete_and_separate_from_codex_judgments
+    reviews = @human_review.fetch("reviews")
+    summary = @summary.fetch("human_review")
+
+    assert_equal "human_review", @human_review.fetch("judge")
+    assert_equal "product_owner", @human_review.fetch("reviewer_role")
+    assert_equal false, @human_review.fetch("personal_information_recorded")
+    assert_equal 10, reviews.length
+    assert_equal 4, reviews.count { |review| review.fetch("changed_from_codex") }
+    assert_equal %w[E008/L021 E019/L074 E023/L073 E023/L118], reviews.select { |review| review.fetch("changed_from_codex") }.map { |review| review.fetch("pair_id") }
+    final_by_pair = reviews.to_h { |review| [review.fetch("pair_id"), review.fetch("final_labels")] }
+    assert_equal [true, "just_right", "same_domain"], final_by_pair.fetch("E008/L021").values_at("acceptable", "distance", "relation_type")
+    assert_equal [false, "too_far", "weak_connection"], final_by_pair.fetch("E019/L074").values_at("acceptable", "distance", "relation_type")
+    assert_equal [false, "too_far", "weak_connection"], final_by_pair.fetch("E023/L073").values_at("acceptable", "distance", "relation_type")
+    assert_equal [true, "just_right", "same_domain"], final_by_pair.fetch("E023/L118").values_at("acceptable", "distance", "relation_type")
+
+    assert_equal "completed", summary.fetch("status")
+    assert_equal 13, summary.fetch("display_count")
+    assert_equal 7, summary.fetch("acceptable_display_count")
+    assert_equal 6, summary.fetch("unacceptable_display_count")
+    assert_equal 6, summary.fetch("codex_human_agreement_pair_count")
+    assert_equal 4, summary.fetch("codex_human_disagreement_pair_count")
+    assert_equal 0, summary.fetch("net_acceptable_display_change")
+    assert_equal true, summary.fetch("all_codex_low_confidence_displays_resolved")
+  end
+
+  def test_final_tally_is_recomputed_by_overlaying_human_labels
+    judgment_by_pair = @judgments.to_h { |row| [row.fetch("pair_id"), row] }
+    human_by_pair = @human_review.fetch("reviews").to_h { |review| [review.fetch("pair_id"), review] }
+    live = @displays.select { |row| row.fetch("dataset") == "abstraction_only_issue36" }
+
+    final_rows = live.map do |display|
+      pair_id = "#{display.fetch('entry_id')}/#{display.fetch('line_id')}"
+      human = human_by_pair[pair_id]
+      if human
+        human.fetch("final_labels")
+      else
+        codex = judgment_by_pair.fetch(pair_id)
+        {
+          "acceptable" => codex.fetch("acceptable") == "true",
+          "distance" => codex.fetch("distance"),
+          "relation_type" => codex.fetch("relation_type")
+        }
+      end
+    end
+
+    final_acceptable = final_rows.count { |row| row.fetch("acceptable") }
+    final_distances = final_rows.map { |row| row.fetch("distance") }.tally.sort.to_h
+    final_relations = final_rows.map { |row| row.fetch("relation_type") }.tally.sort.to_h
+    result = @summary.dig("datasets", "abstraction_only_issue36")
+
+    assert_equal final_acceptable, result.fetch("acceptable_count")
+    assert_equal(final_acceptable.to_f / final_rows.length, result.fetch("acceptable_rate"))
+    assert_equal final_distances, result.fetch("distance_counts")
+    assert_equal final_relations, result.fetch("relation_type_counts")
   end
 
   def test_factual_assertion_is_separate_from_analogy
@@ -102,11 +166,14 @@ class ReflectiveDistanceReassessmentArtifactTest < Minitest::Test
   def test_threshold_decision_and_zero_api_execution_are_explicit
     execution = @summary.fetch("execution")
 
+    assert_equal 0, execution.fetch("openai_api_calls")
+    assert_equal 0, execution.fetch("anthropic_api_calls")
     assert_equal 0, execution.fetch("external_ai_api_calls")
     assert_equal 0, execution.fetch("embedding_api_calls")
     assert_equal 0, execution.fetch("safety_calls")
     assert_equal 0, execution.fetch("abstraction_calls")
     assert_equal 0, execution.fetch("line_reselection_calls")
+    assert_equal 0, execution.fetch("other_paid_external_api_calls")
     assert_equal false, @summary.dig("acceptance", "abstraction_only_met")
     assert_equal false, @summary.dig("decision", "previous_non_adoption_reversed")
     assert_equal false, @summary.dig("decision", "reopen_epic_27")
@@ -116,6 +183,7 @@ class ReflectiveDistanceReassessmentArtifactTest < Minitest::Test
     paths = {
       "rubric_sha256" => @rubric_path,
       "judgments_sha256" => @judgments_path,
+      "human_review_sha256" => @human_review_path,
       "display_pairs_sha256" => @display_path,
       "previous_labels_sha256" => @previous_path,
       "entries_sha256" => File.join(configuration.root_dir, "data", "entries.yml"),
