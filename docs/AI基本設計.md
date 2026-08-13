@@ -672,6 +672,16 @@ Providerおよびモデル名は本書では確定しない。入力データが
 
 評価条件、計測値、失敗例、追加検証項目は[AI一行選定 PoC結果](AI_PoC結果.md)を正とする。
 
+## 20.2 追加PoC結果に基づく判断
+
+2026年8月13日の追加PoCでは、リアルタイムLine評価LLMを使わない`abstraction-only-v1`を検証した。SAFETY `additional-v3`、abstraction `abstraction-only-v2`、事実整合ガード`combined_v1`は個別基準を満たした。一方、abstraction EmbeddingはTop 20候補集合安定性、Ruby選択はBlind表示品質の基準を満たさなかったため、統合結果は`abstraction-only-v1-diagnostic`として扱う。
+
+診断統合では、既存通常日記のSAFETY過剰遮断0件、リアルタイムLine評価LLM 0回、1投稿約0.55円、p95 5.13秒推定を得た。しかしBlind許容率70.37%、baseline差-26.51ポイント、致命的事実不整合2件、Top 20 Jaccard平均0.6397で事前基準を満たさなかった。`selected-v1`も初回PoCの必須基準未達が残るため、どちらも現状のまま詳細設計候補または本番採用方式にしない。
+
+Provider、モデル、契約、プロンプトおよび本番閾値は引き続き未決定とする。追加PoCで有効だった3要素は次方式の部品候補として保持するが、正式採用を意味しない。次方式を検証する場合は、候補集合の上流安定化と、低遅延のgroundedness / obserbing distance評価を別Epicで事前定義する。
+
+評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](AI_追加PoC結果.md)を正とする。
+
 ---
 
 # 21. 未決定事項
