@@ -364,6 +364,17 @@ bundle exec ruby bin\ai_line_selection compare-grounding-guard
 
 結果と採用判断は [Line事実整合ガード 追加PoC比較](../../docs/Line事実整合ガード_追加PoC比較.md) を参照してください。
 
+### LLMなしLine選択追加PoC
+
+Issue #22の固定Top 5とIssue #23の事実整合ガードを使い、Top 1、一様乱択、類似度重み付き乱択、閾値集合を固定seedで比較します。Line評価LLMと外部APIは呼びません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-ruby-selection
+bundle exec ruby bin\ai_line_selection compare-ruby-selection
+```
+
+結果と採用判断は [LLMなしLine選択 追加PoC比較](../../docs/LLMなしLine選択_追加PoC比較.md) を参照してください。
+
 ```powershell
 bundle exec rake test
 ```

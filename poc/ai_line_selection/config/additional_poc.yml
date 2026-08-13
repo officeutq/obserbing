@@ -64,6 +64,7 @@ selection:
     - threshold_uniform
   random_top_n: 5
   threshold_max_candidates: 20
+  similarity_threshold: 0.45
   similarity_weight_epsilon: 0.01
 
 acceptance:

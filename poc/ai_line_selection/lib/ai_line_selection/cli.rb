@@ -42,6 +42,9 @@ module AiLineSelection
       when "evaluate-candidate-quality" then evaluate_candidate_quality
       when "plan-grounding-guard" then plan_grounding_guard
       when "compare-grounding-guard" then compare_grounding_guard
+      when "export-selection-inputs" then export_selection_inputs
+      when "plan-ruby-selection" then plan_ruby_selection
+      when "compare-ruby-selection" then compare_ruby_selection
       when "plan-line-evaluation" then plan_line_evaluation
       when "compare-line-evaluation" then compare_line_evaluation
       when "review-line-evaluation" then review_line_evaluation
@@ -480,6 +483,25 @@ module AiLineSelection
       print_json(GroundingGuardComparison.new(configuration: @configuration).call)
     end
 
+    def export_selection_inputs
+      options = { results: nil, export: File.join(@configuration.root_dir, "data", "evaluations", "ruby_selection_inputs_v1.json") }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--export FILE") { |value| options[:export] = value }
+      end.parse!(@argv)
+      raise ConfigurationError.new("export-selection-inputs requires --results DIRECTORY") unless options[:results]
+
+      print_json(SelectionInputSnapshot.export(results_dir: options.fetch(:results), output_path: options.fetch(:export)))
+    end
+
+    def plan_ruby_selection
+      print_json(RuleBasedSelectionComparison.new(configuration: @configuration).plan)
+    end
+
+    def compare_ruby_selection
+      print_json(RuleBasedSelectionComparison.new(configuration: @configuration).call)
+    end
+
     def plan_line_evaluation
       options = line_evaluation_options(
         default_providers: %w[openai anthropic],
@@ -711,6 +733,9 @@ module AiLineSelection
           ruby bin/ai_line_selection evaluate-candidate-quality --provider openai --results results/abstraction_embedding_<timestamp>_<suffix> --allow-external-api
           ruby bin/ai_line_selection plan-grounding-guard
           ruby bin/ai_line_selection compare-grounding-guard
+          ruby bin/ai_line_selection export-selection-inputs --results results/abstraction_embedding_<timestamp>_<suffix> --export data/evaluations/ruby_selection_inputs_v1.json
+          ruby bin/ai_line_selection plan-ruby-selection
+          ruby bin/ai_line_selection compare-ruby-selection
           ruby bin/ai_line_selection plan-line-evaluation --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-line-evaluation [--providers fixture] [--embedding-provider fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api
