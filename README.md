@@ -73,3 +73,4 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 - [Abstraction追加PoC比較](docs/Abstraction_追加PoC比較.md)
 - [Abstraction Embedding追加PoC比較](docs/Abstraction_Embedding_追加PoC比較.md)
 - [統合PoC比較](docs/統合_PoC比較.md)
+- [B-v2 Epic結果](docs/B-v2_Epic結果.md)

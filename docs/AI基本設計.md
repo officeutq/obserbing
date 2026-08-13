@@ -700,6 +700,14 @@ Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と
 
 固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。機械可読な現行基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v2.yml`に保存し、`v1`も履歴として保持する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
 
+## 20.4 B-v2 Gate A実測結果
+
+2026年8月13日、固定済み構成で現Approved 96 Line・36 Entry × 3反復の本統合PoCを実行した。acceptableは51 / 108（47.22%）、3反復すべてacceptableは4 / 36（11.11%）、semantic SILENCEは3 / 108（2.78%）、p95は6.23389秒、1投稿費用は0.4239円だった。direct restatement / too-closeはB-v1の29件から19件へ34.48%削減した一方、too-far + unrelatedは25件から35件へ増えた。
+
+事前固定済みGate Aでは、acceptable改善が棄却下限の+10ポイント未満（実測-2.78ポイント）であり、p95も6秒上限を超えたため、最終判定を`architecture_rejected`とした。これはGate Bの絶対80%未達だけによる判断ではない。現方式をGate B用baselineとしてLineプール改善へ移行せず、Lineプール改善Epicも作成しない。本番Provider、モデル、閾値等の正式採用判断も引き続き未定である。
+
+実験構成、全Gate条件、low-confidence感度、移行判断は[B-v2 Epic結果](B-v2_Epic結果.md)、[B-v2 Gate A判定](B-v2_Gate_A判定.md)、[B-v2 Lineプール改善移行判断](B-v2_Lineプール改善移行判断.md)を参照する。
+
 ---
 
 # 21. 未決定事項
