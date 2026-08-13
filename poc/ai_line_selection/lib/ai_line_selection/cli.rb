@@ -36,6 +36,7 @@ module AiLineSelection
       when "plan-b-v2-integrated" then plan_b_v2_integrated
       when "run-b-v2-integrated" then run_b_v2_integrated
       when "evaluate-b-v2-integrated" then evaluate_b_v2_integrated
+      when "compare-b-v2-b-v1" then compare_b_v2_b_v1
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -348,6 +349,14 @@ module AiLineSelection
         results_dir: options.fetch(:results),
         judgments_path: options.fetch(:judgments)
       ).call(output_path: options[:output], outcomes_path: options[:outcomes]))
+    end
+
+    def compare_b_v2_b_v1
+      options = { output: nil }
+      OptionParser.new do |parser|
+        parser.on("--output FILE") { |value| options[:output] = value }
+      end.parse!(@argv)
+      print_json(Bv2VsBv1Comparison.new(configuration: @configuration).call(output_path: options[:output]))
     end
 
     def apply_abstraction_preliminary

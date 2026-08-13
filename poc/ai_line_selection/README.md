@@ -163,6 +163,15 @@ bundle exec ruby bin\ai_line_selection evaluate-b-v2-integrated `
   --judgments data\evaluations\b_v2_integrated_codex_judgments_v1.csv
 ```
 
+B-v1との比較も保存成果物だけで再計算できます。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-b-v2-b-v1 `
+  --output data\evaluations\b_v2_vs_b_v1_comparison_v1.json
+```
+
+比較結果と母数・実行時点の注意は[B-v2 / B-v1比較](../../docs/B-v2_B-v1比較.md)を参照してください。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
