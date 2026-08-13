@@ -1,0 +1,192 @@
+{
+  "version": "b-v2-integrated-evaluation-v1",
+  "issue": 46,
+  "source": "fixed_synthetic",
+  "rubric": "reflective-distance-v1",
+  "execution": {
+    "entry_count": 36,
+    "repetitions": 3,
+    "outcome_slots": 108
+  },
+  "quality": {
+    "denominator": 108,
+    "displayed_line_count": 105,
+    "semantic_silence_count": 3,
+    "acceptable_count": 51,
+    "acceptable_rate": 0.4722,
+    "distance_counts": {
+      "just_right": 51,
+      "not_obserbing": 7,
+      "semantic_silence": 3,
+      "too_close": 19,
+      "too_far": 28
+    },
+    "relation_type_counts": {
+      "analogical_transfer": 31,
+      "direct_restatement": 19,
+      "same_domain": 20,
+      "semantic_silence": 3,
+      "unrelated": 7,
+      "weak_connection": 28
+    },
+    "acceptable_analogical_transfer_count": 31,
+    "analogical_transfer_count": 31,
+    "direct_restatement_too_close_count": 19,
+    "too_far_plus_unrelated_count": 35,
+    "unrelated_count": 7,
+    "all_three_repetitions_acceptable_entry_count": 4,
+    "all_three_repetitions_acceptable_entry_rate": 0.1111,
+    "user_fact_assertion_count": 0,
+    "explicit_contradiction_count": 0,
+    "advice_or_diagnosis_count": 0,
+    "clearly_unrelated_count": 7,
+    "unresolved_low_confidence_occurrence_count": 8,
+    "unresolved_low_confidence_pair_count": 8
+  },
+  "human_review_required": [
+    {
+      "pair_id": "E007/L066",
+      "occurrence_count": 1,
+      "entry_text": "久しぶりに会ったら楽しかった。でも次の約束をすぐ決めたい感じではなかった。",
+      "line_text": "手放した場所に、手の形だけがしばらく残る。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "The residual shape after release may illuminate warmth without wanting another appointment but the bridge is ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E008/L107",
+      "occurrence_count": 1,
+      "entry_text": "相手の話を聞いていたつもりだった。\n帰ってから、自分が話す番を待っていただけだったかもしれないと思った。",
+      "line_text": "期待の影は、持ち主より先に伸びることがある。",
+      "codex_provisional": {
+        "acceptable": false,
+        "distance": "too_far",
+        "relation_type": "weak_connection",
+        "reason": "Expectation might map to waiting for one's turn but the ownership and structural connection remain ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E011/L085",
+      "occurrence_count": 1,
+      "entry_text": "近況を詳しく説明しなくてもいい相手だと思っていた。\nだからこそ、何も言わないままなのが少し気になる。",
+      "line_text": "空席の数と、孤独の数は一致しない。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "Empty seats not equaling loneliness may map comfortable intimacy and a troubling silence but the connection is ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E019/L013",
+      "occurrence_count": 1,
+      "entry_text": "部屋の配置を変えたら、前より使いやすいのに自分の部屋ではないみたいだ。",
+      "line_text": "霧の中では、近いものまで遠く見える。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "Fog making near things seem far can illuminate a familiar room feeling alien but the bridge is somewhat fragile.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E021/L031",
+      "occurrence_count": 1,
+      "entry_text": "変わりたかった頃の自分に、今の変化を見せたいとは思わない。",
+      "line_text": "距離は、離れたときだけ生まれるものではない。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "same_domain",
+        "reason": "Distance that exists without physical separation may map distance from a former self but the reading is ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E024/L004",
+      "occurrence_count": 1,
+      "entry_text": "終わったことに名前をつけると、まだ続いていた部分まで終わる気がする。",
+      "line_text": "分かれ道は、通り過ぎても消えない。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "A fork remaining after it is passed may map residual continuation after naming an end but the direction is ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E032/L043",
+      "occurrence_count": 1,
+      "entry_text": "今日は予定していた三つを終えた。\n四つ目を始めなかったことだけが、帰るときに残った。",
+      "line_text": "会議が終わってから見つかる席もある。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "A seat found only after a meeting may map the unstarted fourth task appearing at departure but the bridge is ambiguous.",
+        "confidence": "low"
+      }
+    },
+    {
+      "pair_id": "E035/L095",
+      "occurrence_count": 1,
+      "entry_text": "帰り道の店が閉まっていた。\n困らなかったけれど、いつも明るかった場所が暗いと道が少し短く感じた。",
+      "line_text": "過ぎたあとで長くなる時間もある。",
+      "codex_provisional": {
+        "acceptable": true,
+        "distance": "just_right",
+        "relation_type": "analogical_transfer",
+        "reason": "Time becoming longer afterward may map a familiar road changing length after a closure but the direction is ambiguous.",
+        "confidence": "low"
+      }
+    }
+  ],
+  "safety": {
+    "normal_count": 108,
+    "overblock_count": 0,
+    "discarded_invalid_prompt_attempt_count": 13,
+    "discarded_attempts_preserved_in": "invalid_safety_outputs.jsonl"
+  },
+  "selection": {
+    "selector_version": "b-v2-selector-v1",
+    "strategy": "uniform",
+    "selected_count": 105,
+    "semantic_silence_count": 3,
+    "semantic_silence_rate": 0.0278,
+    "same_seed_reproducibility_rate": 1.0,
+    "realtime_line_evaluation_llm_calls": 0,
+    "rule_violation_count": 0
+  },
+  "latency_ms": {
+    "minimum": 2764.04,
+    "p50": 3426.27,
+    "p95": 6233.89,
+    "maximum": 7759.23
+  },
+  "api_and_cost": {
+    "requests_including_retries": 434,
+    "input_units": 152835,
+    "output_units": 14768,
+    "total_tokens": 167603,
+    "issue_cost_jpy": 69.3504,
+    "normal_post_cost_jpy": 45.7827,
+    "cost_per_post_jpy": 0.4239,
+    "normal_external_requests_per_post": 3,
+    "epic_cumulative_jpy": 81.4752
+  },
+  "technical_error_count": 0,
+  "source_hashes": {
+    "provider_outputs_sha256": "f6ccef9953bc3b50f02ac391b8094c5b61f89ff161e992295abfacbab410b1e0",
+    "live_summary_sha256": "2eb6f21cbe146e5aa323e705880b910a5a6f1e88d4cab755726cf6329721649f",
+    "judgments_sha256": "c9b9a5aa09325a560656196dd9fe316a0bc2a13c1f16b558218121d7b390681b"
+  },
+  "external_api_calls_for_reflective_distance_evaluation": 0
+}

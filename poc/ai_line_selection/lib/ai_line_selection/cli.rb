@@ -33,6 +33,9 @@ module AiLineSelection
       when "compare-b-v2-profile" then compare_b_v2_profile
       when "compare-b-v2-band-pass" then compare_b_v2_band_pass
       when "compare-b-v2-selector" then compare_b_v2_selector
+      when "plan-b-v2-integrated" then plan_b_v2_integrated
+      when "run-b-v2-integrated" then run_b_v2_integrated
+      when "evaluate-b-v2-integrated" then evaluate_b_v2_integrated
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -301,6 +304,50 @@ module AiLineSelection
         configuration: @configuration,
         abstraction_results_dir: options.fetch(:abstraction_results)
       ).call(output_path: options.fetch(:output)))
+    end
+
+    def plan_b_v2_integrated
+      print_json(Bv2IntegratedComparison.new(configuration: @configuration).plan)
+    end
+
+    def run_b_v2_integrated
+      options = { output_dir: nil, resume: false, allow_external_api: false, repair_safety_overblocks: false }
+      OptionParser.new do |parser|
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+        parser.on("--resume") { options[:resume] = true }
+        parser.on("--repair-safety-overblocks") { options[:repair_safety_overblocks] = true }
+        parser.on("--allow-external-api") { options[:allow_external_api] = true }
+      end.parse!(@argv)
+      raise ConfigurationError.new("run-b-v2-integrated requires --output-dir") unless options[:output_dir]
+
+      print_json(Bv2IntegratedComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        output_dir: options.fetch(:output_dir),
+        resume: options.fetch(:resume),
+        repair_safety_overblocks: options.fetch(:repair_safety_overblocks)
+      ))
+    end
+
+    def evaluate_b_v2_integrated
+      options = { results: nil, judgments: nil, output: nil, outcomes: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--judgments FILE") { |value| options[:judgments] = value }
+        parser.on("--output FILE") { |value| options[:output] = value }
+        parser.on("--outcomes FILE") { |value| options[:outcomes] = value }
+      end.parse!(@argv)
+      unless options[:results] && options[:judgments]
+        raise ConfigurationError.new("evaluate-b-v2-integrated requires --results and --judgments")
+      end
+
+      print_json(Bv2IntegratedEvaluator.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        judgments_path: options.fetch(:judgments)
+      ).call(output_path: options[:output], outcomes_path: options[:outcomes]))
     end
 
     def apply_abstraction_preliminary

@@ -1,0 +1,38 @@
+version: b-v2-integrated-artifact-manifest-v1
+issue: 46
+created_at: "2026-08-13"
+source_directory: results/b_v2_integrated_live_20260813_issue46
+committed_artifacts:
+  line_profiles:
+    file: b_v2_integrated_line_profiles_v1.jsonl
+    sha256: 60bb321f2a391010c8056cbe9d386473c761e7fe586ddc84aba51de130bbed33
+    bytes: 52381
+  provider_outputs:
+    file: b_v2_integrated_outputs_v1.jsonl
+    sha256: f6ccef9953bc3b50f02ac391b8094c5b61f89ff161e992295abfacbab410b1e0
+    bytes: 176831
+  invalid_safety_outputs:
+    file: b_v2_integrated_invalid_safety_outputs_v1.jsonl
+    sha256: ec3ecd9ae9927edd73113917598b5acd4e854f8b8d8a8acfcd2b178b3a826917
+    bytes: 7257
+  live_summary:
+    file: b_v2_integrated_live_v1.json
+    sha256: 2eb6f21cbe146e5aa323e705880b910a5a6f1e88d4cab755726cf6329721649f
+    bytes: 1729
+  live_manifest:
+    file: b_v2_integrated_manifest_v1.json
+    sha256: 32ec66090feafdf2b927e11b10d53db99a0a31102b0e790785fdc0459be20670
+    bytes: 3758
+local_vector_artifact:
+  committed: false
+  reason: full_1536_dimension_vectors_are_not_needed_by_downstream_offline_comparison
+  file: line_index.json
+  sha256: f36a277daf2d9cf0d6b4d5bfb602f7070387f889d43d3247516f294f5841d2fa
+  bytes: 8020814
+data_handling:
+  source: fixed_synthetic
+  provider_raw_response_saved: false
+  api_key_saved: false
+  authorization_header_saved: false
+  request_id_saved: false
+  line_pool_changed: false

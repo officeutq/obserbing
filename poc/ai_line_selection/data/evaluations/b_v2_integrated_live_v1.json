@@ -1,0 +1,66 @@
+{
+  "operation": "b-v2-integrated-live-v1",
+  "completed": true,
+  "line_precompute": {
+    "profile_count": 96,
+    "embedding_requests": 1
+  },
+  "execution": {
+    "entry_count": 36,
+    "repetitions": 3,
+    "outcome_slots": 108
+  },
+  "safety": {
+    "normal_count": 108,
+    "overblock_count": 0,
+    "discarded_invalid_prompt_attempt_count": 13,
+    "discarded_attempts_preserved_in": "invalid_safety_outputs.jsonl"
+  },
+  "profile": {
+    "version": "b-v2-profile-primary-secondary-v1",
+    "first_attempt_schema_success_rate": 1.0
+  },
+  "band_pass": {
+    "top_n": 20,
+    "a_min": 0.45,
+    "s_max": 0.55,
+    "eligible_count": {
+      "minimum": 0,
+      "p50": 6,
+      "p95": 14,
+      "maximum": 20
+    },
+    "a_min_pass_count_total": 767,
+    "surface_exclusion_count_total": 38,
+    "policy_exclusion_count_total": 0
+  },
+  "selection": {
+    "selector_version": "b-v2-selector-v1",
+    "strategy": "uniform",
+    "selected_count": 105,
+    "semantic_silence_count": 3,
+    "semantic_silence_rate": 0.0278,
+    "same_seed_reproducibility_rate": 1.0,
+    "realtime_line_evaluation_llm_calls": 0,
+    "rule_violation_count": 0
+  },
+  "technical_error_count": 0,
+  "latency_ms": {
+    "minimum": 2764.04,
+    "p50": 3426.27,
+    "p95": 6233.89,
+    "maximum": 7759.23
+  },
+  "api_and_cost": {
+    "requests_including_retries": 434,
+    "input_units": 152835,
+    "output_units": 14768,
+    "total_tokens": 167603,
+    "issue_cost_jpy": 69.3504,
+    "normal_post_cost_jpy": 45.7827,
+    "cost_per_post_jpy": 0.4239,
+    "normal_external_requests_per_post": 3,
+    "epic_cumulative_jpy": 81.4752
+  },
+  "reflective_distance_evaluation_pending": true
+}

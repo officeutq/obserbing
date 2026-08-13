@@ -1,0 +1,36 @@
+version: b-v2-integrated-preflight-v1.1
+issue: 46
+status: committed_before_targeted_external_api_repair
+fixed_at: "2026-08-13"
+reason:
+  category: implementation_configuration_mismatch
+  detail: initial run referenced the legacy default SAFETY prompt/schema instead of the adopted additional-v3 boundary
+initial_run:
+  completed_outcome_slots: 108
+  invalid_indeterminate_safety_slots: 13
+  provider_requests_including_retries: 395
+  total_tokens: 148754
+  issue_cost_jpy: 62.2068
+repair:
+  scope: rerun only the 13 invalid safety-stop outcome slots
+  safety_prompt_version: additional-v3
+  safety_schema_version: additional-v3
+  maximum_additional_normal_requests: 39
+  maximum_additional_requests_with_retries: 78
+  discarded_attempts_preserved_in: invalid_safety_outputs.jsonl
+  thresholds_changed: false
+  criteria_changed: false
+  rubric_changed: false
+  baseline_changed: false
+  line_pool_changed: false
+  provider_or_model_changed: false
+hard_limits:
+  issue_budget_jpy: 1500.0
+  epic_spend_before_issue_jpy: 12.1248
+  epic_budget_jpy: 2000.0
+  initial_issue_cost_jpy: 62.2068
+  repair_within_issue_and_epic_budgets: true
+prohibitions:
+  realtime_line_evaluation_llm_calls: 0
+  api_key_or_secret_saved: false
+  provider_raw_response_saved: false
