@@ -118,6 +118,19 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-profile `
 
 実APIスモークは60出力を26,006 token・12.1248円で完了し、#43へ渡す暫定版を`b-v2-profile-primary-secondary-v1`としました。追跡可能な正規化出力と集計は`data/evaluations/b_v2_profile_smoke_outputs_v1.jsonl`および`b_v2_profile_smoke_v1.yml`です。
 
+## B-v2 Band-passオフライン比較
+
+Issue #43は保存済み成果物だけを使い、外部API 0回で`A_min / S_max / Top N`を比較します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-b-v2-band-pass `
+  --abstraction-results results\abstraction_embedding_20260813T011138Z_8550 `
+  --surface-results results\embedding_20260812T081729Z_a63c `
+  --output data\evaluations\b_v2_band_pass_offline_v1.json
+```
+
+#46前の固定値は`A_min=0.45`、`S_max=0.55`、`Top N=20`、Embeddingは`text-embedding-3-small` / 1536次元 / cosineです。raw-text保存成果物の制約と診断proxyの扱いは[B-v2 Band-passオフライン検証](../../docs/B-v2_Band-passオフライン検証.md)を参照してください。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。

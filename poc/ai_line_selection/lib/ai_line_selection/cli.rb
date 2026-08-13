@@ -31,6 +31,7 @@ module AiLineSelection
       when "compare-abstraction" then compare_abstraction
       when "plan-b-v2-profile" then plan_b_v2_profile
       when "compare-b-v2-profile" then compare_b_v2_profile
+      when "compare-b-v2-band-pass" then compare_b_v2_band_pass
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -265,6 +266,24 @@ module AiLineSelection
         end
       end.parse!(@argv)
       options
+    end
+
+    def compare_b_v2_band_pass
+      options = { abstraction_results: nil, surface_results: nil, output: nil }
+      OptionParser.new do |parser|
+        parser.on("--abstraction-results DIRECTORY") { |value| options[:abstraction_results] = value }
+        parser.on("--surface-results DIRECTORY") { |value| options[:surface_results] = value }
+        parser.on("--output FILE") { |value| options[:output] = value }
+      end.parse!(@argv)
+      unless options[:abstraction_results] && options[:surface_results]
+        raise ConfigurationError.new("compare-b-v2-band-pass requires --abstraction-results and --surface-results")
+      end
+
+      print_json(Bv2BandPassOffline.new(
+        configuration: @configuration,
+        abstraction_results_dir: options.fetch(:abstraction_results),
+        surface_results_dir: options.fetch(:surface_results)
+      ).call(output_path: options.fetch(:output)))
     end
 
     def apply_abstraction_preliminary

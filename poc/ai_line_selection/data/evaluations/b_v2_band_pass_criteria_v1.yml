@@ -1,0 +1,84 @@
+version: b-v2-band-pass-criteria-v1
+issue: 43
+status: frozen_before_issue_46_live_results
+created_at: "2026-08-13"
+profile:
+  version: b-v2-profile-primary-secondary-v1
+  source: b_v2_profile_smoke_v1.yml
+embedding:
+  version: b-v2-openai-small-dual-cosine-v1
+  provider: openai
+  model: text-embedding-3-small
+  dimensions: 1536
+  distance: cosine
+  vector_normalization: provider_output_cosine
+  text_normalization: embedding-text-v1
+  entry_batch_order:
+    - abstraction
+    - raw_text
+  line_precompute:
+    abstraction: profile.abstraction
+    surface: line.text
+    post_time_generation: false
+  mixed_versions_searchable: false
+band_pass:
+  top_n: 20
+  abstraction_similarity_minimum: 0.45
+  surface_similarity_maximum: 0.55
+  order:
+    - approved_and_compatible_profile
+    - abstraction_top_n
+    - abstraction_similarity_minimum
+    - surface_similarity_maximum
+    - policy_and_history
+  single_monotonic_score_used: false
+  automatic_threshold_relaxation: false
+offline_diagnostic:
+  source: b_v2_band_pass_offline_v1.json
+  source_canonical_json_sha256: 996b01ee475fcf954e8ddb4507b605bf84bbea4505da7a4b59dd044f6d6ec463
+  external_api_calls: 0
+  embedding_api_calls: 0
+  evaluated_outcome_slots: 108
+  entry_count: 36
+  approved_line_count: 96
+  sensitivity_proxy:
+    version: unicode-nfkc-character-bigram-cosine-v1
+    runtime_threshold: false
+    selected_proxy_maximum_for_diagnostics: 0.12
+    at_top_20_and_a_min_0_45:
+      average_eligible_count: 4.0463
+      p50_eligible_count: 3
+      p95_eligible_count: 9
+      zero_slot_count: 5
+      zero_slot_rate: 0.0463
+      labeled_acceptable_rate: 0.6535
+      direct_restatement_occurrences: 18
+      too_far_plus_unrelated_occurrences: 17
+      acceptable_analogical_occurrences: 44
+  actual_provider_surface_sample:
+    scope: saved_top_1_per_entry_only
+    entry_count: 36
+    labeled_count: 22
+    similarity_p50: 0.5446
+    similarity_p95: 0.6805
+    threshold_0_55:
+      all_top_1_excluded_count: 16
+      labeled_excluded_count: 13
+      excluded_distance_counts:
+        too_close: 10
+        just_right: 3
+decision_rationale:
+  a_min: 0.45は0.40よりtoo-far/unrelatedを抑え、0.50以上で急増した候補0件を避ける
+  s_max: 0.55は保存済みProvider Top-1標本でtoo-close 10件を除外する一方、just-right除外を3件に留めた
+  top_n: 20は閾値前のanalogical候補回収余地を保ち、閾値後p95 9件へ縮小する
+limitations:
+  - 保存済みraw-text Provider成果物は各EntryのTop-1だけで、全候補surface cosineを再構成できない
+  - character-bigram値とProvider cosine値は相互変換しない
+  - #42の10対象へ閾値を過適合させず、36 Entryの旧保存profileを診断入力として使った
+  - S_maxの証拠制約は#46の事前固定値を変更せず、ライブ結果の解釈と#48の証拠十分性判定へ引き継ぐ
+invariants:
+  line_pool_changed: false
+  gate_criteria_changed: false
+  external_api_calls: 0
+  embedding_api_calls: 0
+  realtime_line_evaluation_llm_calls: 0
