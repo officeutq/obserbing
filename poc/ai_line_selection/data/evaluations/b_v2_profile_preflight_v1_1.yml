@@ -1,0 +1,36 @@
+version: b-v2-profile-preflight-v1.1
+supersedes_runtime_schema_hash_only: b-v2-profile-preflight-v1
+issue: 42
+fixed_at: "2026-08-13"
+reason:
+  category: provider_schema_compatibility
+  first_run_completed_rows: 30
+  first_run_spend_jpy: 5.3757
+  first_run_tokens: 11384
+  error: OpenAI strict JSON Schema does not permit uniqueItems in this array context
+correction:
+  profile_version: b-v2-profile-primary-secondary-v1
+  removed_json_schema_keyword: uniqueItems
+  uniqueness_enforcement: local_contract_validation
+  semantic_requirement_changed: false
+  prompt_changed: false
+  taxonomy_changed: false
+  corrected_schema_sha256: a3b01c2b76333fda5d8f6d689283c5eab333430b78518fe96b11bea395c4e0a7
+resume:
+  versions: [b-v2-profile-primary-secondary-v1]
+  item_ids: [E001, E003, E008, E023, E032, E035, L021, L083, L102, L118]
+  repetitions: 3
+  normal_remaining_requests: 30
+  retry_including_remaining_requests: 60
+  cumulative_hard_token_limit: 50000
+  cumulative_issue_budget_jpy: 500.0
+unchanged:
+  - provider
+  - model
+  - transmitted_data
+  - saved_data
+  - prompt
+  - taxonomy
+  - item_ids
+  - repetitions
+  - token_and_cost_limits

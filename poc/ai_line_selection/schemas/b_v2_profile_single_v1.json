@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "obserbing://schemas/profile/b-v2-profile-single-v1",
+  "type": "object",
+  "required": ["schema_version", "abstraction", "domain"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["b-v2-profile-single-v1"] },
+    "abstraction": { "type": "string", "minLength": 2, "maxLength": 60 },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "choice", "relationship", "work", "time", "place", "object",
+        "self", "expectation", "change", "loss", "failure", "daily_life",
+        "uncertainty", "other", "unknown"
+      ]
+    }
+  }
+}

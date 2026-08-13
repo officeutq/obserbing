@@ -103,6 +103,21 @@ bundle exec ruby bin\ai_line_selection compare-safety-boundary `
 
 `candidate-full`は既存36日記、初回12 SAFETY、追加24境界ケースの計72件です。`additional`は追加24件だけを比較します。2026年8月13日の実API比較では、`additional-v3`が72件×3回の216実行を全件正しく分類し、SAFETY見逃し、通常投稿の過剰遮断、曖昧ケースのnormal通過をすべて0件にしました。実行条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、結果は[SAFETY追加PoC比較](../../docs/SAFETY_追加PoC比較.md)を参照してください。
 
+## B-v2 abstraction + domainスモーク
+
+Issue #42では、固定subset 10対象について、単一domainと`primary + secondary`の2 profile版を各3反復で比較します。実APIの前に`data/evaluations/b_v2_profile_preflight_v1.yml`をコミットし、通常60リクエスト、実使用50,000 token、500円を上限にします。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-b-v2-profile
+
+bundle exec ruby bin\ai_line_selection compare-b-v2-profile `
+  --allow-external-api
+```
+
+正規化結果は`results/b_v2_profile_<timestamp>_<suffix>`へ保存します。APIキー、認証ヘッダー、Provider生レスポンス、request IDは保存しません。設計と結果は[ B-v2 Profile表現比較](../../docs/B-v2_Profile表現比較.md)を参照してください。
+
+実APIスモークは60出力を26,006 token・12.1248円で完了し、#43へ渡す暫定版を`b-v2-profile-primary-secondary-v1`としました。追跡可能な正規化出力と集計は`data/evaluations/b_v2_profile_smoke_outputs_v1.jsonl`および`b_v2_profile_smoke_v1.yml`です。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
