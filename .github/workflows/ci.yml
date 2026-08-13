@@ -16,7 +16,7 @@ jobs:
         working-directory: backend
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -42,7 +42,7 @@ jobs:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -85,7 +85,7 @@ jobs:
         working-directory: .
 
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -101,3 +101,16 @@ jobs:
 
       - name: Run Rails tests
         run: bin/rails test
+
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Verify the integrated Docker environment
+        shell: pwsh
+        run: >-
+          ./scripts/verify-docker-environment.ps1
+          -ProjectName "obserbing-ci-${{ github.run_id }}-${{ github.run_attempt }}"

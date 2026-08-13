@@ -80,5 +80,6 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 - [AI基本設計](docs/design/AI基本設計.md)
 - [B-v2 AI選定基本設計](docs/design/ai/B-v2_AI選定基本設計.md)
 - [Reflective Distance 評価ルーブリック](docs/evaluation/Reflective_Distance_評価ルーブリック.md)
+- [Rails / Docker 開発手順](docs/development/Rails_Docker開発手順.md)
 
 PoC、比較、診断、Gate判定、Epic結果などの調査・意思決定履歴は[ドキュメント索引](docs/README.md)に集約する。

@@ -23,6 +23,8 @@
 5. 旧仕様
    - [`docs/archive/`](archive/)：現在の設計へ完全に置換され、通常の調査履歴として参照する必要もない旧仕様
 6. 開発運用
+   - [Rails / Docker 開発手順](development/Rails_Docker開発手順.md)：環境変数、起動、DB、検査手順
+   - [Rails / Docker 統合確認結果](development/Rails_Docker統合確認結果.md)：fresh clone相当の再現性・安全性確認
    - [ルートAGENTS.md](../AGENTS.md)：Issue、branch、PR等の開発運用ルール
    - `AGENTS.md`はプロダクト仕様ではない
 
@@ -50,6 +52,9 @@ docs/
 │  ├─ AI基本設計.md
 │  └─ ai/
 │     └─ B-v2_AI選定基本設計.md
+├─ development/
+│  ├─ Rails_Docker開発手順.md
+│  └─ Rails_Docker統合確認結果.md
 ├─ evaluation/
 ├─ research/
 │  └─ ai/

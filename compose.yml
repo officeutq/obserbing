@@ -10,6 +10,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       POSTGRES_DB: ${POSTGRES_DB:-obserbing_development}
+      POSTGRES_TEST_DB: ${POSTGRES_TEST_DB:-obserbing_test}
       POSTGRES_USER: ${POSTGRES_USER:-obserbing}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Copy .env.example to .env and set POSTGRES_PASSWORD}
       RAILS_ENV: development
