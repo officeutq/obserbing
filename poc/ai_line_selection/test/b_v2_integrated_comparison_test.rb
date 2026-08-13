@@ -20,6 +20,8 @@ class Bv2IntegratedComparisonTest < Minitest::Test
     assert_equal true, plan.fetch(:within_issue_budget)
     assert_equal true, plan.fetch(:within_epic_budget)
     assert_equal 0, plan.fetch(:realtime_line_evaluation_llm_calls)
+    assert_equal "additional-v3", plan.dig(:safety, "prompt_version")
+    assert_equal "additional-v3", plan.dig(:safety, "schema_version")
   end
 
   def test_external_run_requires_explicit_permission_before_creating_output

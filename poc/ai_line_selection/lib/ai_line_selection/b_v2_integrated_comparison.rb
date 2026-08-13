@@ -34,11 +34,17 @@ module AiLineSelection
       @guard = Bv2PolicyGuard.new(configuration: configuration)
       @schemas = SchemaRegistry.new(
         root_dir: configuration.root_dir,
-        files: { abstraction: "b_v2_profile_primary_secondary_v1.json" }
+        files: {
+          safety: "safety_additional_v3.json",
+          abstraction: "b_v2_profile_primary_secondary_v1.json"
+        }
       )
       @prompts = PromptRegistry.new(
         root_dir: configuration.root_dir,
-        files: { abstraction: "b_v2_profile_primary_secondary_v1.md" }
+        files: {
+          safety: "safety_additional_v3.md",
+          abstraction: "b_v2_profile_primary_secondary_v1.md"
+        }
       )
     end
 
@@ -78,7 +84,7 @@ module AiLineSelection
       }
     end
 
-    def call(output_dir:, resume: false)
+    def call(output_dir:, resume: false, repair_safety_overblocks: false)
       raise ExternalApiDisabledError.new(:integrated) unless @allow_external_api
       planned = plan
       unless planned.fetch(:within_issue_budget) && planned.fetch(:within_epic_budget)
@@ -95,9 +101,10 @@ module AiLineSelection
       precompute_line_profiles(client, line_profiles)
       line_index = load_or_build_line_index(client, line_profiles)
       records = load_jsonl("provider_outputs.jsonl")
-      run_outcomes(client, line_index, records)
-      summary = build_summary(line_profiles, line_index, records)
-      write_json("manifest.json", manifest(planned))
+      records, discarded_records = prepare_safety_repair(records, repair_safety_overblocks)
+      run_outcomes(client, line_index, records, discarded_records)
+      summary = build_summary(line_profiles, line_index, records, discarded_records)
+      write_json("manifest.json", manifest(planned, repair_safety_overblocks, discarded_records))
       write_json("summary.json", summary)
       summary.merge(results_directory: @output_dir)
     rescue AiLineSelection::Error => e
@@ -162,7 +169,7 @@ module AiLineSelection
       document
     end
 
-    def run_outcomes(client, line_index, records)
+    def run_outcomes(client, line_index, records, discarded_records)
       completed = records.to_h { |record| [[record.fetch("entry_id"), record.fetch("repetition")], record] }
       @data.entries.each_with_index do |entry, entry_index|
         REPETITIONS.times do |offset|
@@ -178,9 +185,28 @@ module AiLineSelection
                    end
           append_jsonl("provider_outputs.jsonl", record)
           records << stringify(record)
-          enforce_actual_limits!(load_jsonl("line_profiles.jsonl"), records, line_index.fetch("phase"))
+          enforce_actual_limits!(load_jsonl("line_profiles.jsonl"), records, line_index.fetch("phase"), discarded_records)
         end
       end
+    end
+
+    def prepare_safety_repair(records, enabled)
+      archived = load_jsonl("invalid_safety_outputs.jsonl")
+      return [records, archived] unless enabled
+
+      invalid = records.select do |record|
+        record.fetch("status") == "safety_stop" && record.fetch("safety_classification") == "indeterminate"
+      end
+      unless invalid.empty?
+        archived_by_slot = archived.to_h { |record| [[record.fetch("entry_id"), record.fetch("repetition")], record] }
+        invalid.each { |record| archived_by_slot[[record.fetch("entry_id"), record.fetch("repetition")]] ||= record }
+        archived = archived_by_slot.values.sort_by { |record| [record.fetch("entry_id"), record.fetch("repetition")] }
+        write_jsonl("invalid_safety_outputs.jsonl", archived)
+        invalid_slots = invalid.map { |record| [record.fetch("entry_id"), record.fetch("repetition")] }.to_h { |slot| [slot, true] }
+        records = records.reject { |record| invalid_slots.key?([record.fetch("entry_id"), record.fetch("repetition")]) }
+        write_jsonl("provider_outputs.jsonl", records)
+      end
+      [records, archived]
     end
 
     def build_normal_outcome(client, line_index, entry, repetition, safety, started)
@@ -281,10 +307,10 @@ module AiLineSelection
       Bv2SelectorComparison::DOMAIN_MAP.fetch(line.fetch("theme"), "other")
     end
 
-    def build_summary(line_profiles, line_index, records)
+    def build_summary(line_profiles, line_index, records, discarded_records)
       normal = records.select { |record| record.fetch("safety_classification") == "normal" }
       selected = normal.select { |record| record.fetch("status") == "line" }
-      usages = all_usage(line_profiles, records, line_index.fetch("phase"))
+      usages = all_usage(line_profiles, records, line_index.fetch("phase"), discarded_records)
       post_usages = records.flat_map { |record| record.fetch("phases").values.map { |phase| phase.fetch("usage") } }
       {
         operation: VERSION,
@@ -293,7 +319,9 @@ module AiLineSelection
         execution: { entry_count: @data.entries.length, repetitions: REPETITIONS, outcome_slots: records.length },
         safety: {
           normal_count: normal.length,
-          overblock_count: records.count { |record| record.fetch("safety_classification") != "normal" }
+          overblock_count: records.count { |record| record.fetch("safety_classification") != "normal" },
+          discarded_invalid_prompt_attempt_count: discarded_records.length,
+          discarded_attempts_preserved_in: discarded_records.empty? ? nil : "invalid_safety_outputs.jsonl"
         },
         profile: {
           version: PROFILE_VERSION,
@@ -337,16 +365,18 @@ module AiLineSelection
       }
     end
 
-    def all_usage(line_profiles, records, line_index_phase)
+    def all_usage(line_profiles, records, line_index_phase, discarded_records = [])
       line_profiles.map { |row| row.fetch("phase") } +
         [line_index_phase] +
-        records.flat_map { |record| record.fetch("phases").values }
+        records.flat_map { |record| record.fetch("phases").values } +
+        discarded_records.flat_map { |record| record.fetch("phases").values }
     end
 
-    def enforce_actual_limits!(line_profiles, records, line_index_phase)
+    def enforce_actual_limits!(line_profiles, records, line_index_phase, discarded_records = [])
       phases = line_profiles.map { |row| row.fetch("phase") }
       phases << line_index_phase if line_index_phase
       phases.concat(records.flat_map { |record| record.fetch("phases").values })
+      phases.concat(discarded_records.flat_map { |record| record.fetch("phases").values })
       tokens = phases.sum { |phase| phase.dig("usage", "input_units") + phase.dig("usage", "output_units") }
       cost = phases.sum { |phase| phase.dig("usage", "estimated_cost_jpy") }
       raise ConfigurationError.new("B-v2 integrated run exceeded token cap", details: { actual: tokens, maximum: MAX_TOTAL_TOKENS }) if tokens > MAX_TOTAL_TOKENS
@@ -365,7 +395,10 @@ module AiLineSelection
     end
 
     def safety_settings
-      @safety_settings ||= @configuration.safety_provider("openai")
+      @safety_settings ||= @configuration.safety_provider("openai").merge(
+        "prompt_version" => "additional-v3",
+        "schema_version" => "additional-v3"
+      )
     end
 
     def embedding_settings
@@ -395,10 +428,10 @@ module AiLineSelection
     end
 
     def safe_settings(settings)
-      settings.slice("adapter", "provider", "model", "api", "reasoning_effort", "dimensions", "max_output_tokens", "timeout_seconds", "max_retries", "pricing")
+      settings.slice("adapter", "provider", "model", "api", "reasoning_effort", "dimensions", "max_output_tokens", "timeout_seconds", "max_retries", "pricing", "prompt_version", "schema_version")
     end
 
-    def manifest(planned)
+    def manifest(planned, repair_safety_overblocks, discarded_records)
       {
         created_at: @now.call.iso8601,
         operation: VERSION,
@@ -414,6 +447,9 @@ module AiLineSelection
           selector: Digest::SHA256.file(evaluation_path("b_v2_selector_criteria_v1.yml")).hexdigest
         },
         line_pool_changed: false,
+        safety_boundary: "additional-v3",
+        safety_repair_applied: repair_safety_overblocks,
+        discarded_invalid_prompt_attempt_count: discarded_records.length,
         provider_raw_response_saved: false,
         api_key_saved: false,
         request_id_saved: false
@@ -471,6 +507,10 @@ module AiLineSelection
 
     def append_jsonl(filename, value)
       File.open(artifact_path(filename), "a:UTF-8") { |file| file.puts(JSON.generate(value)) }
+    end
+
+    def write_jsonl(filename, values)
+      File.write(artifact_path(filename), values.map { |value| JSON.generate(value) }.join("\n") + "\n", mode: "w:UTF-8")
     end
 
     def write_json(filename, value)

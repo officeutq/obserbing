@@ -310,10 +310,11 @@ module AiLineSelection
     end
 
     def run_b_v2_integrated
-      options = { output_dir: nil, resume: false, allow_external_api: false }
+      options = { output_dir: nil, resume: false, allow_external_api: false, repair_safety_overblocks: false }
       OptionParser.new do |parser|
         parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
         parser.on("--resume") { options[:resume] = true }
+        parser.on("--repair-safety-overblocks") { options[:repair_safety_overblocks] = true }
         parser.on("--allow-external-api") { options[:allow_external_api] = true }
       end.parse!(@argv)
       raise ConfigurationError.new("run-b-v2-integrated requires --output-dir") unless options[:output_dir]
@@ -322,7 +323,11 @@ module AiLineSelection
         configuration: @configuration,
         allow_external_api: options.fetch(:allow_external_api),
         progress: ->(message) { @error_output.puts(message) }
-      ).call(output_dir: options.fetch(:output_dir), resume: options.fetch(:resume)))
+      ).call(
+        output_dir: options.fetch(:output_dir),
+        resume: options.fetch(:resume),
+        repair_safety_overblocks: options.fetch(:repair_safety_overblocks)
+      ))
     end
 
     def apply_abstraction_preliminary
