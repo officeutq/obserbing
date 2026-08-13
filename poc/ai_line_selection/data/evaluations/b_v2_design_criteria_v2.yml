@@ -58,7 +58,7 @@ gate_a:
     acceptable_outcome:
       minimum_rate: 0.70
       minimum_count_for_108: 76
-      minimum_improvement_points_over_baseline: 15.0
+      minimum_improvement_points_over_baseline: 20.0
     direct_restatement_too_close:
       minimum_reduction_rate_from_baseline: 0.30
       maximum_count_for_108: 20

@@ -309,7 +309,7 @@ Gate Aは、現96 Lineの製品品質を認定するものではない。B-v1診
 
 `architecture_candidate`には、次をすべて要求する。
 
-- acceptable outcome率70%以上（76 / 108以上）、かつbaselineから15ポイント以上改善
+- acceptable outcome率70%以上（76 / 108以上）、かつbaseline 50.00%から20ポイント以上改善
 - `direct_restatement / too_close`をbaselineから30%以上削減（20件以下）
 - `too_far + unrelated`をbaseline比+5ポイント以内（30件以下）、かつ`unrelated`12件以下
 - acceptableな`analogical_transfer`をbaselineの90%以上保持（32件以上）、かつanalogical内acceptable率90%以上

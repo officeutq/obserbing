@@ -54,7 +54,13 @@ class BV2DesignCriteriaArtifactTest < Minitest::Test
 
     assert_equal 0.70, candidate.dig("acceptable_outcome", "minimum_rate")
     assert_equal 76, candidate.dig("acceptable_outcome", "minimum_count_for_108")
-    assert_equal 15.0, candidate.dig("acceptable_outcome", "minimum_improvement_points_over_baseline")
+    assert_equal 0.50, @criteria.dig("gate_a", "baseline", "acceptable_rate")
+    assert_equal 20.0, candidate.dig("acceptable_outcome", "minimum_improvement_points_over_baseline")
+    assert_in_delta(
+      candidate.dig("acceptable_outcome", "minimum_rate"),
+      @criteria.dig("gate_a", "baseline", "acceptable_rate") +
+        (candidate.dig("acceptable_outcome", "minimum_improvement_points_over_baseline") / 100.0)
+    )
     assert_equal 0.30, candidate.dig("direct_restatement_too_close", "minimum_reduction_rate_from_baseline")
     assert_equal 20, candidate.dig("direct_restatement_too_close", "maximum_count_for_108")
     assert_equal 30, candidate.dig("too_far_plus_unrelated", "maximum_count_for_108")
