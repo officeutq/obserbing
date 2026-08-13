@@ -1,0 +1,431 @@
+{
+  "setting_count": 825,
+  "current_setting": {
+    "setting_id": "A0450_S0550_N020",
+    "a_min": 0.45,
+    "s_max": 0.55,
+    "top_n": 20,
+    "acceptable_count": 51,
+    "acceptable_rate": 0.472222,
+    "all_three_repetitions_acceptable_entry_count": 4,
+    "all_three_repetitions_acceptable_entry_rate": 0.111111,
+    "semantic_silence_count": 3,
+    "semantic_silence_rate": 0.027778,
+    "eligible_count": {
+      "p50": 6,
+      "p95": 14,
+      "minimum": 0,
+      "maximum": 20,
+      "zero_count": 3,
+      "zero_rate": 0.027778
+    },
+    "distance_counts": {
+      "just_right": 51,
+      "not_obserbing": 7,
+      "semantic_silence": 3,
+      "too_close": 19,
+      "too_far": 28
+    },
+    "relation_type_counts": {
+      "analogical_transfer": 31,
+      "direct_restatement": 19,
+      "same_domain": 20,
+      "semantic_silence": 3,
+      "unrelated": 7,
+      "weak_connection": 28
+    },
+    "analogical_transfer_count": 31,
+    "low_confidence_occurrence_count": 8,
+    "low_confidence_pair_count": 8,
+    "selector_opportunity_lower_bound": {
+      "eligible_candidate_occurrences": 729,
+      "labeled_eligible_candidate_occurrences": 553,
+      "labeled_eligible_coverage_rate": 0.758573,
+      "slots_with_known_acceptable_candidate": 92,
+      "uniform_missed_known_acceptable_count": 41,
+      "uniform_missed_known_acceptable_rate": 0.445652,
+      "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+    },
+    "rank_by_acceptable_then_all_three": 391,
+    "acceptable_percentile": 0.539394
+  },
+  "best_point": {
+    "setting_id": "A0425_S0425_N010",
+    "a_min": 0.425,
+    "s_max": 0.425,
+    "top_n": 10,
+    "acceptable_count": 69,
+    "acceptable_rate": 0.638889,
+    "all_three_repetitions_acceptable_entry_count": 15,
+    "all_three_repetitions_acceptable_entry_rate": 0.416667,
+    "semantic_silence_count": 4,
+    "semantic_silence_rate": 0.037037,
+    "eligible_count": {
+      "p50": 7,
+      "p95": 9,
+      "minimum": 0,
+      "maximum": 10,
+      "zero_count": 4,
+      "zero_rate": 0.037037
+    },
+    "distance_counts": {
+      "just_right": 69,
+      "not_obserbing": 6,
+      "semantic_silence": 4,
+      "too_close": 7,
+      "too_far": 22
+    },
+    "relation_type_counts": {
+      "analogical_transfer": 44,
+      "direct_restatement": 7,
+      "same_domain": 25,
+      "semantic_silence": 4,
+      "unrelated": 6,
+      "weak_connection": 22
+    },
+    "analogical_transfer_count": 44,
+    "low_confidence_occurrence_count": 11,
+    "low_confidence_pair_count": 11,
+    "selector_opportunity_lower_bound": {
+      "eligible_candidate_occurrences": 689,
+      "labeled_eligible_candidate_occurrences": 520,
+      "labeled_eligible_coverage_rate": 0.754717,
+      "slots_with_known_acceptable_candidate": 100,
+      "uniform_missed_known_acceptable_count": 31,
+      "uniform_missed_known_acceptable_rate": 0.31,
+      "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+    }
+  },
+  "near_best_definition": {
+    "acceptable_rate_within_points_of_global_maximum": 2.0,
+    "four_neighbor_connectivity_within_each_top_n_panel": true,
+    "threshold_rate": 0.618889
+  },
+  "near_best_region_count": 3,
+  "largest_near_best_region": {
+    "top_n": 10,
+    "cell_count": 2,
+    "a_min_range": [
+      0.425,
+      0.425
+    ],
+    "s_max_range": [
+      0.4,
+      0.425
+    ],
+    "acceptable_rate_minimum": 0.62037,
+    "acceptable_rate_mean": 0.62963,
+    "acceptable_rate_maximum": 0.638889,
+    "settings": [
+      "A0425_S0400_N010",
+      "A0425_S0425_N010"
+    ]
+  },
+  "top_n_influence": [
+    {
+      "top_n": 5,
+      "acceptable_rate_minimum": 0.055556,
+      "acceptable_rate_mean": 0.46358,
+      "acceptable_rate_maximum": 0.62037,
+      "semantic_silence_rate_mean": 0.227778,
+      "best_setting": {
+        "setting_id": "A0475_S0400_N005",
+        "a_min": 0.475,
+        "s_max": 0.4,
+        "top_n": 5,
+        "acceptable_count": 67,
+        "acceptable_rate": 0.62037,
+        "all_three_repetitions_acceptable_entry_count": 11,
+        "all_three_repetitions_acceptable_entry_rate": 0.305556,
+        "semantic_silence_count": 13,
+        "semantic_silence_rate": 0.12037,
+        "eligible_count": {
+          "p50": 2,
+          "p95": 4,
+          "minimum": 0,
+          "maximum": 5,
+          "zero_count": 13,
+          "zero_rate": 0.12037
+        },
+        "distance_counts": {
+          "just_right": 67,
+          "not_obserbing": 6,
+          "semantic_silence": 13,
+          "too_close": 6,
+          "too_far": 16
+        },
+        "relation_type_counts": {
+          "analogical_transfer": 50,
+          "direct_restatement": 6,
+          "same_domain": 17,
+          "semantic_silence": 13,
+          "unrelated": 6,
+          "weak_connection": 16
+        },
+        "analogical_transfer_count": 50,
+        "low_confidence_occurrence_count": 16,
+        "low_confidence_pair_count": 13,
+        "selector_opportunity_lower_bound": {
+          "eligible_candidate_occurrences": 223,
+          "labeled_eligible_candidate_occurrences": 198,
+          "labeled_eligible_coverage_rate": 0.887892,
+          "slots_with_known_acceptable_candidate": 81,
+          "uniform_missed_known_acceptable_count": 14,
+          "uniform_missed_known_acceptable_rate": 0.17284,
+          "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+        }
+      }
+    },
+    {
+      "top_n": 10,
+      "acceptable_rate_minimum": 0.055556,
+      "acceptable_rate_mean": 0.457239,
+      "acceptable_rate_maximum": 0.638889,
+      "semantic_silence_rate_mean": 0.221717,
+      "best_setting": {
+        "setting_id": "A0425_S0425_N010",
+        "a_min": 0.425,
+        "s_max": 0.425,
+        "top_n": 10,
+        "acceptable_count": 69,
+        "acceptable_rate": 0.638889,
+        "all_three_repetitions_acceptable_entry_count": 15,
+        "all_three_repetitions_acceptable_entry_rate": 0.416667,
+        "semantic_silence_count": 4,
+        "semantic_silence_rate": 0.037037,
+        "eligible_count": {
+          "p50": 7,
+          "p95": 9,
+          "minimum": 0,
+          "maximum": 10,
+          "zero_count": 4,
+          "zero_rate": 0.037037
+        },
+        "distance_counts": {
+          "just_right": 69,
+          "not_obserbing": 6,
+          "semantic_silence": 4,
+          "too_close": 7,
+          "too_far": 22
+        },
+        "relation_type_counts": {
+          "analogical_transfer": 44,
+          "direct_restatement": 7,
+          "same_domain": 25,
+          "semantic_silence": 4,
+          "unrelated": 6,
+          "weak_connection": 22
+        },
+        "analogical_transfer_count": 44,
+        "low_confidence_occurrence_count": 11,
+        "low_confidence_pair_count": 11,
+        "selector_opportunity_lower_bound": {
+          "eligible_candidate_occurrences": 689,
+          "labeled_eligible_candidate_occurrences": 520,
+          "labeled_eligible_coverage_rate": 0.754717,
+          "slots_with_known_acceptable_candidate": 100,
+          "uniform_missed_known_acceptable_count": 31,
+          "uniform_missed_known_acceptable_rate": 0.31,
+          "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+        }
+      }
+    },
+    {
+      "top_n": 20,
+      "acceptable_rate_minimum": 0.055556,
+      "acceptable_rate_mean": 0.402974,
+      "acceptable_rate_maximum": 0.611111,
+      "semantic_silence_rate_mean": 0.221717,
+      "best_setting": {
+        "setting_id": "A0475_S0400_N020",
+        "a_min": 0.475,
+        "s_max": 0.4,
+        "top_n": 20,
+        "acceptable_count": 66,
+        "acceptable_rate": 0.611111,
+        "all_three_repetitions_acceptable_entry_count": 13,
+        "all_three_repetitions_acceptable_entry_rate": 0.361111,
+        "semantic_silence_count": 12,
+        "semantic_silence_rate": 0.111111,
+        "eligible_count": {
+          "p50": 2,
+          "p95": 7,
+          "minimum": 0,
+          "maximum": 12,
+          "zero_count": 12,
+          "zero_rate": 0.111111
+        },
+        "distance_counts": {
+          "just_right": 66,
+          "not_obserbing": 5,
+          "semantic_silence": 12,
+          "too_close": 5,
+          "too_far": 20
+        },
+        "relation_type_counts": {
+          "analogical_transfer": 50,
+          "direct_restatement": 5,
+          "same_domain": 16,
+          "semantic_silence": 12,
+          "unrelated": 5,
+          "weak_connection": 20
+        },
+        "analogical_transfer_count": 50,
+        "low_confidence_occurrence_count": 17,
+        "low_confidence_pair_count": 14,
+        "selector_opportunity_lower_bound": {
+          "eligible_candidate_occurrences": 322,
+          "labeled_eligible_candidate_occurrences": 266,
+          "labeled_eligible_coverage_rate": 0.826087,
+          "slots_with_known_acceptable_candidate": 82,
+          "uniform_missed_known_acceptable_count": 16,
+          "uniform_missed_known_acceptable_rate": 0.195122,
+          "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+        }
+      }
+    },
+    {
+      "top_n": 40,
+      "acceptable_rate_minimum": 0.055556,
+      "acceptable_rate_mean": 0.392537,
+      "acceptable_rate_maximum": 0.611111,
+      "semantic_silence_rate_mean": 0.221717,
+      "best_setting": {
+        "setting_id": "A0475_S0400_N040",
+        "a_min": 0.475,
+        "s_max": 0.4,
+        "top_n": 40,
+        "acceptable_count": 66,
+        "acceptable_rate": 0.611111,
+        "all_three_repetitions_acceptable_entry_count": 13,
+        "all_three_repetitions_acceptable_entry_rate": 0.361111,
+        "semantic_silence_count": 12,
+        "semantic_silence_rate": 0.111111,
+        "eligible_count": {
+          "p50": 2,
+          "p95": 7,
+          "minimum": 0,
+          "maximum": 12,
+          "zero_count": 12,
+          "zero_rate": 0.111111
+        },
+        "distance_counts": {
+          "just_right": 66,
+          "not_obserbing": 5,
+          "semantic_silence": 12,
+          "too_close": 5,
+          "too_far": 20
+        },
+        "relation_type_counts": {
+          "analogical_transfer": 50,
+          "direct_restatement": 5,
+          "same_domain": 16,
+          "semantic_silence": 12,
+          "unrelated": 5,
+          "weak_connection": 20
+        },
+        "analogical_transfer_count": 50,
+        "low_confidence_occurrence_count": 17,
+        "low_confidence_pair_count": 14,
+        "selector_opportunity_lower_bound": {
+          "eligible_candidate_occurrences": 322,
+          "labeled_eligible_candidate_occurrences": 266,
+          "labeled_eligible_coverage_rate": 0.826087,
+          "slots_with_known_acceptable_candidate": 82,
+          "uniform_missed_known_acceptable_count": 16,
+          "uniform_missed_known_acceptable_rate": 0.195122,
+          "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+        }
+      }
+    },
+    {
+      "top_n": 96,
+      "acceptable_rate_minimum": 0.055556,
+      "acceptable_rate_mean": 0.392929,
+      "acceptable_rate_maximum": 0.611111,
+      "semantic_silence_rate_mean": 0.221717,
+      "best_setting": {
+        "setting_id": "A0475_S0400_N096",
+        "a_min": 0.475,
+        "s_max": 0.4,
+        "top_n": 96,
+        "acceptable_count": 66,
+        "acceptable_rate": 0.611111,
+        "all_three_repetitions_acceptable_entry_count": 13,
+        "all_three_repetitions_acceptable_entry_rate": 0.361111,
+        "semantic_silence_count": 12,
+        "semantic_silence_rate": 0.111111,
+        "eligible_count": {
+          "p50": 2,
+          "p95": 7,
+          "minimum": 0,
+          "maximum": 12,
+          "zero_count": 12,
+          "zero_rate": 0.111111
+        },
+        "distance_counts": {
+          "just_right": 66,
+          "not_obserbing": 5,
+          "semantic_silence": 12,
+          "too_close": 5,
+          "too_far": 20
+        },
+        "relation_type_counts": {
+          "analogical_transfer": 50,
+          "direct_restatement": 5,
+          "same_domain": 16,
+          "semantic_silence": 12,
+          "unrelated": 5,
+          "weak_connection": 20
+        },
+        "analogical_transfer_count": 50,
+        "low_confidence_occurrence_count": 17,
+        "low_confidence_pair_count": 14,
+        "selector_opportunity_lower_bound": {
+          "eligible_candidate_occurrences": 322,
+          "labeled_eligible_candidate_occurrences": 266,
+          "labeled_eligible_coverage_rate": 0.826087,
+          "slots_with_known_acceptable_candidate": 82,
+          "uniform_missed_known_acceptable_count": 16,
+          "uniform_missed_known_acceptable_rate": 0.195122,
+          "interpretation": "lower_bound_because_unselected_unlabeled_pairs_are_not_assumed_bad"
+        }
+      }
+    }
+  ],
+  "tradeoff": {
+    "too_close_too_far_pearson_correlation": -0.429346,
+    "raising_a_min_effect_on_too_far": {
+      "comparison_count": 750,
+      "increased_count": 90,
+      "unchanged_count": 71,
+      "decreased_count": 589,
+      "mean_occurrence_change": -3.456
+    },
+    "relaxing_s_max_effect_on_too_close": {
+      "comparison_count": 770,
+      "increased_count": 462,
+      "unchanged_count": 283,
+      "decreased_count": 25,
+      "mean_occurrence_change": 1.412987
+    }
+  },
+  "quality_evidence": {
+    "selected_pair_label_coverage_rate": 1.0,
+    "similarity_and_quality_stored_separately": true,
+    "codex_labels_are_provisional": true
+  },
+  "version": "b-v2-band-sensitivity-analysis-v1",
+  "issue": 59,
+  "post_hoc_follow_up": true,
+  "changes_existing_gate_a_or_epic_40_decision": false,
+  "network_call_performed": false,
+  "external_api_calls_after_entry_embedding_completion": 0,
+  "provisional_quality_judgments": true,
+  "human_quality_judgments_preserved_where_available": true,
+  "source_hashes": {
+    "selections_sha256": "ab21a1d68666a5e2eb7470480f45f629625672fc498786e8047bcdcaf35dd015",
+    "judgments_sha256": "64b701367f40776441704e9f4002817c707411c70b8b81e64db346150cf995d1",
+    "pair_similarities_sha256": "ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6"
+  }
+}

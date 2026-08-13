@@ -1,0 +1,70 @@
+version: b-v2-band-sensitivity-preflight-v1
+issue: 59
+parent_epic: 40
+status: committed_before_embedding_api
+fixed_at: "2026-08-13"
+purpose: complete_only_missing_issue_46_entry_embeddings_for_post_hoc_band_sensitivity
+source:
+  issue: 46
+  results_directory: results/b_v2_integrated_live_20260813_issue46
+  provider_outputs_sha256: f6ccef9953bc3b50f02ac391b8094c5b61f89ff161e992295abfacbab410b1e0
+  line_index_sha256_required: f36a277daf2d9cf0d6b4d5bfb602f7070387f889d43d3247516f294f5841d2fa
+  line_index_regeneration_allowed: false
+embedding:
+  provider: openai
+  model: text-embedding-3-small
+  dimensions: 1536
+  distance: cosine
+  endpoint: /v1/embeddings
+  raw_entry_inputs: 36
+  abstraction_outcome_inputs: 108
+  total_inputs: 144
+  batching: one_synchronous_request
+  normal_requests: 1
+  maximum_retry_per_failed_request: 1
+  maximum_requests_including_retry: 2
+pricing:
+  checked_at: "2026-08-13"
+  input_per_million_usd: 0.02
+  usd_to_jpy: 150.0
+  source: https://developers.openai.com/api/docs/models/text-embedding-3-small
+limits:
+  hard_cost_jpy: 100.0
+  total_utf8_input_bytes: 9465
+  conservative_input_token_cap_including_retry: 18930
+  conservative_cost_jpy_including_retry: 0.05679
+  actual_usage_and_retries_included: true
+  stop_if_line_index_hash_mismatch: true
+allowed_external_api:
+  embedding: true
+prohibited_external_api:
+  safety: true
+  abstraction_and_domain: true
+  line_profile: true
+  line_embedding: true
+  other_llm: true
+outputs:
+  local_entry_vectors: entry_vectors.json
+  committed_entry_vectors: false
+  pair_similarity_rows: 10368
+  pair_similarity_fields:
+    - entry_id
+    - repetition
+    - line_id
+    - abstraction_similarity
+    - surface_similarity
+  pair_similarity_is_offline_source_of_truth: true
+data_handling:
+  source: fixed_synthetic
+  provider_raw_response_saved: false
+  api_key_saved: false
+  authorization_header_saved: false
+  request_id_saved: false
+frozen_non_embedding_components:
+  profile: b-v2-profile-primary-secondary-v1
+  line_pool: current_approved_96_unchanged
+  guard_policy: b-v2-guard-policy-v1
+  selector: b-v2-selector-v1/uniform
+  rubric: reflective-distance-v1
+  existing_gate_a_changed: false
+  epic_40_outcome_changed: false

@@ -1,0 +1,103 @@
+{
+  "version": "b-v2-band-sensitivity-mechanical-v1",
+  "issue": 59,
+  "purpose": "post_hoc_follow_up_diagnostic",
+  "changes_existing_gate_a_or_epic_40_decision": false,
+  "network_call_performed": false,
+  "external_api_calls": 0,
+  "profile_version": "b-v2-profile-primary-secondary-v1",
+  "embedding_version": "b-v2-openai-small-dual-cosine-v1",
+  "policy_version": "b-v2-guard-policy-v1",
+  "selector_version": "b-v2-selector-v1",
+  "selector_strategy": "uniform",
+  "line_pool_count": 96,
+  "outcome_slots": 108,
+  "pair_similarity_count": 10368,
+  "grid": {
+    "a_min_values": [
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475,
+      0.5,
+      0.525,
+      0.55,
+      0.575,
+      0.6
+    ],
+    "s_max_values": [
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475,
+      0.5,
+      0.525,
+      0.55,
+      0.575,
+      0.6,
+      0.625,
+      0.65,
+      0.675,
+      0.7
+    ],
+    "top_n_values": [
+      5,
+      10,
+      20,
+      40,
+      96
+    ],
+    "setting_count": 825
+  },
+  "current_setting": {
+    "a_min": 0.45,
+    "s_max": 0.55,
+    "top_n": 20
+  },
+  "current_setting_reproduction": {
+    "exact": true,
+    "mismatch_count": 0,
+    "mismatch_examples": [],
+    "selected_count": 105,
+    "semantic_silence_count": 3
+  },
+  "quality_labels": {
+    "selected_unique_pair_count": 587,
+    "already_labeled_pair_count": 143,
+    "new_codex_provisional_judgment_required_count": 444,
+    "existing_low_confidence_pair_count": 8,
+    "all_judgments_are_separate_from_similarity": true
+  },
+  "separation_of_evidence": {
+    "similarity": "provider_cosine_from_saved_pair_artifact",
+    "quality": "reflective-distance-v1 judgment artifact",
+    "similarity_used_as_quality_label": false
+  },
+  "source_hashes": {
+    "issue_46_provider_outputs_sha256": "f6ccef9953bc3b50f02ac391b8094c5b61f89ff161e992295abfacbab410b1e0",
+    "issue_46_line_index_sha256": "f36a277daf2d9cf0d6b4d5bfb602f7070387f889d43d3247516f294f5841d2fa",
+    "completion_summary_sha256": "c3e1ccf862742e93434b173f46782b73727c9b2bd01f495865b9718b97daa0d5",
+    "completion_pair_similarities_sha256": "ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6",
+    "entries_sha256": "8ca60da809022778f2f1474f2c20525748b1da7f90fec52d565a0ef58cd8e181",
+    "lines_sha256": "c2c4814d0f159daf989a21e17413b008a822533ee5c843fbda00d658cfff4232"
+  },
+  "artifact_hashes": {
+    "pair_similarities_sha256": "ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6",
+    "selections_sha256": "ab21a1d68666a5e2eb7470480f45f629625672fc498786e8047bcdcaf35dd015",
+    "mechanical_sha256": "4a19c50a75a20955dac7d202a1b1c6dc92519302365478dbd8613ecddb417f47",
+    "pair_judgments_sha256": "eeccd734cfd64f745365de67bd50c58b3ed9ebb7250b91b2e6bb8c387d3e8ab6",
+    "quality_sha256": "2ed902fe202e4bdc997efb2bd5aa879b6c9c9703683deacf3c26773f315ff2a0",
+    "heatmaps_sha256": "6cb720d679e0f5d25cb8f3aa176febc5b959977dde2c4b11593689173a426855",
+    "analysis_sha256": "5cb630883fe6da2b293c3fea8191092b0ba4e6d8945dcfc7ff1037ada4c1d88a"
+  },
+  "offline_evaluation": {
+    "completed": true,
+    "setting_count": 825,
+    "external_api_calls": 0,
+    "selected_pair_label_coverage_rate": 1.0
+  }
+}

@@ -1,0 +1,45 @@
+version: b-v2-band-sensitivity-conclusion-v1
+issue: 59
+diagnosis: selector_review_needed
+post_hoc_follow_up: true
+changes_existing_gate_a_or_epic_40_decision: false
+evidence:
+  current_setting:
+    a_min: 0.45
+    s_max: 0.55
+    top_n: 20
+    acceptable: 51/108
+    acceptable_rate: 0.472222
+  best_point:
+    a_min: 0.425
+    s_max: 0.425
+    top_n: 10
+    acceptable: 69/108
+    acceptable_rate: 0.638889
+    improvement_points_over_current: 16.6667
+  largest_near_best_region:
+    definition: within 2 percentage points of the global best with four-neighbor connectivity per Top N panel
+    top_n: 10
+    cell_count: 2
+    a_min_range: [0.425, 0.425]
+    s_max_range: [0.400, 0.425]
+    acceptable_rate_range: [0.620370, 0.638889]
+    broad_stable_region: false
+  best_point_selector_opportunity_lower_bound:
+    labeled_eligible_coverage_rate: 0.754717
+    slots_with_known_acceptable_candidate: 100
+    uniform_missed_known_acceptable_count: 31
+    uniform_missed_known_acceptable_rate: 0.31
+  tradeoff:
+    too_close_too_far_pearson_correlation: -0.429346
+    current_too_close: 19
+    best_too_close: 7
+    current_too_far: 28
+    best_too_far: 22
+interpretation:
+  - Band tuning materially improves the fixed current point, so this evidence does not support rejecting the band-pass idea itself.
+  - The near-best plateau is only two adjacent cells and the best point remains below 70%, so a band-only live re-PoC is not the strongest next step.
+  - Even at the best point, uniform selection misses a known acceptable eligible Line in 31 of 100 slots where one is known to exist; this is a lower bound because not every eligible pair is labeled.
+  - The next experiment should review selector behavior offline on the saved pair matrix before any new external API execution.
+next_recommended_action: Compare deterministic or quality-aware lightweight selectors offline while fixing the pair similarities, profile, Line pool, policy, and reflective-distance-v1 labels.
+external_api_calls_for_conclusion: 0

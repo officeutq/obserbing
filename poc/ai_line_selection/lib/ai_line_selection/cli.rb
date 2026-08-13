@@ -39,6 +39,11 @@ module AiLineSelection
       when "compare-b-v2-b-v1" then compare_b_v2_b_v1
       when "evaluate-b-v2-gate-a" then evaluate_b_v2_gate_a
       when "decide-b-v2-line-pool-transition" then decide_b_v2_line_pool_transition
+      when "plan-b-v2-band-sensitivity" then plan_b_v2_band_sensitivity
+      when "complete-b-v2-entry-embeddings" then complete_b_v2_entry_embeddings
+      when "prepare-b-v2-band-sweep" then prepare_b_v2_band_sweep
+      when "apply-b-v2-band-sweep-codex-review" then apply_b_v2_band_sweep_codex_review
+      when "evaluate-b-v2-band-sweep" then evaluate_b_v2_band_sweep
       when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
@@ -375,6 +380,92 @@ module AiLineSelection
         parser.on("--output FILE") { |value| options[:output] = value }
       end.parse!(@argv)
       print_json(Bv2LinePoolTransition.new(configuration: @configuration).call(output_path: options[:output]))
+    end
+
+    def plan_b_v2_band_sensitivity
+      options = { results: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+      end.parse!(@argv)
+      raise ConfigurationError.new("plan-b-v2-band-sensitivity requires --results") unless options[:results]
+
+      print_json(Bv2EntryEmbeddingCompletion.new(
+        configuration: @configuration,
+        issue_46_results_dir: options.fetch(:results)
+      ).plan)
+    end
+
+    def complete_b_v2_entry_embeddings
+      options = { results: nil, output_dir: nil, allow_external_api: false }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+        parser.on("--allow-external-api") { options[:allow_external_api] = true }
+      end.parse!(@argv)
+      unless options[:results] && options[:output_dir]
+        raise ConfigurationError.new("complete-b-v2-entry-embeddings requires --results and --output-dir")
+      end
+
+      print_json(Bv2EntryEmbeddingCompletion.new(
+        configuration: @configuration,
+        issue_46_results_dir: options.fetch(:results),
+        allow_external_api: options.fetch(:allow_external_api)
+      ).call(output_dir: options.fetch(:output_dir)))
+    end
+
+    def prepare_b_v2_band_sweep
+      options = { results: nil, completion_results: nil, output_dir: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--completion-results DIRECTORY") { |value| options[:completion_results] = value }
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+      end.parse!(@argv)
+      unless options.values_at(:results, :completion_results, :output_dir).all?
+        raise ConfigurationError.new("prepare-b-v2-band-sweep requires --results, --completion-results and --output-dir")
+      end
+
+      print_json(Bv2BandSensitivity.new(
+        configuration: @configuration,
+        issue_46_results_dir: options.fetch(:results),
+        completion_results_dir: options.fetch(:completion_results)
+      ).prepare(output_dir: options.fetch(:output_dir)))
+    end
+
+    def apply_b_v2_band_sweep_codex_review
+      options = { results: nil, completion_results: nil, output_dir: nil, review: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--completion-results DIRECTORY") { |value| options[:completion_results] = value }
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+        parser.on("--review FILE") { |value| options[:review] = value }
+      end.parse!(@argv)
+      unless options.values_at(:results, :completion_results, :output_dir, :review).all?
+        raise ConfigurationError.new("apply-b-v2-band-sweep-codex-review requires --results, --completion-results, --output-dir and --review")
+      end
+
+      print_json(Bv2BandSensitivity.new(
+        configuration: @configuration,
+        issue_46_results_dir: options.fetch(:results),
+        completion_results_dir: options.fetch(:completion_results)
+      ).apply_codex_review(output_dir: options.fetch(:output_dir), review_path: options.fetch(:review)))
+    end
+
+    def evaluate_b_v2_band_sweep
+      options = { results: nil, completion_results: nil, output_dir: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--completion-results DIRECTORY") { |value| options[:completion_results] = value }
+        parser.on("--output-dir DIRECTORY") { |value| options[:output_dir] = value }
+      end.parse!(@argv)
+      unless options.values_at(:results, :completion_results, :output_dir).all?
+        raise ConfigurationError.new("evaluate-b-v2-band-sweep requires --results, --completion-results and --output-dir")
+      end
+
+      print_json(Bv2BandSensitivity.new(
+        configuration: @configuration,
+        issue_46_results_dir: options.fetch(:results),
+        completion_results_dir: options.fetch(:completion_results)
+      ).evaluate(output_dir: options.fetch(:output_dir)))
     end
 
     def apply_abstraction_preliminary
