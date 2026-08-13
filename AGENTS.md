@@ -15,4 +15,4 @@
 - `main` へ直接コミット・プッシュしない。
 - 実装後は関連するテストを実行し、作業ブランチをプッシュする。
 - `main` 向けのPull Requestを作成し、本文に `Closes #<Issue番号>` を記載する。
-- Pull Requestには、関連Issueと同じ主要ラベルを付与する。
+- Pull Requestへのラベル付与とGitHub Projectへの追加は不要とする。
