@@ -1,12 +1,68 @@
 # B-v2 AI選定基本設計
 
-**文書ステータス：基本設計・PoC事前基準固定**
+**文書ステータス：PoC事前固定設計・follow-up後の現行仕様追補**
 
-**設計版：`b-v2-band-pass-design-v2`**
+**PoC固定設計版：`b-v2-band-pass-design-v2`**
+
+**現行仕様追補：Issue #63**
 
 **作成日：2026年8月13日**
 
-**関連Issue：#41 / Epic #40**
+**関連Issue：#41 / Epic #40 / #59 / #61 / #63**
+
+## 0. follow-up後の現行仕様
+
+Epic #40で検証した固定構成の`architecture_rejected`は変更しない。Issue #59の帯域感度追補とIssue #61の軽量selector比較を踏まえ、B-v2のうち次の処理骨格を今後の基本方式として暫定採用する。
+
+1. SAFETYを判定する。
+2. Entryから`abstraction + domain`を生成する。
+3. Entry abstractionをEmbeddingする。
+4. Line側の事前生成済みabstraction embeddingから、本質的に近い候補を検索する。
+5. Entry原文とLine本文のEmbedding similarityをsurface距離として計算する。
+6. abstraction下限とsurface上限によるband-passで候補集合を作る。
+7. Rails / Rubyでstatus、履歴、再利用条件、policy等を適用する。
+8. 適格候補から版付き・再現可能なselectorでLineを選択する。
+9. 正常処理後の適格候補が0件ならSILENCEとする。
+
+リアルタイムLine評価LLMは使用しない。Line側のabstraction、domain、abstraction embedding、text embedding、policy / profile情報は、登録・承認時またはバッチで事前生成し、投稿時には生成しない。
+
+### 0.1 PoC結果の位置づけ
+
+- Epic #40の`A_min=0.45 / S_max=0.55 / Top N=20 / uniform`という固定構成は不採用である。
+- Issue #59では正確な全pair similarityにより`0.425 / 0.425 / Top 10`付近で品質改善を確認したが、良好な領域は狭く、後付けで本番値には採用しない。
+- Issue #61では、similarity、rank、domainだけを用いた6種類の軽量selectorのいずれもuniformを大きく上回らず、最終診断は`selector_gain_insufficient`だった。
+- Blind人間評価を含むここまでの品質確認から、selectorの小さな重み差よりLine本文そのものの品質差が結果へ影響している可能性が高い。ただし、Issue #61で作成した17件のBlind packetは独立した評価証拠であり、完了前に特定selectorの採用根拠として扱わない。
+
+したがって、**band-passという構造は維持するが、具体的な閾値とselectorは現Lineプールでは正式決定しない**。これはEpic #40の結果を覆すものではなく、follow-up診断から、残す設計骨格と再検討対象を分離したものである。
+
+### 0.2 本番仕様として未確定の項目
+
+- `A_min`
+- `S_max`
+- `Top N`
+- 最終selectorとselector weight
+- 本番Provider / model
+- 最終domain taxonomy
+- 本番`pgvector` index parameter
+- 現Approved 96 Lineプール
+
+`A_min / S_max / Top N / selector`は、Lineプールのブラッシュアップ後に再キャリブレーションして決定する。`0.425 / 0.425 / Top 10`は再検証の起点候補であり、既定値・推奨値・本番値ではない。
+
+### 0.3 次フェーズ
+
+次の開発・PoCフェーズはLineプールのブラッシュアップとする。その後、次の順で選定条件を再決定する。
+
+1. 改善後のLine profileを再生成する。
+2. Line abstraction / text Embeddingを再生成する。
+3. 固定評価Entryとの全pair similarityを再作成する。
+4. `A_min × S_max × Top N`を再スイープする。
+5. 一点最適ではなく、安定したband-pass領域を決定する。
+6. 同じ候補集合でselectorを再比較する。
+7. Blind人間評価を含めて最終閾値・selectorを確定する。
+
+Lineプール改善の効果と選定ロジック変更の効果を同じ比較で混ぜない。まずLineプールの版を固定し、その後にband-passとselectorを順番に評価する。
+
+以下の第1〜19章は、Epic #40の結果を見る前に固定した設計・Gate・実施順を記録する。過去の判断を追跡できるよう本文を履歴として保持し、現在の仕様上の位置づけは本章を正とする。
 
 ## 1. 結論
 

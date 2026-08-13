@@ -8,6 +8,12 @@ Epic #27では、初回PoCを変更せず、日記とLineのEmbedding入力を`a
 
 Epic #40では、Reflective Distance再評価を踏まえ、abstraction similarityを下限、surface similarityをtoo-close除外の上限とする`b-v2-band-pass-design-v2`を設計・検証します。domainは補助属性、structureは分析用途とし、投稿時Line評価LLMは使用しません。現96 Lineの方式改善を判定するGate Aと、方式固定・Line改善後の製品品質を判定するGate Bを分離します。Issue #42はオフライン絞り込み後に小規模な表現生成APIスモーク、Issue #46は36 Entry × 3反復の本統合ライブPoCです。基本設計は[B-v2 AI選定基本設計](../../docs/B-v2_AI選定基本設計.md)、現行の機械可読な基準は`data/evaluations/b_v2_design_criteria_v2.yml`を参照してください。`v1`成果物も改訂前の証拠として保持します。Issue #41では設計だけを扱い、外部API実行、Lineプール変更、DB migrationは行いません。
 
+### follow-up後の仕様上の位置づけ
+
+Epic #40の固定構成に対する`architecture_rejected`と、Issue #59・#61のpost-hoc結果は履歴として変更しません。follow-up後は、SAFETY、`abstraction + domain`、2種類のEmbedding、abstraction下限 + surface上限、Rails policy、適格候補selector、候補0件時SILENCEという骨格だけを暫定採用します。
+
+`0.45 / 0.55 / Top 20`は不採用であり、Issue #59の`0.425 / 0.425 / Top 10`付近も安定領域が狭いため本番値ではありません。Issue #61でもuniformを大きく上回る軽量selectorは確認できませんでした。`A_min / S_max / Top N / selector`は、次フェーズのLineプールブラッシュアップ後に再スイープ・再比較します。Issue #49時点でLineプール改善Epicを作成しなかった履歴と、follow-up後に次フェーズをLineプール改善とする現在方針は分けて扱います。
+
 ## 必要環境
 
 - Ruby 3.3以上（開発時：3.4.7）
@@ -475,7 +481,7 @@ bundle exec ruby bin\ai_line_selection prepare-b-v2-lightweight-selector --outpu
 bundle exec ruby bin\ai_line_selection evaluate-b-v2-lightweight-selector --output-dir data\evaluations\b_v2_lightweight_selector_v1
 ```
 
-比較criteriaは結果集計前に固定し、Entry単位6-fold CV、neighbor順位、low-confidence感度、Blind人間評価packetを保存します。結果は[B-v2 軽量selectorオフライン比較](../../docs/B-v2_軽量selectorオフライン比較.md)を参照してください。全工程で外部APIは0回です。
+比較criteriaは結果集計前に固定し、Entry単位6-fold CV、neighbor順位、low-confidence感度、Blind人間評価packetを保存します。最終診断は`selector_gain_insufficient`で、特定のselectorは本番採用していません。結果は[B-v2 軽量selectorオフライン比較](../../docs/B-v2_軽量selectorオフライン比較.md)を参照してください。全工程で外部APIは0回です。
 
 ### 事実整合ガード追加PoC
 
