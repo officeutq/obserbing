@@ -70,4 +70,5 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 - [AI一行選定 PoC結果](docs/AI_PoC結果.md)
 - [AI追加PoC計画](docs/AI_追加PoC計画.md)
 - [SAFETY追加PoC比較](docs/SAFETY_追加PoC比較.md)
+- [Abstraction追加PoC比較](docs/Abstraction_追加PoC比較.md)
 - [統合PoC比較](docs/統合_PoC比較.md)

@@ -101,6 +101,27 @@ bundle exec ruby bin\ai_line_selection compare-safety-boundary `
 
 `candidate-full`は既存36日記、初回12 SAFETY、追加24境界ケースの計72件です。`additional`は追加24件だけを比較します。2026年8月13日の実API比較では、`additional-v3`が72件×3回の216実行を全件正しく分類し、SAFETY見逃し、通常投稿の過剰遮断、曖昧ケースのnormal通過をすべて0件にしました。実行条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、結果は[SAFETY追加PoC比較](../../docs/SAFETY_追加PoC比較.md)を参照してください。
 
+## Abstraction-only表現比較
+
+既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-abstraction `
+  --version abstraction-only-v2 `
+  --provider openai `
+  --embedding-provider openai-small `
+  --repetitions 3
+
+bundle exec ruby bin\ai_line_selection compare-abstraction `
+  --version abstraction-only-v2 `
+  --provider openai `
+  --embedding-provider openai-small `
+  --repetitions 3 `
+  --allow-external-api
+```
+
+2026年8月13日の実API比較では、468生成がすべて初回Schema成功し、Codex一次評価の利用可能率と3反復の意味的同等率はいずれも100%、新事実・診断・感情固定・不要な固有名詞は0件でした。採用候補`abstraction-only-v2`のEntry 36件・Line 120件は`data/abstractions/abstraction_only_v2.yml`へ版付きで保存しています。詳細は[Abstraction追加PoC比較](../../docs/Abstraction_追加PoC比較.md)を参照してください。
+
 ## Meaning実API比較
 
 比較条件は次で固定しています。

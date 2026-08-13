@@ -7,6 +7,7 @@ module AiLineSelection
     FILES = {
       safety: "safety.json",
       meaning: "meaning.json",
+      abstraction: "abstraction.json",
       embedding: "embedding.json",
       line_evaluation: "line_evaluation.json"
     }.freeze

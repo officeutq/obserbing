@@ -116,7 +116,7 @@ module AiLineSelection
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
-      %w[safety meaning embedding line_evaluation].each { |name| operation(name) }
+      %w[safety meaning abstraction embedding line_evaluation].each { |name| operation(name) }
 
       unless [true, false].include?(external_api["enabled"])
         raise ConfigurationError.new("external_api.enabled must be boolean")
@@ -136,6 +136,10 @@ module AiLineSelection
 
       unless external_api.fetch("maximum_line_evaluation_comparison_requests").to_i.positive?
         raise ConfigurationError.new("external_api.maximum_line_evaluation_comparison_requests must be positive")
+      end
+
+      unless external_api.fetch("maximum_abstraction_comparison_requests").to_i.positive?
+        raise ConfigurationError.new("external_api.maximum_abstraction_comparison_requests must be positive")
       end
 
       if external_api.fetch("total_budget_jpy").to_f.negative?

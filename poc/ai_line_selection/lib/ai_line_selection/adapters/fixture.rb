@@ -13,6 +13,7 @@ module AiLineSelection
         data = case request.operation
                when :safety then safety(request.fixture_context, request.schema_version)
                when :meaning then meaning(request.fixture_context)
+               when :abstraction then abstraction(request.fixture_context, request.schema_version)
                when :embedding then embedding(request.input)
                when :line_evaluation then line_evaluation(request.input)
                else
@@ -51,6 +52,13 @@ module AiLineSelection
           "themes" => expected.fetch("themes"),
           "structure" => expected.fetch("structure"),
           "abstraction" => expected.fetch("abstraction")
+        }
+      end
+
+      def abstraction(fixture_context, schema_version)
+        {
+          "schema_version" => schema_version,
+          "abstraction" => fixture_context.fetch("baseline_abstraction")
         }
       end
 

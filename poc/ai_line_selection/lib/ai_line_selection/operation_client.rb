@@ -191,6 +191,11 @@ module AiLineSelection
         validate_safety_contract!(data)
       when :meaning
         validate_meaning_contract!(data)
+      when :abstraction
+        abstraction = data.fetch("abstraction")
+        unless abstraction.length.between?(2, 60) && abstraction == abstraction.strip
+          raise SchemaValidationError.new(:abstraction, ["$.abstraction: must be a trimmed 2..60 character string"])
+        end
       when :embedding
         expected_indexes = (0...input.fetch("texts").length).to_a
         actual_indexes = data.fetch("vectors").map { |item| item.fetch("index") }
