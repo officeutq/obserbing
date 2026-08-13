@@ -9,7 +9,8 @@ module AiLineSelection
       meaning: "meaning.json",
       abstraction: "abstraction.json",
       embedding: "embedding.json",
-      line_evaluation: "line_evaluation.json"
+      line_evaluation: "line_evaluation.json",
+      candidate_quality: "candidate_quality.json"
     }.freeze
 
     def initialize(root_dir: AiLineSelection::ROOT, files: {})

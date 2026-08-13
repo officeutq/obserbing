@@ -36,6 +36,10 @@ module AiLineSelection
       when "compare-safety-boundary" then compare_safety_boundary
       when "plan-embedding" then plan_embedding
       when "compare-embedding" then compare_embedding
+      when "plan-abstraction-embedding" then plan_abstraction_embedding
+      when "compare-abstraction-embedding" then compare_abstraction_embedding
+      when "plan-candidate-quality" then plan_candidate_quality
+      when "evaluate-candidate-quality" then evaluate_candidate_quality
       when "plan-line-evaluation" then plan_line_evaluation
       when "compare-line-evaluation" then compare_line_evaluation
       when "review-line-evaluation" then review_line_evaluation
@@ -210,11 +214,12 @@ module AiLineSelection
     end
 
     def apply_abstraction_preliminary
-      options = { results: nil, judgments: nil, export: nil }
+      options = { results: nil, judgments: nil, export: nil, export_repetitions: nil }
       OptionParser.new do |parser|
         parser.on("--results DIRECTORY") { |value| options[:results] = value }
         parser.on("--judgments FILE") { |value| options[:judgments] = value }
         parser.on("--export FILE") { |value| options[:export] = value }
+        parser.on("--export-repetitions FILE") { |value| options[:export_repetitions] = value }
       end.parse!(@argv)
       unless options[:results] && options[:judgments]
         raise ConfigurationError.new("apply-abstraction-preliminary requires --results and --judgments")
@@ -224,7 +229,8 @@ module AiLineSelection
         configuration: @configuration,
         results_dir: options.fetch(:results),
         judgments_path: options.fetch(:judgments),
-        export_path: options.fetch(:export)
+        export_path: options.fetch(:export),
+        repetitions_export_path: options.fetch(:export_repetitions)
       ).call)
     end
 
@@ -391,6 +397,76 @@ module AiLineSelection
           end
         end
       end.parse!(@argv)
+      options
+    end
+
+    def plan_abstraction_embedding
+      options = abstraction_embedding_options(allow_external_api_option: false)
+      print_json(AbstractionEmbeddingComparison.new(configuration: @configuration).plan(
+        provider: options.fetch(:provider),
+        entry_ids: options.fetch(:entry_ids)
+      ))
+    end
+
+    def compare_abstraction_embedding
+      options = abstraction_embedding_options(allow_external_api_option: true)
+      print_json(AbstractionEmbeddingComparison.new(
+        configuration: @configuration,
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        provider: options.fetch(:provider),
+        entry_ids: options.fetch(:entry_ids)
+      ))
+    end
+
+    def abstraction_embedding_options(allow_external_api_option:)
+      options = { provider: "fixture", entry_ids: nil, allow_external_api: false }
+      OptionParser.new do |parser|
+        parser.on("--provider NAME", @configuration.embedding_provider_names) { |value| options[:provider] = value }
+        parser.on("--entry-id ID", "Limit the comparison to one synthetic entry") do |value|
+          options[:entry_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external Embedding API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def plan_candidate_quality
+      options = candidate_quality_options(allow_external_api_option: false)
+      print_json(CandidateQualityComparison.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results)
+      ).plan(provider: options.fetch(:provider)))
+    end
+
+    def evaluate_candidate_quality
+      options = candidate_quality_options(allow_external_api_option: true)
+      print_json(CandidateQualityComparison.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(provider: options.fetch(:provider)))
+    end
+
+    def candidate_quality_options(allow_external_api_option:)
+      options = { provider: "openai", results: nil, allow_external_api: false }
+      OptionParser.new do |parser|
+        parser.on("--provider NAME", @configuration.line_evaluation_provider_names) { |value| options[:provider] = value }
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid offline candidate quality calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      raise ConfigurationError.new("candidate quality requires --results DIRECTORY") unless options[:results]
+
       options
     end
 
@@ -610,7 +686,7 @@ module AiLineSelection
           ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
           ruby bin/ai_line_selection plan-abstraction --version abstraction-only-v2 --provider openai --embedding-provider openai-small --repetitions 3
           ruby bin/ai_line_selection compare-abstraction --version abstraction-only-v2 --provider openai --embedding-provider openai-small --repetitions 3 --allow-external-api
-          ruby bin/ai_line_selection apply-abstraction-preliminary --results results/abstraction_<version>_<timestamp>_<suffix> --judgments reviews/abstraction_only_v2_codex_preliminary.yml --export data/abstractions/abstraction_only_v2.yml
+          ruby bin/ai_line_selection apply-abstraction-preliminary --results results/abstraction_<version>_<timestamp>_<suffix> --judgments reviews/abstraction_only_v2_codex_preliminary.yml --export data/abstractions/abstraction_only_v2.yml --export-repetitions data/abstractions/abstraction_only_v2_repetitions.yml
           ruby bin/ai_line_selection plan-safety --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-safety [--providers fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-safety --providers openai,anthropic --repetitions 3 --allow-external-api
@@ -619,6 +695,10 @@ module AiLineSelection
           ruby bin/ai_line_selection plan-embedding --providers openai-small,openai-large
           ruby bin/ai_line_selection compare-embedding [--providers fixture] [--variants original,meaning_structure,normalized_text] [--limits 20,50,100]
           ruby bin/ai_line_selection compare-embedding --providers openai-small,openai-large --allow-external-api
+          ruby bin/ai_line_selection plan-abstraction-embedding --provider openai-small
+          ruby bin/ai_line_selection compare-abstraction-embedding --provider openai-small --allow-external-api
+          ruby bin/ai_line_selection plan-candidate-quality --provider openai --results results/abstraction_embedding_<timestamp>_<suffix>
+          ruby bin/ai_line_selection evaluate-candidate-quality --provider openai --results results/abstraction_embedding_<timestamp>_<suffix> --allow-external-api
           ruby bin/ai_line_selection plan-line-evaluation --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-line-evaluation [--providers fixture] [--embedding-provider fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-line-evaluation --providers openai,anthropic --embedding-provider openai-small --repetitions 3 --allow-external-api

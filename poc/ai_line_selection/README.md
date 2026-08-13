@@ -122,6 +122,40 @@ bundle exec ruby bin\ai_line_selection compare-abstraction `
 
 2026年8月13日の実API比較では、468生成がすべて初回Schema成功し、Codex一次評価の利用可能率と3反復の意味的同等率はいずれも100%、新事実・診断・感情固定・不要な固有名詞は0件でした。採用候補`abstraction-only-v2`のEntry 36件・Line 120件は`data/abstractions/abstraction_only_v2.yml`へ版付きで保存しています。詳細は[Abstraction追加PoC比較](../../docs/Abstraction_追加PoC比較.md)を参照してください。
 
+## Abstraction Embedding追加比較
+
+Issue #22では、Meaning Structure baseline、`abstraction-only-v2`のLine代表1表現、Line 3表現のベクトル重心を同じEmbedding条件で比較します。3反復入力は`data/abstractions/abstraction_only_v2_repetitions.yml`に保存され、本文、request ID、token情報を含みません。
+
+通信なしで計画を確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-abstraction-embedding `
+  --provider openai-small
+```
+
+実Embedding比較を実行します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection compare-abstraction-embedding `
+  --provider openai-small `
+  --allow-external-api
+```
+
+方式名・Theme・類似度を伏せたTop 5候補をCodex一次評価します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-candidate-quality `
+  --provider openai `
+  --results results\abstraction_embedding_<timestamp>_<suffix>
+
+bundle exec ruby bin\ai_line_selection evaluate-candidate-quality `
+  --provider openai `
+  --results results\abstraction_embedding_<timestamp>_<suffix> `
+  --allow-external-api
+```
+
+評価はEntry単位で保存されます。timeoutやRate Limitで停止した場合、同じコマンドは完了済みEntryと費用を読み取り、未完了Entryだけを再開します。実測結果と判断は[Abstraction Embedding追加PoC比較](../../docs/Abstraction_Embedding_追加PoC比較.md)を参照してください。
+
 ## Meaning実API比較
 
 比較条件は次で固定しています。

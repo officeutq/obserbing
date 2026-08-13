@@ -116,7 +116,7 @@ module AiLineSelection
         raise ConfigurationError.new("Missing configuration section", details: { key: key }) unless @data.key?(key)
       end
 
-      %w[safety meaning abstraction embedding line_evaluation].each { |name| operation(name) }
+      %w[safety meaning abstraction embedding line_evaluation candidate_quality].each { |name| operation(name) }
 
       unless [true, false].include?(external_api["enabled"])
         raise ConfigurationError.new("external_api.enabled must be boolean")
