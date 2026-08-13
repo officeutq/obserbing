@@ -1,0 +1,189 @@
+version: b-v2-lightweight-selector-criteria-v1
+issue: 61
+purpose: post_hoc_offline_selector_comparison
+frozen_before_quality_aggregation: true
+external_api_calls: 0
+realtime_line_evaluation_llm_calls: 0
+changes_existing_gate_a_or_epic_40_decision: false
+
+sources:
+  pair_similarities:
+    path: data/evaluations/b_v2_band_sensitivity_v1/b_v2_band_sensitivity_pair_similarities_v1.csv
+    canonical_lf_sha256: ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6
+    expected_rows: 10368
+  pair_judgments:
+    path: data/evaluations/b_v2_band_sensitivity_v1/b_v2_band_sensitivity_pair_judgments_v1.csv
+    canonical_lf_sha256: 64b701367f40776441704e9f4002817c707411c70b8b81e64db346150cf995d1
+    use: evaluation_only
+  policy:
+    path: data/evaluations/b_v2_guard_policy_v1.yml
+    canonical_lf_sha256: b5a0136919bbce7b2d9d69341748bbc8565f6b9b8d6f6a136183b8a79a6c6230
+  entries:
+    path: data/entries.yml
+    canonical_lf_sha256: 7805ce5cdc05bafa25ed730d9b24fcaed982f22270b3d48cfa71286a2326f9c5
+  lines:
+    path: data/lines.yml
+    canonical_lf_sha256: 79810d6a46dbaf30aec15afa5f7b637c24ece9815008c2fa04a15f660dd26eac
+    approved_count: 96
+
+bands:
+  primary:
+    a_min: 0.425
+    s_max: 0.425
+    top_n: 10
+    issue_59_uniform_reference:
+      acceptable_count: 69
+      acceptable_denominator: 108
+      acceptable_rate: 0.638889
+      slots_with_known_acceptable_candidate: 100
+      missed_known_acceptable_count: 31
+  neighbor:
+    a_min: 0.425
+    s_max: 0.400
+    top_n: 10
+    issue_59_uniform_reference:
+      acceptable_count: 67
+      acceptable_denominator: 108
+      acceptable_rate: 0.620370
+      slots_with_known_acceptable_candidate: 97
+      missed_known_acceptable_count: 30
+
+selection_contract:
+  seed: existing_b_v2_sha256_entry_id_repetition_seed
+  common_random_number_across_selectors: true
+  history: fixed_empty_as_in_issue_46
+  policy: b-v2-guard-policy-v1
+  candidate_order_before_sampling: line_id_ascending
+  allowed_features:
+    - abstraction_similarity
+    - surface_similarity
+    - abstraction_rank
+    - surface_rank
+    - domain_primary
+    - policy_eligibility
+    - seed
+  prohibited_features:
+    - acceptable
+    - distance
+    - relation_type
+    - confidence
+    - low_confidence
+    - judge
+    - reviewer_role
+    - label_source
+    - reason
+  missing_selected_pair_label:
+    action: codex_provisional_review_after_mechanical_selection
+    selector_rerun_after_review: false
+    external_api_calls: 0
+
+weight_bounds:
+  minimum: 0.75
+  maximum: 1.25
+  maximum_ratio: 1.666667
+  rationale: prevent extreme concentration on a single highest-scoring candidate
+
+selectors:
+  - id: uniform
+    formula: every eligible candidate has weight 1.0
+  - id: abstraction_bounded_weighted
+    formula: min-max normalize abstraction similarity within the eligible set; weight = 0.75 + 0.50 * score
+  - id: surface_band_center
+    formula: target the midpoint between the eligible-set minimum surface similarity and S_max; linearly decay to each edge; weight = 0.75 + 0.50 * score
+  - id: dual_margin_band_center
+    formula: harmonic mean of normalized abstraction margin above A_min and surface margin below S_max; weight = 0.75 + 0.50 * score
+  - id: rank_fusion
+    formula: 0.60 * descending abstraction rank percentile + 0.40 * ascending surface rank percentile; weight = 0.75 + 0.50 * score
+  - id: bounded_domain_diversity
+    formula: 0.80 * normalized abstraction score + 0.20 * inverse-frequency domain rarity; weight = 0.75 + 0.50 * score
+
+overfitting_control:
+  method: fixed_six_fold_entry_cross_validation
+  parameter_tuning_from_labels: false
+  fold_assignment: one_based_entry_number_modulo_6
+  folds:
+    fold_1: [E001, E007, E013, E019, E025, E031]
+    fold_2: [E002, E008, E014, E020, E026, E032]
+    fold_3: [E003, E009, E015, E021, E027, E033]
+    fold_4: [E004, E010, E016, E022, E028, E034]
+    fold_5: [E005, E011, E017, E023, E029, E035]
+    fold_6: [E006, E012, E018, E024, E030, E036]
+  dev_ranking:
+    - acceptable_rate_desc
+    - missed_known_acceptable_rate_asc
+    - all_three_repetitions_acceptable_rate_desc
+    - selector_id_asc
+  holdout_report:
+    - acceptable_rate_difference_vs_uniform
+    - missed_known_acceptable_count_difference_vs_uniform
+    - selector_rank_stability
+  limitation: fixed post-hoc data; cross-validation checks stability but does not prove generalization
+
+metrics:
+  - acceptable_rate
+  - all_three_repetitions_acceptable_rate
+  - too_close
+  - too_far
+  - not_obserbing
+  - analogical_transfer
+  - same_domain
+  - direct_restatement
+  - weak_connection
+  - unrelated
+  - semantic_silence
+  - missed_known_acceptable_rate
+  - seed_reproducibility_rate
+  - selected_unique_line_count
+  - maximum_line_share
+  - normalized_selection_entropy
+  - elapsed_milliseconds
+
+low_confidence_sensitivity:
+  primary: published_provisional_labels
+  lower: treat_every_low_confidence_selection_as_unacceptable
+  upper: treat_every_low_confidence_selection_as_acceptable
+  paired: exclude_slots_where_uniform_or_compared_selector_uses_a_low_confidence_label
+
+diagnosis:
+  evidence_insufficient_if:
+    selected_pair_label_coverage_below: 1.0
+    seed_reproducibility_below: 1.0
+    primary_or_neighbor_outcome_slots_not_equal: 108
+  provisional_promising_if_all:
+    primary_acceptable_gain_points_at_least: 5.0
+    primary_missed_known_acceptable_reduction_at_least: 10
+    neighbor_acceptable_gain_points_at_least: 3.0
+    neighbor_missed_known_acceptable_reduction_at_least: 7
+    winner_neighbor_rank_at_most: 2
+    holdout_folds_with_positive_acceptable_gain_at_least: 4
+    holdout_folds_with_nonworse_missed_count_at_least: 4
+    maximum_line_share_not_over_uniform_by_points: 5.0
+  human_review_required_if:
+    provisional_promising: true
+    paired_non_low_confidence_gain_not_positive: true
+  lightweight_selector_promising_if:
+    provisional_promising: true
+    paired_non_low_confidence_gain_positive: true
+  selector_gain_insufficient_otherwise: true
+
+blind_human_review:
+  target_case_count: 24
+  source: primary_band_disagreements_among_top_three_selectors
+  priority:
+    - selectors_choose_different_lines
+    - provisional_acceptability_differs
+    - contains_low_confidence_pair
+    - deterministic_sha256_order
+  visible:
+    - blind_case_id
+    - entry_text
+    - option_labels
+    - line_texts
+    - human_acceptability_fields
+  hidden:
+    - selector_name
+    - line_id
+    - similarity
+    - codex_judgment
+    - existing_label
+  human_review_completion_required_for_issue: false

@@ -75,3 +75,4 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 - [統合PoC比較](docs/統合_PoC比較.md)
 - [B-v2 Epic結果](docs/B-v2_Epic結果.md)
 - [B-v2 帯域感度追補診断](docs/B-v2_帯域感度追補診断.md)
+- [B-v2 軽量selectorオフライン比較](docs/B-v2_軽量selectorオフライン比較.md)
