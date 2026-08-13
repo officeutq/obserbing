@@ -42,11 +42,11 @@ obserbingが意味を与えるのではなく、ユーザー自身がいつか�
 | 対象OS | iOS / Android |
 | モバイル | React Native / TypeScript（`mobile/`） |
 | 開発・ビルド | Expo Development Build / EAS Build |
-| サーバー | Ruby on Rails（`backend/`） |
+| サーバー | Ruby 4.0.6 / Rails 8.1.3.1（`backend/`） |
 | API | REST JSON / OpenAPI / `/api/v1` |
 | 管理画面 | Rails Views / HotwireによるWebアプリ |
 | ローカル開発 | Docker Compose（Rails + PostgreSQL / pgvector） |
-| データベース | PostgreSQL / pgvector |
+| データベース | PostgreSQL 18系 / pgvector 0.8系 |
 | アプリ内課金 | StoreKit / Google Play Billing |
 | 課金管理 | RevenueCat / `react-native-purchases` |
 | インフラ | AWS EC2 + Docker / Amazon RDS for PostgreSQL |
@@ -57,6 +57,8 @@ iOSとAndroidは同時に開発し、審査、課金設定、テストおよび�
 Railsはモバイル向けREST APIと、運営者向けWeb管理画面を同じアプリケーション内で提供します。管理画面はネイティブアプリに含めません。
 
 モノレポではRailsを`backend/`、React Native / Expoを`mobile/`、PoCを`poc/`へ分離します。初期本番はRailsをEC2上のDockerコンテナで実行し、既存RDS PostgreSQLインスタンス内のobserbing専用Database・専用DB Userを使用します。ネイティブアプリはEC2のIPではなく、HTTPSのAPIサブドメインへ接続します。
+
+既存Amazon RDSのPostgreSQL server versionは18.3、利用可能なpgvectorの`default_version`は0.8.1です。`corporate_production` Databaseには`vector` extensionを導入せず、将来作成するobserbing専用Databaseでのみ利用します。Database、DB User、extensionの作成・変更は、明示的な実施Issueの範囲でのみ行います。
 
 ### AI
 

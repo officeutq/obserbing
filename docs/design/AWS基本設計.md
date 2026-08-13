@@ -102,7 +102,7 @@ Caddy、nginx等のWeb server / reverse proxy、TLS証明書の具体的取得�
 
 共有するのはRDSインスタンスというインフラ境界であり、アプリケーションのDatabase、DB Userおよびデータ責務は分離する。obserbingのアプリケーションコードはコーポレートサイトのDatabaseやテーブルへ依存しない。
 
-同一インスタンスを共有するため、CPU、メモリ、ストレージ、connection、メンテナンス、backup operationおよび障害の影響範囲を共有する。この制約を初期MVPでは許容するが、既存インスタンスの仕様、余力、PostgreSQL version、接続上限、バックアップおよび保守条件を本番投入前に確認する。
+同一インスタンスを共有するため、CPU、メモリ、ストレージ、connection、メンテナンス、backup operationおよび障害の影響範囲を共有する。この制約を初期MVPでは許容する。PostgreSQL server versionは18.3であることを確認済みであり、その他の仕様、余力、接続上限、バックアップおよび保守条件は本番投入前に確認する。
 
 ## 10. obserbing専用Database / DB User
 
@@ -118,6 +118,8 @@ Amazon RDS PostgreSQL
 
 - `obserbing_database`とobserbing専用DB Userを作る。
 - 専用DB Userにはobserbing用Databaseに必要な最小権限だけを付与する。
+- 確認に用いた現在の管理ユーザーは`CREATEDB = true`、`CREATEROLE = true`であり、`rds_superuser`のmemberである。
+- Database、DB User、権限およびextensionの作成・変更は、明示的な実施Issueの範囲でのみ行う。
 - コーポレートサイト側のDatabaseやテーブルへアクセスできることを前提にしない。
 - 接続先、資格情報、migration用権限および通常実行時権限を環境設定として分離できるようにする。
 - Database名、User名、owner、schema、role構成および権限付与SQLは詳細設計で決める。
@@ -131,10 +133,13 @@ obserbingではLine候補検索にpgvectorを利用する予定とし、ロー�
 - extensionの提供可否、対応versionおよび有効化権限を既存RDSで確認する。
 - extensionを有効にするDatabase、実施主体、変更手順およびrollback可否を詳細設計する。
 - Rails通常実行Userへextension管理権限を恒常的に与えることを前提にしない。
+- `corporate_production` Databaseには`vector` extensionを導入しない。
 - Embeddingのmodel、dimensions、version、正規化および距離方式が一致するデータだけを比較する。
 - index方式とparameterは現時点で固定せず、AI基本設計と実データ規模に基づく性能検証後に決める。
 
 pgvector extensionの有効化方式、権限、HNSW / IVFFlat等のindex方式およびparameterは未決定である。
+
+既存RDSの`pg_available_extensions`には`vector`が存在し、`default_version = 0.8.1`であることを確認済みである。現在の`corporate_production` Databaseでは未導入であり、将来作成するobserbing専用Databaseでのみ利用する。有効化の手順、実行主体、所有者および運用権限はDB詳細設計で決める。
 
 ## 12. ネットワーク / Security Groupの基本方針
 
@@ -268,7 +273,7 @@ ECR、ECS、Fargate、ALB、Service Discovery、Auto Scalingおよび移行時�
 - GitHub Actions等によるCI/CD
 - 本番でDocker Composeを使用するか、本番用composeファイルを持つか
 - EC2起動時のcontainer自動起動方式
-- RDS既存インスタンスの仕様、余力、PostgreSQL versionおよび運用制約
+- RDS既存インスタンスのPostgreSQL version以外の仕様、余力および運用制約
 - RDS上でのpgvector extensionの有効化方式・権限
 - pgvector index方式、parameter、性能基準および再index手順
 - backup、snapshot、RPO / RTOおよび復元試験の具体設定

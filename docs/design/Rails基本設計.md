@@ -56,6 +56,8 @@ Railsアプリケーションはリポジトリルートではなく`backend/`�
 
 `poc/`は本番Rails実装と分離して維持する。PoCコードの直接移植を前提にせず、上位仕様または現行設計へ正式採用された責務、方式および境界だけを本番実装へ反映する。
 
+環境導入時の基準バージョンはRuby 4.0.6、Rails 8.1.3.1とし、`latest`等の可変指定を使わず具体版を固定する。
+
 ## 5. ディレクトリ構成
 
 本書で固定する配置境界は次のとおりとする。
@@ -180,9 +182,13 @@ Provider、model、閾値、selector、domain taxonomyおよび本番Lineプー�
 ## 10. PostgreSQL / pgvectorとの関係
 
 - Railsの主DBはPostgreSQLとする。
+- 環境導入時のPostgreSQLは18系、pgvectorは0.8系とする。
 - Line候補検索に必要なベクトルを同じデータ整合性境界で扱えるよう、pgvectorを利用可能な構成とする。
 - ローカルDBはPostgreSQLとpgvectorを利用できる別コンテナとする。
 - 本番DBはAmazon RDS for PostgreSQLを使用し、初期は既存コーポレートサイト用RDSインスタンス内の専用Database・専用DB Userを利用する。
+- 確認済みの既存RDSはPostgreSQL 18.3で、`pg_available_extensions`の`vector`は`default_version = 0.8.1`である。
+- `corporate_production` Databaseには`vector` extensionを導入せず、obserbing専用Databaseでのみ利用する。
+- Database、DB User、extensionの作成・変更は、明示的な実施Issueの範囲で行う。
 - RailsアプリケーションからコーポレートサイトのDatabaseやテーブルへ依存しない。
 - 異なるEmbeddingモデル、次元、正規化版のベクトルを比較しない。
 - Entry・Traceに結び付くprofile、EmbeddingおよびGap Event等を個別ユーザーデータとして削除連動させる。
@@ -310,7 +316,6 @@ DBトランザクションの範囲と、外部AI API呼び出しの前後に置
 
 ## 19. 未決定事項
 
-- RailsおよびRubyの具体バージョン
 - `backend/`内部のアーキテクチャと命名
 - 認証、Device Credential、Phone Recoveryおよび管理者認証の具体方式
 - APIエンドポイント、error schema、Idempotency KeyおよびOpenAPI運用
