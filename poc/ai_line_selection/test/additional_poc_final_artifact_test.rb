@@ -12,11 +12,12 @@ class AdditionalPocFinalArtifactTest < Minitest::Test
   def test_decision_preserves_fixed_noninferiority_criterion
     comparison = @document.fetch("comparison")
 
-    assert_equal(-26.51, comparison.fetch("blind_acceptable_rate_delta_percentage_points"))
+    assert_equal(-22.81, comparison.fetch("blind_acceptable_rate_delta_percentage_points"))
     assert_equal(-7.0, comparison.fetch("noninferiority_minimum_delta_percentage_points"))
     assert_equal false, comparison.fetch("noninferiority_met")
     assert_equal false, comparison.fetch("candidate_absolute_quality_met")
     assert_equal false, comparison.fetch("candidate_fatal_grounding_requirement_met")
+    assert_equal true, comparison.fetch("candidate_performance_measurement_conclusive")
   end
 
   def test_no_current_method_or_provider_is_promoted

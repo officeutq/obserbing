@@ -676,11 +676,11 @@ Providerおよびモデル名は本書では確定しない。入力データが
 
 2026年8月13日の追加PoCでは、リアルタイムLine評価LLMを使わない`abstraction-only-v1`を検証した。SAFETY `additional-v3`、abstraction `abstraction-only-v2`、事実整合ガード`combined_v1`は個別基準を満たした。一方、abstraction EmbeddingはTop 20候補集合安定性、Ruby選択はBlind表示品質の基準を満たさなかったため、統合結果は`abstraction-only-v1-diagnostic`として扱う。
 
-診断統合では、既存通常日記のSAFETY過剰遮断0件、リアルタイムLine評価LLM 0回、1投稿約0.55円、p95 5.13秒推定を得た。しかしBlind許容率70.37%、baseline差-26.51ポイント、致命的事実不整合2件、Top 20 Jaccard平均0.6397で事前基準を満たさなかった。`selected-v1`も初回PoCの必須基準未達が残るため、どちらも現状のまま詳細設計候補または本番採用方式にしない。
+APIクレジット追加後のライブ診断統合では、既存通常日記のSAFETY過剰遮断0件、リアルタイムLine評価LLM 0回、1投稿約0.551円、p95 5.48768秒を実測した。しかし重要ケース補正後のBlind許容率74.07%、baseline差-22.81ポイント、致命的事実不整合1件、Top 20 Jaccard平均0.672で事前基準を満たさなかった。`selected-v1`も初回PoCの必須基準未達が残るため、どちらも現状のまま詳細設計候補または本番採用方式にしない。
 
 Provider、モデル、契約、プロンプトおよび本番閾値は引き続き未決定とする。追加PoCで有効だった3要素は次方式の部品候補として保持するが、正式採用を意味しない。次方式を検証する場合は、候補集合の上流安定化と、低遅延のgroundedness / obserbing distance評価を別Epicで事前定義する。
 
-評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](AI_追加PoC結果.md)を正とする。
+評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](AI_追加PoC結果.md)、ライブ実測の詳細は[Abstraction Only ライブ統合追補](Abstraction_Only_ライブ統合追補.md)を正とする。
 
 ---
 

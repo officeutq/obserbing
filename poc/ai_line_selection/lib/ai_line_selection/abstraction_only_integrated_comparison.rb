@@ -107,6 +107,7 @@ module AiLineSelection
       summary = build_summary(run_context, records, quality_records, line_phase, preflight)
       write_manifest(run_context, preflight)
       write_json("summary.json", summary)
+      FileUtils.rm_f(File.join(@output_dir, "stopped.json"))
       summary.merge(results_directory: File.expand_path(@output_dir))
     rescue AiLineSelection::Error => e
       write_json(
@@ -299,7 +300,7 @@ module AiLineSelection
       end
 
       abstraction = @client.call(
-        :abstraction, { "entry_text" => entry.fetch("body") },
+        :abstraction, { "text" => entry.fetch("body") },
         fixture_context: { "baseline_abstraction" => entry.dig("expected", "abstraction") },
         settings: run_context.dig(:settings, :abstraction)
       )
@@ -391,11 +392,17 @@ module AiLineSelection
       displayed = successful.select { |record| record.fetch("selected_line_id", nil) }
       quality = quality_records
       normal_usage = aggregate_usage(successful.flat_map { |record| record.fetch("phases").values.map { |phase| symbolize(phase.fetch("usage")) } })
-      total_usage = aggregate_usage(
+      logical_usage = aggregate_usage(
         [symbolize(line_phase.fetch(:usage))] +
         records.flat_map { |record| record.fetch("phases").values.map { |phase| symbolize(phase.fetch("usage")) } } +
         unique_quality_phases(quality_records).map { |phase| symbolize(phase.fetch("usage")) }
       )
+      logical_request_count = line_phase.fetch(:attempt_count) +
+                              records.sum { |record| record.fetch("request_count") } +
+                              unique_quality_phases(quality_records).sum { |phase| phase.fetch("attempt_count") }
+      telemetry_ledger = provider_telemetry_ledger
+      total_usage = telemetry_ledger.fetch(:usage, logical_usage)
+      total_request_count = telemetry_ledger.fetch(:request_count, logical_request_count)
       latencies = successful.map { |record| record.fetch("full_flow_duration_ms") }
       quality_by_entry_rank = quality.to_h { |item| [[item.fetch("entry_id"), item.fetch("rank")], item] }
       selected_quality = displayed.filter_map { |record| quality_by_entry_rank[[record.fetch("entry_id"), record.fetch("repetition")]] }
@@ -441,7 +448,9 @@ module AiLineSelection
           realtime_line_evaluation_calls: 0,
           offline_blind_quality_calls: quality_records.map { |record| record.fetch("entry_id") }.uniq.length,
           normal_flow_calls_per_post: successful.empty? ? 0.0 : (successful.sum { |record| record.fetch("request_count") }.to_f / successful.length).round(4),
-          total_requests_including_retries: line_phase.fetch(:attempt_count) + records.sum { |record| record.fetch("request_count") } + unique_quality_phases(quality_records).sum { |phase| phase.fetch("attempt_count") },
+          total_requests_including_retries: total_request_count,
+          logical_completed_request_count: logical_request_count,
+          resumed_orphan_request_count: [total_request_count - logical_request_count, 0].max,
           first_attempt_schema_success_rate: first_attempt_rate(records, quality_records, line_phase),
           retry_success_count: retry_success_count(records, quality_records, line_phase),
           usage: total_usage,
@@ -632,6 +641,9 @@ module AiLineSelection
     end
 
     def actual_cost(line_phase, records, quality_records)
+      ledger = provider_telemetry_ledger
+      return ledger.dig(:usage, :estimated_cost_jpy).to_f unless ledger.empty?
+
       line_phase.fetch(:usage).fetch(:estimated_cost_jpy).to_f +
         records.sum { |record| record.fetch("phases").values.sum { |phase| phase.fetch("usage").fetch("estimated_cost_jpy", phase.fetch("usage")[:estimated_cost_jpy]).to_f } } +
         unique_quality_phases(quality_records).sum { |phase| phase.dig("usage", "estimated_cost_jpy").to_f }
@@ -645,6 +657,20 @@ module AiLineSelection
         total[:estimated_cost_usd] = total[:estimated_cost_usd].round(8)
         total[:estimated_cost_jpy] = total[:estimated_cost_jpy].round(4)
       end
+    end
+
+    def provider_telemetry_ledger
+      path = File.join(@output_dir, "telemetry.jsonl")
+      return {} unless File.exist?(path)
+
+      events = File.readlines(path, encoding: "UTF-8").filter_map do |line|
+        event = JSON.parse(line)
+        event if event["provider"].to_s != ""
+      end
+      {
+        request_count: events.length,
+        usage: aggregate_usage(events.map { |event| symbolize(event) })
+      }
     end
 
     def symbolize(value)
