@@ -6,7 +6,8 @@ module AiLineSelection
       safety: "safety.md",
       meaning: "meaning.md",
       abstraction: "abstraction.md",
-      line_evaluation: "line_evaluation.md"
+      line_evaluation: "line_evaluation.md",
+      candidate_quality: "candidate_quality.md"
     }.freeze
 
     def initialize(root_dir: AiLineSelection::ROOT, files: {})

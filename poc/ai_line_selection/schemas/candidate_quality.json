@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evaluations"],
+  "properties": {
+    "evaluations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["blind_set_id", "rank", "line_id", "acceptable", "distance", "clearly_unrelated", "fatal_grounding_mismatch", "confidence", "reason"],
+        "properties": {
+          "blind_set_id": { "type": "string" },
+          "rank": { "type": "integer" },
+          "line_id": { "type": "string", "pattern": "^L[0-9]{3}$" },
+          "acceptable": { "type": "boolean" },
+          "distance": { "type": "string", "enum": ["too_close", "just_right", "too_far", "not_obserbing"] },
+          "clearly_unrelated": { "type": "boolean" },
+          "fatal_grounding_mismatch": { "type": "boolean" },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "reason": { "type": "string" }
+        }
+      }
+    }
+  }
+}

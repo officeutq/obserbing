@@ -1,0 +1,119 @@
+version: 1
+source: synthetic
+evaluation_version: abstraction-embedding-v1
+status: not_eligible_for_ruby_selection_comparison
+created_at: "2026-08-13"
+
+inputs:
+  abstraction_version: abstraction-only-v2
+  abstraction_repetitions_sha256: ffb85a8143bfb1976c41502668621e24999ea0bd84a44c60c410e60c91b50c99
+  additional_poc_config_sha256: cba3c32e1c5c27e21c1061282d67fbc16b5f1f45923183bef149267a841cdc57
+  entry_data_sha256: 8ca60da809022778f2f1474f2c20525748b1da7f90fec52d565a0ef58cd8e181
+  line_data_sha256: c2c4814d0f159daf989a21e17413b008a822533ee5c843fbda00d658cfff4232
+  entry_count: 36
+  approved_line_count: 96
+  excluded_status_counts:
+    candidate: 12
+    retired: 12
+
+embedding:
+  primary_model: text-embedding-3-small
+  diagnostic_model: text-embedding-3-large
+  dimensions: 1536
+  similarity: cosine
+  deterministic_search_rate: 1.0
+  status_exclusion_violations: 0
+  realtime_line_evaluation_calls: 0
+
+machine_results:
+  meaning_structure_baseline_small:
+    recall_at_20: 0.9514
+    recall_at_50: 0.9896
+    top_1_theme_mismatch_count: 1
+  abstraction_only_v2_small:
+    recall_at_20: 0.3715
+    recall_at_50: 0.6944
+    top_20_jaccard: 0.6397
+    top_50_jaccard: 0.7611
+  abstraction_only_v2_line_centroid_small:
+    recall_at_20: 0.3872
+    recall_at_50: 0.7066
+    top_20_jaccard: 0.6429
+    top_50_jaccard: 0.7640
+    threshold_0_45:
+      average_candidate_count: 7.8333
+      empty_entry_count: 1
+      empty_entry_rate: 0.0278
+    threshold_0_55:
+      average_candidate_count: 1.4444
+      empty_entry_count: 9
+      empty_entry_rate: 0.25
+  abstraction_only_v2_large:
+    recall_at_20: 0.4288
+    recall_at_50: 0.7396
+    top_20_jaccard: 0.6464
+    top_50_jaccard: 0.7768
+
+blind_quality:
+  version: candidate-quality-v1
+  prompt_sha256: e3ed20bab61f8dfd5ff0e263a0b301a8d57b264d8048f9a48a70c8de906389c8
+  schema_sha256: 600671ecfc6e92b804ae9b2e6b6ac8582aa3c30ceb2fa91fa28abf3c27f456ae
+  methodology:
+    evaluated_top_n: 5
+    mode_hidden: true
+    theme_and_similarity_hidden: true
+    judge: codex_preliminary
+  evaluator_counts:
+    openai/gpt-5.6-terra: 480
+    anthropic/claude-sonnet-5: 60
+  meaning_structure_baseline:
+    entries_with_acceptable_candidate_rate: 1.0
+    acceptable_rate: 0.7611
+    clearly_unrelated_rate: 0.0111
+    fatal_grounding_mismatch_count: 1
+  abstraction_only_v2:
+    entries_with_acceptable_candidate_rate: 1.0
+    acceptable_rate: 0.8167
+    clearly_unrelated_rate: 0.0167
+    fatal_grounding_mismatch_count: 2
+  abstraction_only_v2_line_centroid:
+    entries_with_acceptable_candidate_rate: 1.0
+    acceptable_rate: 0.7444
+    clearly_unrelated_rate: 0.0667
+    fatal_grounding_mismatch_count: 2
+  low_confidence_or_fatal_entry_ids:
+    - E006
+    - E013
+    - E018
+    - E019
+    - E022
+    - E023
+    - E034
+    - E036
+
+cost_jpy:
+  embedding_small_representative: 0.0222
+  embedding_large_representative: 0.1446
+  embedding_small_with_line_centroid: 0.0421
+  blind_candidate_quality: 107.3841
+  issue_total: 107.5930
+  epic_cumulative_after_issue: 547.8733
+
+acceptance:
+  candidate_or_retired_mixing_zero: true
+  fixed_search_determinism_100_percent: true
+  entries_with_acceptable_candidate_at_least_95_percent: true
+  repeated_abstraction_top20_jaccard_at_least_0_80: false
+  fatal_grounding_mismatch_zero_before_guard: false
+  eligible_for_ruby_selection_comparison: false
+
+decision:
+  production_decision: pending
+  poc_candidate: null
+  reason: >-
+    All entries contained at least one acceptable Top 5 candidate, but generated abstraction
+    variants produced unstable Top 20 sets and fatal grounding mismatches remained before guards.
+  follow_up:
+    - issue: 23
+      purpose: deterministic grounding guard comparison
+    - purpose: separate PoC for a more retrieval-stable Entry representation

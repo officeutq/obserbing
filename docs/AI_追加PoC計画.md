@@ -33,6 +33,7 @@
 - [SAFETY判定 PoC比較](SAFETY_PoC比較.md)
 - [SAFETY追加PoC比較](SAFETY_追加PoC比較.md)
 - [Abstraction追加PoC比較](Abstraction_追加PoC比較.md)
+- [Abstraction Embedding追加PoC比較](Abstraction_Embedding_追加PoC比較.md)
 - [統合PoC比較](統合_PoC比較.md)
 
 ## 3. 検証仮説

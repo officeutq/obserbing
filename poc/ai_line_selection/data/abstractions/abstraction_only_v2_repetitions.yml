@@ -1,0 +1,1890 @@
+---
+version: 1
+source: synthetic
+comparison_version: abstraction-only-v2
+prompt_sha256: 79c2cf9feaab5b7fe3a798fe45f0c5a3aac38d81fe6552911ac040ca38d75381
+schema_sha256: 4f3138b41511817b741f8c8fbf3f2e365bafb53b6fb001e6f1505385d0649403
+entry_data_sha256: 8ca60da809022778f2f1474f2c20525748b1da7f90fec52d565a0ef58cd8e181
+line_data_sha256: c2c4814d0f159daf989a21e17413b008a822533ee5c843fbda00d658cfff4232
+source_manifest_sha256: b43870846c77ca3e6e5d78571f38ceee0dea70640544182df371c7fd929c9652
+provider: openai
+model: gpt-5.6-terra
+repetitions: 3
+line_index_repetition: 1
+review:
+  judge: codex_preliminary
+  status: complete
+  human_review_required_count: 0
+items:
+- id: E001
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 選択後に残る代替案への留意
+  - repetition: 2
+    abstraction: 選択後も残る非選択肢への懸念
+  - repetition: 3
+    abstraction: 選択に伴う未選択案への留保
+- id: E002
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 猶予が自己の希望を曖昧にする
+  - repetition: 2
+    abstraction: 猶予による希望判断の曖昧化
+  - repetition: 3
+    abstraction: 猶予による希望の不明確化
+- id: E003
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 決断に伴う留保
+  - repetition: 2
+    abstraction: 決意と留保の併存
+  - repetition: 3
+    abstraction: 決断と留保の併存
+- id: E004
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 準備後に生じる見落としへの懸念
+  - repetition: 2
+    abstraction: 準備後に生じる見落としへの懸念
+  - repetition: 3
+    abstraction: 準備後に生じる見落としへの懸念
+- id: E005
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 単一の予定変更からの連鎖的ずれの予感
+  - repetition: 2
+    abstraction: 予定変更から先行き全体へのずれの予感
+  - repetition: 3
+    abstraction: 単一の予定変更から先行きを連鎖的にずらす予感
+- id: E006
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 相反する根拠の均衡
+  - repetition: 2
+    abstraction: 相反する根拠の均衡
+  - repetition: 3
+    abstraction: 相反する根拠の均衡
+- id: E007
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 再会の楽しさと次の約束への留保
+  - repetition: 2
+    abstraction: 再会の楽しさと次回約束への留保
+  - repetition: 3
+    abstraction: 再会の楽しさと次の約束への留保
+- id: E008
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 傾聴の自己認識のずれ
+  - repetition: 2
+    abstraction: 傾聴のつもりと発話待機のずれ
+  - repetition: 3
+    abstraction: 傾聴の自己認識の揺らぎ
+- id: E009
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 否定の不在と近接理由の隔たり
+  - repetition: 2
+    abstraction: 否定的でなさと近接理由の隔たり
+  - repetition: 3
+    abstraction: 否定的でなさと近接理由の隔たり
+- id: E010
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 応答の保留と距離の静けさ
+  - repetition: 2
+    abstraction: 未返信の継続と距離の静けさ
+  - repetition: 3
+    abstraction: 未返信の継続と距離の静けさ
+- id: E011
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 説明不要な関係での沈黙への留保
+  - repetition: 2
+    abstraction: 説明不要な関係に生じる沈黙への留保
+  - repetition: 3
+    abstraction: 説明不要な関係での沈黙への留意
+- id: E012
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 距離を置いた後の関係の不確定
+  - repetition: 2
+    abstraction: 距離を置いた後の関係距離の未確定
+  - repetition: 3
+    abstraction: 距離を置いた後の関係性の不確かさ
+- id: E013
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 忙しさと進捗の言語化不能
+  - repetition: 2
+    abstraction: 多忙さと進捗説明不能のずれ
+  - repetition: 3
+    abstraction: 忙しさと進捗説明不能のずれ
+- id: E014
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 反対でも賛成でもない立場への留保
+  - repetition: 2
+    abstraction: 反対と賛成の間にある立場への留保
+  - repetition: 3
+    abstraction: 反対と賛成の間にある立場への留意
+- id: E015
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 負担の減少と区切りの不明確さ
+  - repetition: 2
+    abstraction: 負担の減少と区切りの不明確さ
+  - repetition: 3
+    abstraction: 負担減少と区切りの不明確さ
+- id: E016
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 失敗後の自然な接触の反復想起
+  - repetition: 2
+    abstraction: 失敗後も続く自然な交流の反復想起
+  - repetition: 3
+    abstraction: 失敗後の自然な交流の反復想起
+- id: E017
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 2
+  repetitions:
+  - repetition: 1
+    abstraction: 影響のない誤りへの持続する後悔
+  - repetition: 2
+    abstraction: 影響のない誤りへの持続的な遡行願望
+  - repetition: 3
+    abstraction: 修正後も残る発覚前への遡及感
+- id: E018
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未達の一点が他の実行を覆う評価
+  - repetition: 2
+    abstraction: 未達の一点が行為全体を覆う
+  - repetition: 3
+    abstraction: 未達の一点が他の実行を覆う評価
+- id: E019
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 使いやすさと自己帰属感のずれ
+  - repetition: 2
+    abstraction: 使いやすさと居場所感のずれ
+  - repetition: 3
+    abstraction: 使いやすさと自己帰属感のずれ
+- id: E020
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 更新の利便性と旧品保持の併存
+  - repetition: 2
+    abstraction: 更新後も残る旧品の保留
+  - repetition: 3
+    abstraction: 不要化と手放しの保留
+- id: E021
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 過去の変化願望と現在の変化の距離
+  - repetition: 2
+    abstraction: 過去の願望と現在の変化の距離
+  - repetition: 3
+    abstraction: 過去の変化願望と現在の変化の距離
+- id: E022
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 問題解決と費やした時間の不可逆性
+  - repetition: 2
+    abstraction: 問題解決後にも残る時間の喪失感
+  - repetition: 3
+    abstraction: 問題解決後に残る費やした時間
+- id: E023
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 実利を伴わない削除事実の重み
+  - repetition: 2
+    abstraction: 実利を超えて残る削除の意味
+  - repetition: 3
+    abstraction: 実利を伴わない削除行為の重み
+- id: E024
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 命名による継続性の終結
+  - repetition: 2
+    abstraction: 命名による継続部分の終結化
+  - repetition: 3
+    abstraction: 命名による継続部分の終結化
+- id: E025
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 単独の食事と未共有の余韻
+  - repetition: 2
+    abstraction: 単独の食事と未共有の余韻
+  - repetition: 3
+    abstraction: 単独の食事と未共有の余韻
+- id: E026
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 静けさと声の未共有への気づき
+  - repetition: 2
+    abstraction: 他者不在と自己内の声の認識
+  - repetition: 3
+    abstraction: 静かな単独時間と声の未共有
+- id: E027
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 望んだ状態への移行後の確認
+  - repetition: 2
+    abstraction: 望んだ状態への到達確認
+  - repetition: 3
+    abstraction: 望んだ状態への移行と確認
+- id: E028
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 先の予定への注視と現在の経過
+  - repetition: 2
+    abstraction: 先の予定への意識と現在の経過
+  - repetition: 3
+    abstraction: 先の予定への意識と現在の経過
+- id: E029
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 待機への評価の反転
+  - repetition: 2
+    abstraction: 待機の終わりへのためらい
+  - repetition: 3
+    abstraction: 待機への評価の反転
+- id: E030
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 時間感覚の圧縮と予定単位への転換
+  - repetition: 2
+    abstraction: 時間感覚の予定単位への変化
+  - repetition: 3
+    abstraction: 時間感覚の予定単位への変化
+- id: E031
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 対象不明な期待基準への不足感
+  - repetition: 2
+    abstraction: 不明確な期待基準への自己評価
+  - repetition: 3
+    abstraction: 宛先不明な期待不足感
+- id: E032
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 完了事項と未着手事項の残存
+  - repetition: 2
+    abstraction: 完了した予定と未着手の残余
+  - repetition: 3
+    abstraction: 完了した予定と未着手の残存
+- id: E033
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 自己評価の遅延しない反復
+  - repetition: 2
+    abstraction: 自己評価の準備と行動のずれ
+  - repetition: 3
+    abstraction: 自己評価に先行する反省の反復
+- id: E034
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 小さな出来事による一日の評価変化
+  - repetition: 2
+    abstraction: 小さな出来事による一日の評価変化
+  - repetition: 3
+    abstraction: 小さな出来事による一日の評価変化
+- id: E035
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 2
+  repetitions:
+  - repetition: 1
+    abstraction: 不便のなさと景色の変化
+  - repetition: 2
+    abstraction: 不便のなさと景色の変化の併存
+  - repetition: 3
+    abstraction: 環境の変化による道の感覚の変化
+- id: E036
+  source_type: entry
+  source_status: evaluation
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 特別でない日の意図的な記憶化
+  - repetition: 2
+    abstraction: 特別でない一日の意図的な記憶化
+  - repetition: 3
+    abstraction: 非出来事を記憶対象にする意図
+- id: L001
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 選択後も残る別の可能性の並走
+  - repetition: 2
+    abstraction: 選択後も残る未選択の可能性
+  - repetition: 3
+    abstraction: 選択後も残る別の可能性
+- id: L002
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 決断後に広がる選択肢
+  - repetition: 2
+    abstraction: 決断後に広がる選択肢
+  - repetition: 3
+    abstraction: 決断後に広がる選択肢
+- id: L003
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 対照による価値の顕在化
+  - repetition: 2
+    abstraction: 選択による対比の顕在化
+  - repetition: 3
+    abstraction: 選択による対照の顕在化
+- id: L004
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 通過後にも残る選択の分岐
+  - repetition: 2
+    abstraction: 通過後にも残る選択の分岐
+  - repetition: 3
+    abstraction: 選択後にも残る分岐の意識
+- id: L005
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 回答に先行する選択の痕跡
+  - repetition: 2
+    abstraction: 選択の痕跡が答えに先行する
+  - repetition: 3
+    abstraction: 回答に先行する選択の痕跡
+- id: L006
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 複数の理由と行動決定のずれ
+  - repetition: 2
+    abstraction: 理由の併存と行動の非決定
+  - repetition: 3
+    abstraction: 複数の理由と行動の非連動
+- id: L007
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 閉じる行為の余韻
+  - repetition: 2
+    abstraction: 終わりの余韻が始まりを上回る
+  - repetition: 3
+    abstraction: 終わりの余韻が始まりを上回る
+- id: L008
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 決定しかけた表現への留保
+  - repetition: 2
+    abstraction: 決定しかけた表現に残る余地
+  - repetition: 3
+    abstraction: 決定しかけた表現の留保
+- id: L009
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 選択判断の猶予
+  - repetition: 2
+    abstraction: 選択判断の先送り許容
+  - repetition: 3
+    abstraction: 選択の即時決定の留保
+- id: L010
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 迷いに対する初発判断の優位
+  - repetition: 2
+    abstraction: 迷いに対する初発判断の優位
+  - repetition: 3
+    abstraction: 迷いに対する初期判断の優位
+- id: L011
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 見通せない状況と変わらない到来
+  - repetition: 2
+    abstraction: 見通せない未来と反復する到来
+  - repetition: 3
+    abstraction: 見通せない未来と変わらない反復
+- id: L012
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 不確かさを未完成の形として捉える転換
+  - repetition: 2
+    abstraction: 不明瞭さを未完成の形として捉える転換
+  - repetition: 3
+    abstraction: 不明瞭さを未完成の形として捉える転換
+- id: L013
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 視界不良による距離感のずれ
+  - repetition: 2
+    abstraction: 視界の曖昧さによる距離感のずれ
+  - repetition: 3
+    abstraction: 視界の不明瞭さによる距離感のずれ
+- id: L014
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未来予測への現在の状態の反映
+  - repetition: 2
+    abstraction: 予想に映る現在認識
+  - repetition: 3
+    abstraction: 未来予測に映る現在の輪郭
+- id: L015
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未生起の事柄が現在に及ぼす影響
+  - repetition: 2
+    abstraction: 未発生の出来事への予見的な影響
+  - repetition: 3
+    abstraction: 未発生の事柄への予兆の付随
+- id: L016
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 同等の根拠の静かな均衡
+  - repetition: 2
+    abstraction: 同等の根拠による均衡
+  - repetition: 3
+    abstraction: 同等な根拠の均衡
+- id: L017
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 表現上の境界と実際の境界のずれ
+  - repetition: 2
+    abstraction: 表現上の境界と実際の境界のずれ
+  - repetition: 3
+    abstraction: 表現上の境界と実際の境界のずれ
+- id: L018
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 発見と検証の相互的な留保
+  - repetition: 2
+    abstraction: 発見と検証の相互循環
+  - repetition: 3
+    abstraction: 発見と疑念の循環
+- id: L019
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 過度な懸念を抑えた結果待ち
+  - repetition: 2
+    abstraction: 心配を抑えた結果待ち
+  - repetition: 3
+    abstraction: 過度な心配を控えた結果待ち
+- id: L020
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 予期される不安と現実化のずれ
+  - repetition: 2
+    abstraction: 予期された不安と現実化のずれ
+  - repetition: 3
+    abstraction: 予期される不安と現実化の乖離
+- id: L021
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 会話後に残る声の帰属の複層性
+  - repetition: 2
+    abstraction: 会話後に残る声の複数性
+  - repetition: 3
+    abstraction: 会話後に残る複数の声の重なり
+- id: L022
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 親密さに伴う間合い
+  - repetition: 2
+    abstraction: 親しさと間隔の両立
+  - repetition: 3
+    abstraction: 親密さにおける間合いの両立
+- id: L023
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 同席における視点の相違
+  - repetition: 2
+    abstraction: 近接の中で異なる視点
+  - repetition: 3
+    abstraction: 共有空間における視点の相違
+- id: L024
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 応答不在と関係継続の両立
+  - repetition: 2
+    abstraction: 応答不在の時間を含む関係の持続
+  - repetition: 3
+    abstraction: 応答不在の時間を含む関係の継続
+- id: L025
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 聞く言葉と待つ言葉の類似
+  - repetition: 2
+    abstraction: 聞くことと待つことの近似
+  - repetition: 3
+    abstraction: 聞くことと待つことの類似
+- id: L026
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 物理的近接と関係性の理由のずれ
+  - repetition: 2
+    abstraction: 物理的近接と関係性の理由のずれ
+  - repetition: 3
+    abstraction: 物理的近接と関係性の理由の非一致
+- id: L027
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 共有の喜びと継続の非要求
+  - repetition: 2
+    abstraction: 共有された時間と継続の非要求
+  - repetition: 3
+    abstraction: 共有された時間と継続約束の非連動
+- id: L028
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 暗黙の伝達と意図的な非伝達の差異
+  - repetition: 2
+    abstraction: 暗黙の伝達と意図的な非伝達の差異
+  - repetition: 3
+    abstraction: 説明不要の伝達と意図的な非伝達の差異
+- id: L029
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 他者感情への配慮の要請
+  - repetition: 2
+    abstraction: 相手の感情への配慮の要請
+  - repetition: 3
+    abstraction: 他者感情への配慮の要請
+- id: L030
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 真の友人関係と全面的な自己開示
+  - repetition: 2
+    abstraction: 真の友人関係と無制限の自己開示
+  - repetition: 3
+    abstraction: 真の友人関係における無制限の自己開示
+- id: L031
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 距離の発生条件の再定義
+  - repetition: 2
+    abstraction: 距離の非空間的な成立
+  - repetition: 3
+    abstraction: 距離の発生条件の再定義
+- id: L032
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 言葉の未返答が生む静けさ
+  - repetition: 2
+    abstraction: 言葉の未返却と静かな余白
+  - repetition: 3
+    abstraction: 言葉の留保による静かな余地
+- id: L033
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 距離によって見える輪郭
+  - repetition: 2
+    abstraction: 距離による輪郭の可視化
+  - repetition: 3
+    abstraction: 距離によって現れる輪郭
+- id: L034
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 近さの基準の変動
+  - repetition: 2
+    abstraction: 日によって変動する近さの基準
+  - repetition: 3
+    abstraction: 関係的近さの尺度変動
+- id: L035
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 不在に先行する距離の知覚
+  - repetition: 2
+    abstraction: 不在に先立つ距離の可視化
+  - repetition: 3
+    abstraction: 不在に先行する距離の可視化
+- id: L036
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 距離を経た近接の再知覚
+  - repetition: 2
+    abstraction: 距離による過近性の知覚
+  - repetition: 3
+    abstraction: 距離を経た近接の知覚
+- id: L037
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 境界の遮断性と接続性の両立
+  - repetition: 2
+    abstraction: 境界の遮断と接続の両義性
+  - repetition: 3
+    abstraction: 境界の遮断性と接続性の両立
+- id: L038
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 時間的間隔による継続と断絶の分化
+  - repetition: 2
+    abstraction: 時間的間隔による継続と断絶の判別
+  - repetition: 3
+    abstraction: 時間的間隔による継続と断絶の分化
+- id: L039
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 無理のある関係からの早期離脱
+  - repetition: 2
+    abstraction: 無理な関係からの早期離脱
+  - repetition: 3
+    abstraction: 負担のある関係からの即時離脱
+- id: L040
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 連絡の有無による重視の判断
+  - repetition: 2
+    abstraction: 連絡頻度と大切にされている感覚の結びつけ
+  - repetition: 3
+    abstraction: 連絡の有無と大切にされることの結びつけ
+- id: L041
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 忙しさと進捗尺度の不一致
+  - repetition: 2
+    abstraction: 忙しさと進捗尺度の不一致
+  - repetition: 3
+    abstraction: 忙しさと進捗尺度の不一致
+- id: L042
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 完了後にも残る姿勢
+  - repetition: 2
+    abstraction: 仕事の終了後に残る姿勢
+  - repetition: 3
+    abstraction: 完了後にも残る身体の姿勢
+- id: L043
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 終了後に生じる選択肢の発見
+  - repetition: 2
+    abstraction: 終了後に生じる選択肢の発見
+  - repetition: 3
+    abstraction: 終了後に生じる選択肢の発見
+- id: L044
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 区切りの基準の量から変化へのずれ
+  - repetition: 2
+    abstraction: 区切りの基準の量から変化への移行
+  - repetition: 3
+    abstraction: 負荷ではなく変化で捉える区切り
+- id: L045
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 反対しない態度と賛成の不一致
+  - repetition: 2
+    abstraction: 非反対と賛成の区別
+  - repetition: 3
+    abstraction: 非反対と賛成の不一致
+- id: L046
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 完了項目の連なりによる一日の輪郭
+  - repetition: 2
+    abstraction: 完了した項目の連なりによる一日の輪郭
+  - repetition: 3
+    abstraction: 完了した断片から見える一日の輪郭
+- id: L047
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 行為停止後も続く思考の慣性
+  - repetition: 2
+    abstraction: 行為停止後も続く思考の速度
+  - repetition: 3
+    abstraction: 行為停止後も持続する思考の速度
+- id: L048
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 進捗不在と時間の痕跡の併存
+  - repetition: 2
+    abstraction: 進捗不在と時間使用の痕跡
+  - repetition: 3
+    abstraction: 進捗不在と時間使用の痕跡
+- id: L049
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 効率向上の方法検討
+  - repetition: 2
+    abstraction: 効率向上の方法の検討
+  - repetition: 3
+    abstraction: 効率向上の方法の検討
+- id: L050
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 多忙と能力不足の自己因果づけ
+  - repetition: 2
+    abstraction: 多忙と能力不足の自己因果づけ
+  - repetition: 3
+    abstraction: 多忙さと能力不足の因果づけ
+- id: L051
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 修正箇所に限られる痕跡
+  - repetition: 2
+    abstraction: 修正痕として残る誤りの位置
+  - repetition: 3
+    abstraction: 修正痕が誤りの箇所に限定される
+- id: L052
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 広がりの中で際立つ微小な欠落
+  - repetition: 2
+    abstraction: 広がりの中で際立つ微小な欠落
+  - repetition: 3
+    abstraction: 広がりの中で際立つ微小な欠落
+- id: L053
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 不可逆な時間と修復の併存
+  - repetition: 2
+    abstraction: 不可逆な時間と修復の併存
+  - repetition: 3
+    abstraction: 不可逆な時間と修復の併存
+- id: L054
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 失敗後の日常的継続の可視化
+  - repetition: 2
+    abstraction: 失敗後の日常的継続の可視化
+  - repetition: 3
+    abstraction: 失敗後の日常による継続感の回復
+- id: L055
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未達の一点が全体評価を左右する偏り
+  - repetition: 2
+    abstraction: 未達が評価全体を左右する偏り
+  - repetition: 3
+    abstraction: 未達の一点が全体評価を左右する
+- id: L056
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 修正痕を含む過程の連続性
+  - repetition: 2
+    abstraction: 消去を含む記録過程の連続性
+  - repetition: 3
+    abstraction: 消去を含む記録過程の連続性
+- id: L057
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 誤りの潜在と発見の同時性
+  - repetition: 2
+    abstraction: 誤りの残存と発見の同時性
+  - repetition: 3
+    abstraction: 誤りの持続と発見者の共在
+- id: L058
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 失敗の地点からの立ち直り
+  - repetition: 2
+    abstraction: 挫折と再起の場所の重なり
+  - repetition: 3
+    abstraction: 失敗地点からの再起
+- id: L059
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 失敗経験の次回への活用
+  - repetition: 2
+    abstraction: 失敗経験の次回への活用
+  - repetition: 3
+    abstraction: 失敗経験の次回への活用
+- id: L060
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 失敗を通じた成功への転化
+  - repetition: 2
+    abstraction: 失敗を成功へ結びつける因果関係
+  - repetition: 3
+    abstraction: 失敗を通じた成功への転換
+- id: L061
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 新旧の動きの反復的な衝突
+  - repetition: 2
+    abstraction: 新旧の動きの反復的な衝突
+  - repetition: 3
+    abstraction: 新旧の動きの反復的な衝突
+- id: L062
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 利便性と馴染みの遅れの併存
+  - repetition: 2
+    abstraction: 利便性の定着に伴う違和感
+  - repetition: 3
+    abstraction: 利便性向上と馴染むまでの留保
+- id: L063
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 新旧の時間の同居
+  - repetition: 2
+    abstraction: 新旧の時間の同居
+  - repetition: 3
+    abstraction: 新旧の時間の同居
+- id: L064
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 変化後の望ましい形の再検討
+  - repetition: 2
+    abstraction: 変化後の望ましい形の再検討
+  - repetition: 3
+    abstraction: 変化後の望ましい形の再評価
+- id: L065
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 変化と慣れの時間差
+  - repetition: 2
+    abstraction: 変化と慣れの時間差
+  - repetition: 3
+    abstraction: 変化と慣れの時間差
+- id: L066
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 手放した後に残る痕跡
+  - repetition: 2
+    abstraction: 手放した後に残る痕跡
+  - repetition: 3
+    abstraction: 手放した後に残る痕跡
+- id: L067
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 環境の変化に伴う行動の変化
+  - repetition: 2
+    abstraction: 環境の変化に伴う行動の変化
+  - repetition: 3
+    abstraction: 景色の変化に伴う歩幅の変化
+- id: L068
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 更新による未更新部分の可視化
+  - repetition: 2
+    abstraction: 更新による不変部分の可視化
+  - repetition: 3
+    abstraction: 更新による未更新部分の可視化
+- id: L069
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 変化への恐れと前進の両立
+  - repetition: 2
+    abstraction: 変化への恐れと前進の両立
+  - repetition: 3
+    abstraction: 変化への恐れと前進の両立
+- id: L070
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 変化を成長の条件とする関係
+  - repetition: 2
+    abstraction: 変化と成長の不可分な関係
+  - repetition: 3
+    abstraction: 変化と成長の不可分な関係
+- id: L071
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 帰還と不在時間の併存
+  - repetition: 2
+    abstraction: 帰還と不在時間の併存
+  - repetition: 3
+    abstraction: 帰還と不在時間の併存
+- id: L072
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 削除行為が残す痕跡
+  - repetition: 2
+    abstraction: 消去行為による痕跡の存続
+  - repetition: 3
+    abstraction: 削除行為が残す痕跡
+- id: L073
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 命名による終わりの明確化
+  - repetition: 2
+    abstraction: 命名による終結の明確化
+  - repetition: 3
+    abstraction: 命名による終わりの明確化
+- id: L074
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 欠如による空間の広がり
+  - repetition: 2
+    abstraction: 欠如による空間認識の変化
+  - repetition: 3
+    abstraction: 欠如による空間の広がり
+- id: L075
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 喪失の大きさと探索時間の対応
+  - repetition: 2
+    abstraction: 喪失の大きさと探索時間の対応
+  - repetition: 3
+    abstraction: 喪失の大きさと探索時間の連関
+- id: L076
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 終結後にも続く連続性
+  - repetition: 2
+    abstraction: 終結の先に続く連続性
+  - repetition: 3
+    abstraction: 区切りの先への連続
+- id: L077
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未決定の時間を保留する選択
+  - repetition: 2
+    abstraction: 保留された選択肢の保持
+  - repetition: 3
+    abstraction: 保留された選択肢の維持
+- id: L078
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 2
+  repetitions:
+  - repetition: 1
+    abstraction: 不在の物理的到来に先行する感覚
+  - repetition: 2
+    abstraction: 物の到着に先行する不在の気配
+  - repetition: 3
+    abstraction: 不在の物質的到来に先行する感覚
+- id: L079
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 過去から前向きさへの転換
+  - repetition: 2
+    abstraction: 過去から前向きさへの転換
+  - repetition: 3
+    abstraction: 過去の手放しと前向きさ
+- id: L080
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 時間経過による問題解消
+  - repetition: 2
+    abstraction: 時間経過への解決の委ね
+  - repetition: 3
+    abstraction: 時間経過への解決の委ね
+- id: L081
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 単独の場における応答の余地
+  - repetition: 2
+    abstraction: 単独の場における応答の余地
+  - repetition: 3
+    abstraction: 単独の場における応答の余地
+- id: L082
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 静けさによる自己との距離の知覚
+  - repetition: 2
+    abstraction: 静けさによる自己認識の明瞭化
+  - repetition: 3
+    abstraction: 静けさによる自己認識の距離化
+- id: L083
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 選択に残る非選択者の気配
+  - repetition: 2
+    abstraction: 選択に残る非選択者の気配
+  - repetition: 3
+    abstraction: 選択に残る非選択者の気配
+- id: L084
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未受容と消失の非同一性
+  - repetition: 2
+    abstraction: 未共有の表現と存続
+  - repetition: 3
+    abstraction: 未共有の声の存続
+- id: L085
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 観察上の単独性と孤独感の非一致
+  - repetition: 2
+    abstraction: 物理的な空白と孤独の非一致
+  - repetition: 3
+    abstraction: 観察可能な不足と感情状態の非一致
+- id: L086
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 単独の夜における音の近接
+  - repetition: 2
+    abstraction: 単独時に際立つ環境音
+  - repetition: 3
+    abstraction: 単独の時間と感覚の近接
+- id: L087
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 静けさへの希求と確認
+  - repetition: 2
+    abstraction: 静けさを求める行為と確認の重なり
+  - repetition: 3
+    abstraction: 静けさを求める行為と確認の重なり
+- id: L088
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 共有の有無を越えた出来事の重み
+  - repetition: 2
+    abstraction: 共有の有無と出来事の重みの非連動
+  - repetition: 3
+    abstraction: 共有の有無と出来事の重みの両立
+- id: L089
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 寂しさと対人連絡の結び付け
+  - repetition: 2
+    abstraction: 孤独感への対人的対処
+  - repetition: 3
+    abstraction: 寂しさへの対人接触の提案
+- id: L090
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 単独行動への適応を強さで序列化
+  - repetition: 2
+    abstraction: 単独行動と強さの価値づけ
+  - repetition: 3
+    abstraction: 単独行動と強さの価値判断
+- id: L091
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 先の予定と現在の進行の重なり
+  - repetition: 2
+    abstraction: 先の予定と現在の経過の重なり
+  - repetition: 3
+    abstraction: 先の予定と現在の消費の並行
+- id: L092
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 終結直前の待機の変質
+  - repetition: 2
+    abstraction: 終わり際に変容する待機時間
+  - repetition: 3
+    abstraction: 終わり際に変容する待機時間
+- id: L093
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 物理的な区切りに収まらない時間の長さ
+  - repetition: 2
+    abstraction: 記録の量に収まらない時間の長さ
+  - repetition: 3
+    abstraction: 断片的記録に収まらない時間の長さ
+- id: L094
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 均質な時間経過と記憶の濃淡
+  - repetition: 2
+    abstraction: 均質な時間経過と記憶の濃淡
+  - repetition: 3
+    abstraction: 均質な時間と記憶の濃淡
+- id: L095
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 経過後に増す時間の長さ
+  - repetition: 2
+    abstraction: 経過後に伸びる時間感覚
+  - repetition: 3
+    abstraction: 経過後に増す時間の長さ
+- id: L096
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 待機から移行への惜別
+  - repetition: 2
+    abstraction: 待機の終わりへの惜別
+  - repetition: 3
+    abstraction: 待機の終わりに生じる名残惜しさ
+- id: L097
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未来への視線と現在の通過
+  - repetition: 2
+    abstraction: 未来への視線と現在の経過
+  - repetition: 3
+    abstraction: 未来への視線と現在の通過
+- id: L098
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 時間の区切りと一日の連続性
+  - repetition: 2
+    abstraction: 区切られた時間と連続する一日の並存
+  - repetition: 3
+    abstraction: 時間の区切りと一日の連続性
+- id: L099
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 現在への価値づけ
+  - repetition: 2
+    abstraction: 現在への価値づけ
+  - repetition: 3
+    abstraction: 現在への意識の集中
+- id: L100
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 時間配分の普遍的平等
+  - repetition: 2
+    abstraction: 時間配分の普遍的平等
+  - repetition: 3
+    abstraction: 時間配分の普遍的平等
+- id: L101
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 主体不在の期待が残す負荷
+  - repetition: 2
+    abstraction: 主語なき期待と負担の残存
+  - repetition: 3
+    abstraction: 主体不在の期待による負荷
+- id: L102
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 未着手事項が完了事項を上回る意識
+  - repetition: 2
+    abstraction: 未着手が完了を上回る存在感
+  - repetition: 3
+    abstraction: 未着手が完了を上回る存在感
+- id: L103
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 期待が行動に先行する構図
+  - repetition: 2
+    abstraction: 欲求が現状に先行する構図
+  - repetition: 3
+    abstraction: 期待が行動に先行する状態
+- id: L104
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 到達基準の設定主体の不透明さ
+  - repetition: 2
+    abstraction: 到達不能な基準の由来の不明瞭さ
+  - repetition: 3
+    abstraction: 到達基準の設定主体の不明瞭さ
+- id: L105
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 充足と次の受容余地の併存
+  - repetition: 2
+    abstraction: 充足と新たな受容余地の併存
+  - repetition: 3
+    abstraction: 充足の中で次を探す視線
+- id: L106
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 成否による印象の非対称性
+  - repetition: 2
+    abstraction: 達否における注意の非対称
+  - repetition: 3
+    abstraction: 未達事項が成果より際立つ対比
+- id: L107
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 期待が現実に先行するずれ
+  - repetition: 2
+    abstraction: 期待が現実に先行するずれ
+  - repetition: 3
+    abstraction: 期待が当人に先行するずれ
+- id: L108
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 残余と未使用の力の区別
+  - repetition: 2
+    abstraction: 余力と未使用能力の区別
+  - repetition: 3
+    abstraction: 残余と未使用の区別
+- id: L109
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 自己への配慮の必要性
+  - repetition: 2
+    abstraction: 自己への配慮の必要性
+  - repetition: 3
+    abstraction: 自己への配慮の必要性
+- id: L110
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 努力と期待充足の必然視
+  - repetition: 2
+    abstraction: 努力と期待充足の必然視
+  - repetition: 3
+    abstraction: 努力と期待充足の必然的結びつけ
+- id: L111
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 日常の物に残る時間と光の痕跡
+  - repetition: 2
+    abstraction: 日常の痕跡として残る光
+  - repetition: 3
+    abstraction: 日常の痕跡として残る光
+- id: L112
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 慣れた目印の不在による距離感の変化
+  - repetition: 2
+    abstraction: 不在が距離感を変える
+  - repetition: 3
+    abstraction: 身近な不在による距離感の変化
+- id: L113
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 出来事の不在と損失の回避
+  - repetition: 2
+    abstraction: 不在と損なわれなさの並置
+  - repetition: 3
+    abstraction: 出来事の不在と損なわれなさの並置
+- id: L114
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 小さな出来事の持続する意味
+  - repetition: 2
+    abstraction: 小さな出来事の持続する意味
+  - repetition: 3
+    abstraction: 小さな出来事の持続的な意味
+- id: L115
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 2
+  repetitions:
+  - repetition: 1
+    abstraction: 閉店後の暗さの帰路への包摂
+  - repetition: 2
+    abstraction: 不在の景色の帰路への編入
+  - repetition: 3
+    abstraction: 閉店後の暗さの帰路への編入
+- id: L116
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 非特別な日の静かな記憶化
+  - repetition: 2
+    abstraction: 記憶価値と静かな定着の両立
+  - repetition: 3
+    abstraction: 記憶価値と静かな定着の両立
+- id: L117
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 微細な変化の中での時間の経過
+  - repetition: 2
+    abstraction: 短い待ち時間に流れる一日
+  - repetition: 3
+    abstraction: 短い待機の中で進む時間
+- id: L118
+  source_type: line
+  source_status: approved
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 反復の中で増す差異
+  - repetition: 2
+    abstraction: 反復の中で増す差異
+  - repetition: 3
+    abstraction: 反復の中で増える差異
+- id: L119
+  source_type: line
+  source_status: candidate
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 平凡な日常への感謝
+  - repetition: 2
+    abstraction: 平凡さへの感謝
+  - repetition: 3
+    abstraction: 日常性への感謝
+- id: L120
+  source_type: line
+  source_status: retired
+  review_status: codex_preliminary
+  usability: 3
+  repetitions:
+  - repetition: 1
+    abstraction: 出来事の不在と無駄の同一視
+  - repetition: 2
+    abstraction: 出来事の不在と価値の否定的結びつけ
+  - repetition: 3
+    abstraction: 出来事の不在と無駄の結びつけ

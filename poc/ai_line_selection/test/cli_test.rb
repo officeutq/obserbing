@@ -144,6 +144,21 @@ class CliTest < Minitest::Test
     assert_equal 469, document.fetch("total_requests")
   end
 
+  def test_abstraction_embedding_plan_performs_no_network_call
+    output = StringIO.new
+    status = AiLineSelection::CLI.start(
+      ["plan-abstraction-embedding", "--provider", "openai-small", "--entry-id", "E001"],
+      output: output,
+      error_output: StringIO.new
+    )
+
+    document = JSON.parse(output.string)
+    assert_equal 0, status
+    assert_equal "abstraction-embedding-v1", document.fetch("operation")
+    assert_equal 6, document.fetch("total_requests")
+    assert_equal false, document.fetch("network_call_performed")
+  end
+
   def test_external_abstraction_comparison_requires_explicit_flag
     errors = StringIO.new
     status = AiLineSelection::CLI.start(

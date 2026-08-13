@@ -252,6 +252,13 @@ operations:
     prompt_version: draft-1
     schema_version: draft-1
     timeout_seconds: 3
+  candidate_quality:
+    adapter: fixture
+    provider: fixture
+    model: offline-candidate-quality-v1
+    prompt_version: candidate-quality-v1
+    schema_version: candidate-quality-v1
+    timeout_seconds: 3
 
 integrated:
   chain_name: selected-v1

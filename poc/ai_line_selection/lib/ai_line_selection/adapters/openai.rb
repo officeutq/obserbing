@@ -84,7 +84,8 @@ module AiLineSelection
           safety: "safety_classification",
           meaning: "meaning_structure",
           abstraction: "abstraction_only",
-          line_evaluation: "line_evaluation"
+          line_evaluation: "line_evaluation",
+          candidate_quality: "candidate_quality"
         }.fetch(operation)
       end
 

@@ -13,11 +13,12 @@ module AiLineSelection
     ].freeze
     QUALITY_FLAGS = (FATAL_FLAGS + %w[excessive_concrete meaning_loss]).freeze
 
-    def initialize(configuration:, results_dir:, judgments_path:, export_path: nil)
+    def initialize(configuration:, results_dir:, judgments_path:, export_path: nil, repetitions_export_path: nil)
       @configuration = configuration
       @results_dir = File.expand_path(results_dir)
       @judgments_path = File.expand_path(judgments_path)
       @export_path = export_path && File.expand_path(export_path)
+      @repetitions_export_path = repetitions_export_path && File.expand_path(repetitions_export_path)
     end
 
     def call
@@ -31,9 +32,11 @@ module AiLineSelection
       write_json("preliminary_review_summary.json", review_summary)
       update_comparison_summary(summary, review_summary)
       export_abstractions(summary, judgments, reviewed) if @export_path
+      export_repetitions(summary, judgments, reviewed, records) if @repetitions_export_path
       review_summary.merge(
         summary_file: File.join(@results_dir, "preliminary_review_summary.json"),
-        export_file: @export_path
+        export_file: @export_path,
+        repetitions_export_file: @repetitions_export_path
       ).compact
     rescue Errno::ENOENT, Psych::Exception, JSON::ParserError, KeyError => e
       raise DataError.new(
@@ -233,6 +236,52 @@ module AiLineSelection
         end
       }
       File.write(@export_path, YAML.dump(payload), mode: "w:UTF-8")
+    end
+
+    def export_repetitions(comparison, judgments, reviewed, records)
+      FileUtils.mkdir_p(File.dirname(@repetitions_export_path))
+      reviews_by_id = reviewed.to_h { |review| [review.dig(:item, "item_id"), review] }
+      grouped_records = records.group_by { |record| record.fetch("item_id") }
+      manifest_path = File.join(@results_dir, "manifest.json")
+      manifest = read_json("manifest.json")
+      payload = {
+        "version" => 1,
+        "source" => "synthetic",
+        "comparison_version" => judgments.fetch("comparison_version"),
+        "prompt_sha256" => manifest.fetch("prompt_sha256"),
+        "schema_sha256" => manifest.fetch("schema_sha256"),
+        "entry_data_sha256" => manifest.fetch("entry_data_sha256"),
+        "line_data_sha256" => manifest.fetch("line_data_sha256"),
+        "source_manifest_sha256" => Digest::SHA256.file(manifest_path).hexdigest,
+        "provider" => comparison.dig("provider", "name"),
+        "model" => comparison.dig("provider", "model"),
+        "repetitions" => comparison.fetch("repetitions"),
+        "line_index_repetition" => 1,
+        "review" => {
+          "judge" => judgments.fetch("judge"),
+          "status" => "complete",
+          "human_review_required_count" => 0
+        },
+        "items" => reviewed.map do |review|
+          item = review.fetch(:item)
+          id = item.fetch("item_id")
+          repetitions = grouped_records.fetch(id).sort_by { |record| record.fetch("repetition") }.map do |record|
+            {
+              "repetition" => record.fetch("repetition"),
+              "abstraction" => record.fetch("abstraction")
+            }
+          end
+          {
+            "id" => id,
+            "source_type" => item.fetch("source_type"),
+            "source_status" => item.fetch("status"),
+            "review_status" => "codex_preliminary",
+            "usability" => reviews_by_id.fetch(id).dig(:candidate, :usability),
+            "repetitions" => repetitions
+          }
+        end
+      }
+      File.write(@repetitions_export_path, YAML.dump(payload), mode: "w:UTF-8")
     end
 
     def read_json(filename)
