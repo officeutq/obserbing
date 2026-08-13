@@ -183,6 +183,22 @@ bundle exec ruby bin\ai_line_selection evaluate-b-v2-gate-a `
 
 Gate Aが`architecture_rejected`のため、Issue #49では現方式をGate B用baselineとして固定せず、Lineプール改善Epicも作成しませんでした。再現用の構成snapshotとApproved 96 Lineのcanonical hashは`data/evaluations/b_v2_line_pool_transition_v1.json`、判断の詳細は[B-v2 Lineプール改善移行判断](../../docs/B-v2_Lineプール改善移行判断.md)を参照してください。
 
+## B-v2帯域感度follow-up
+
+Issue #59は、Issue #46で保存されなかったEntry側Embeddingだけを補完し、固定Gate Aを変更せずにband-passのpost-hoc感度を診断します。実行前にLine index hash、Embedding対象144件、1 batch、retry込み最大2 request、100円hard limitを確認します。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-b-v2-band-sensitivity `
+  --results results\b_v2_integrated_live_20260813_issue46
+
+bundle exec ruby bin\ai_line_selection complete-b-v2-entry-embeddings `
+  --results results\b_v2_integrated_live_20260813_issue46 `
+  --output-dir results\b_v2_band_sensitivity_20260813_issue59 `
+  --allow-external-api
+```
+
+許可する外部APIは`text-embedding-3-small`によるEntry Embedding 1 batchだけです。SAFETY、abstraction、Line profile、Line Embedding、その他LLMは再実行しません。Entry vectorはローカル成果物に限定し、全10,368 pairのcosineを後続オフライン解析の正本とします。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
