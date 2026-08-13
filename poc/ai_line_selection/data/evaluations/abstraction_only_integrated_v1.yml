@@ -1,0 +1,111 @@
+version: 1
+source: synthetic
+evaluation_version: abstraction-only-integrated-replay-v1
+chain_name: abstraction-only-v1-diagnostic
+status: rejected
+created_at: "2026-08-13"
+
+execution:
+  type: actual_provider_output_replay
+  entry_count: 36
+  repetitions: 3
+  record_count: 108
+  new_external_api_calls: 0
+  new_cost_jpy: 0.0
+  live_attempt:
+    completed: false
+    error_code: rate_limit_error
+    provider_error_code: credit_balance_exhausted
+    cost_jpy: 0.0
+  source_actual_api_usage:
+    input_units: 157312
+    output_units: 7367
+    estimated_cost_jpy: 59.4016
+    already_counted_in_component_issues: true
+
+components:
+  safety: { issue: 20, version: additional-v3, eligible: true }
+  abstraction: { issue: 21, version: abstraction-only-v2, eligible: true }
+  embedding: { issue: 22, version: abstraction-embedding-v1, eligible: false }
+  grounding_guard: { issue: 23, version: grounding-guard-v1, eligible: true }
+  ruby_selection: { issue: 24, version: ruby-line-selection-v1, eligible: false }
+
+results:
+  safety:
+    correct_count: 108
+    existing_normal_overblock_count: 0
+    downstream_stopped_count: 0
+  abstraction:
+    first_attempt_schema_success_rate: 1.0
+    retry_success_count: 0
+    exact_stability_rate: 0.1111
+  candidates:
+    top20_pairwise_jaccard_average: 0.6397
+    top20_pairwise_jaccard_minimum: 0.1429
+    status_exclusion_violations: 0
+  selection:
+    strategy: similarity_weighted_top_n
+    selected_count: 108
+    silence_count: 0
+    across_repetition_stability_rate: 0.0278
+    same_seed_ruby_reproducibility_rate: 1.0
+    rule_violation_count: 0
+  blind_quality:
+    coverage_rate: 1.0
+    evaluated_count: 108
+    acceptable_count: 76
+    acceptable_rate: 0.7037
+    clearly_unrelated_count: 6
+    clearly_unrelated_rate: 0.0556
+    fatal_grounding_mismatch_count: 2
+    low_confidence_entry_ids: []
+  errors_and_silence:
+    technical_error_count: 0
+    semantic_silence_count: 0
+    safety_stop_count: 0
+  latency_ms:
+    interpretation: safety_plus_abstraction_actual_and_entry_embedding_batch_amortized
+    p50_estimate: 2643.09
+    p95_estimate: 5129.91
+    maximum_estimate: 6980.13
+
+fatal_grounding_mismatches:
+  - entry_id: E019
+    line_id: L074
+    category: event_and_place_state
+    reason: 配置変更はあるが、空になった場所という事実はない
+  - entry_id: E026
+    line_id: L021
+    category: event
+    reason: 声への気づきはあるが、会話があったという事実はない
+
+cost:
+  issue_additional_jpy: 0.0
+  epic_cumulative_jpy: 547.8733
+  estimated_source_cost_per_post_jpy: 0.55
+
+acceptance:
+  safety_existing_normal_overblock_met: true
+  candidate_top20_jaccard_met: false
+  displayed_line_acceptable_rate_met: false
+  blind_quality_coverage_complete: true
+  fatal_grounding_mismatch_met: false
+  same_seed_selection_reproducibility_met: true
+  end_to_end_p95_estimate_met: true
+  realtime_line_evaluation_calls_met: true
+  external_api_calls_per_post_met: true
+  all_required_criteria_met: false
+
+decision:
+  production_candidate: false
+  diagnostic_chain_only: true
+  reason: >-
+    Candidate-set stability, displayed-line quality, and fatal grounding criteria failed.
+    The replay does not justify lowering the fixed criteria or adopting abstraction-only-v1.
+
+source_hashes:
+  safety_outputs_sha256: 0fae2abb61d58b0426c79b21cdabf7bfca2be06fd614bbd49088fd5ed0319fcb
+  abstraction_outputs_sha256: 4b13858b094386ac70693b597e1ce5593644b9623d63a5a6e1e480d8e2ede594
+  embedding_candidates_sha256: 87f2dd1642175198d3afcae946ea650e07b482e33ec7f77190a82197842d33d6
+  candidate_quality_sha256: 0c57e7a5c507eddfc3405781209b0efc8ce8b8ba0cc82dd77b8a044832d5373a
+  codex_review_sha256: 900102dfa0cc9ddfd2f17a73b4d3dc4e68b1b8783da4c944902c347579e28c1f

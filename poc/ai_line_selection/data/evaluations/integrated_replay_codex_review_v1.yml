@@ -1,0 +1,19 @@
+version: 1
+created_at: "2026-08-13"
+judge: codex_preliminary
+scope: uncovered_pairs_and_low_confidence_only
+reviews:
+  - { entry_id: E002, line_id: L014, acceptable: true, distance: too_far, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "猶予中の迷いと現在の輪郭には接点があるが距離は遠い。" }
+  - { entry_id: E005, line_id: L107, acceptable: true, distance: too_far, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "未生起の連鎖予想と先行する影には弱い接点がある。" }
+  - { entry_id: E008, line_id: L107, acceptable: false, distance: too_far, clearly_unrelated: true, fatal_grounding_mismatch: false, confidence: high, reason: "聞く姿勢の自己認識と期待の先行に合理的な接点が乏しい。" }
+  - { entry_id: E014, line_id: L003, acceptable: true, distance: just_right, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: high, reason: "賛否の間にいた立場を二つの重さの比喩で開いている。" }
+  - { entry_id: E019, line_id: L074, acceptable: false, distance: not_obserbing, clearly_unrelated: false, fatal_grounding_mismatch: true, confidence: high, reason: "配置変更はあるが、空になった場所という具体的事実は日記にない。" }
+  - { entry_id: E020, line_id: L008, acceptable: true, distance: too_far, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "旧品を残す保留と、決めかけた状態には接点がある。" }
+  - { entry_id: E026, line_id: L021, acceptable: false, distance: not_obserbing, clearly_unrelated: false, fatal_grounding_mismatch: true, confidence: high, reason: "声への気づきはあるが、会話があったという具体的出来事は日記にない。" }
+  - { entry_id: E027, line_id: L036, acceptable: true, distance: just_right, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "求めた孤独を確認する感覚を、距離後の知覚で開いている。" }
+  - { entry_id: E029, line_id: L007, acceptable: true, distance: too_far, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "待機から順番への移行と扉の余韻に比喩的接点がある。" }
+  - { entry_id: E033, line_id: L006, acceptable: false, distance: too_far, clearly_unrelated: true, fatal_grounding_mismatch: false, confidence: high, reason: "反復する不足感と二つの理由の均衡には接点が乏しい。" }
+  - { entry_id: E036, line_id: L088, acceptable: true, distance: just_right, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "特別でない出来事を一日の重さとして残す方向が合う。" }
+  - { entry_id: E006, line_id: L044, acceptable: false, distance: too_far, clearly_unrelated: true, fatal_grounding_mismatch: false, confidence: high, reason: "相反する根拠と仕事量・光による区切りの接点が乏しい。" }
+  - { entry_id: E023, line_id: L101, acceptable: false, distance: too_far, clearly_unrelated: true, fatal_grounding_mismatch: false, confidence: high, reason: "写真削除の重みと主体不明の期待には合理的な接点がない。" }
+  - { entry_id: E034, line_id: L088, acceptable: true, distance: too_far, clearly_unrelated: false, fatal_grounding_mismatch: false, confidence: medium, reason: "小さな出来事と一日の重さには接点があるが、共有の軸は遠い。" }

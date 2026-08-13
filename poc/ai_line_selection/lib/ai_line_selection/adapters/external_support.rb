@@ -57,7 +57,10 @@ module AiLineSelection
         when 401, 403
           raise AuthenticationError.new(provider, request_id: id)
         when 429
-          raise RateLimitError.new(provider, request_id: id, retry_after: response.headers["retry-after"])
+          raise RateLimitError.new(
+            provider, request_id: id, retry_after: response.headers["retry-after"],
+            provider_error: provider_error_details(response)
+          )
         when 500..599
           raise ProviderServerError.new(provider, status: response.status, request_id: id)
         else
