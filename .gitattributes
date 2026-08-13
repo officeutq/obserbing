@@ -1,0 +1,5 @@
+* text=auto
+
+# Rails and container files execute inside Linux containers even on Windows hosts.
+backend/** text=auto eol=lf
+compose*.yml text eol=lf

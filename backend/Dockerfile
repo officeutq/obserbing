@@ -1,11 +1,8 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t backend .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name backend backend
-
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+# One multi-stage Dockerfile serves local development and production builds.
+# Docker Compose selects the development target; production is the final target.
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=4.0.6
@@ -20,20 +17,39 @@ RUN apt-get update -qq && \
     ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Set production environment variables and enable jemalloc for reduced memory usage and latency.
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development" \
+# Use a shared bundle path and enable jemalloc for reduced memory usage and latency.
+ENV BUNDLE_PATH="/usr/local/bundle" \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so"
 
-# Throw-away build stage to reduce size of final image
-FROM base AS build
-
 # Install packages needed to build gems
+FROM base AS build_packages
+
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libpq-dev libvips libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Local development target used by compose.yml.
+FROM build_packages AS development
+
+ENV RAILS_ENV="development" \
+    BUNDLE_DEPLOYMENT="0" \
+    BUNDLE_WITHOUT=""
+
+COPY vendor/* ./vendor/
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+COPY . .
+
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+EXPOSE 3000
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]
+
+# Throw-away production build stage.
+FROM build_packages AS build
+
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_WITHOUT="development"
 
 # Install application gems
 COPY vendor/* ./vendor/
@@ -57,8 +73,12 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 
 
-# Final stage for app image
-FROM base
+# Final production stage for the app image.
+FROM base AS production
+
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_WITHOUT="development"
 
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1000 rails && \
