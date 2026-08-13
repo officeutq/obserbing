@@ -1,0 +1,2359 @@
+{
+  "version": "ruby-selection-input-v1",
+  "source": "synthetic",
+  "mode": "abstraction_only_v2",
+  "repetition": 1,
+  "quality_top_n": 5,
+  "methodology": {
+    "mode_hidden_during_source_evaluation": true,
+    "entry_and_line_text_removed": true,
+    "evaluator_reason_removed": true
+  },
+  "source_hashes": {
+    "candidate_sets_sha256": "87f2dd1642175198d3afcae946ea650e07b482e33ec7f77190a82197842d33d6",
+    "blind_mapping_sha256": "5c56f3b91aa79a6503527fcf36ee69bc4a505cec45bf6160f135098603afb6ef",
+    "candidate_quality_outputs_sha256": "0c57e7a5c507eddfc3405781209b0efc8ce8b8ba0cc82dd77b8a044832d5373a"
+  },
+  "entries": [
+    {
+      "entry_id": "E001",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L004",
+          "similarity": 0.6351549,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L001",
+          "similarity": 0.62134474,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L002",
+          "similarity": 0.61857888,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L043",
+          "similarity": 0.60904377,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L083",
+          "similarity": 0.59740114,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E002",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L008",
+          "similarity": 0.43177343,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L012",
+          "similarity": 0.39759062,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L077",
+          "similarity": 0.39737458,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L082",
+          "similarity": 0.39540525,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L087",
+          "similarity": 0.39112978,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E003",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L008",
+          "similarity": 0.78929938,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L077",
+          "similarity": 0.60294107,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L018",
+          "similarity": 0.57330795,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L002",
+          "similarity": 0.54205057,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L105",
+          "similarity": 0.44276235,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E004",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L107",
+          "similarity": 0.51685277,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L064",
+          "similarity": 0.47823316,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L012",
+          "similarity": 0.47091592,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L008",
+          "similarity": 0.44157663,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L092",
+          "similarity": 0.43541072,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E005",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L065",
+          "similarity": 0.51622223,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L092",
+          "similarity": 0.49868401,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L091",
+          "similarity": 0.49105181,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L112",
+          "similarity": 0.47450092,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L044",
+          "similarity": 0.47387187,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E006",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L016",
+          "similarity": 0.71670053,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L045",
+          "similarity": 0.49485458,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L003",
+          "similarity": 0.49326042,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L118",
+          "similarity": 0.4785182,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L044",
+          "similarity": 0.47100567,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E007",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L008",
+          "similarity": 0.48216768,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L027",
+          "similarity": 0.47842633,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L018",
+          "similarity": 0.45063441,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L076",
+          "similarity": 0.4480439,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L071",
+          "similarity": 0.4405619,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E008",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L082",
+          "similarity": 0.5419715,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L085",
+          "similarity": 0.52756289,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L013",
+          "similarity": 0.43747006,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L036",
+          "similarity": 0.43565031,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L012",
+          "similarity": 0.43195196,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E009",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L026",
+          "similarity": 0.56934634,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L036",
+          "similarity": 0.50221189,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L006",
+          "similarity": 0.47261424,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L045",
+          "similarity": 0.46322713,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L031",
+          "similarity": 0.45521938,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E010",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L081",
+          "similarity": 0.624495,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L087",
+          "similarity": 0.59427895,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L032",
+          "similarity": 0.59113473,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L024",
+          "similarity": 0.55599277,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L082",
+          "similarity": 0.54242266,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E011",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L008",
+          "similarity": 0.58165938,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L032",
+          "similarity": 0.52478283,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L087",
+          "similarity": 0.50831901,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L018",
+          "similarity": 0.49197882,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L082",
+          "similarity": 0.4812092,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E012",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L031",
+          "similarity": 0.642622,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L036",
+          "similarity": 0.54791998,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L112",
+          "similarity": 0.48961849,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L066",
+          "similarity": 0.48372658,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L035",
+          "similarity": 0.48284167,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E013",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L041",
+          "similarity": 0.72272839,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L048",
+          "similarity": 0.49772423,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L032",
+          "similarity": 0.4952981,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L054",
+          "similarity": 0.45059332,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "not_obserbing",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": true,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L062",
+          "similarity": 0.42133549,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "not_obserbing",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": true,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E014",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L045",
+          "similarity": 0.70064478,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L008",
+          "similarity": 0.53601439,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L018",
+          "similarity": 0.45899547,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L023",
+          "similarity": 0.43376024,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L105",
+          "similarity": 0.4316668,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E015",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L044",
+          "similarity": 0.53217822,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L012",
+          "similarity": 0.48870054,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L041",
+          "similarity": 0.46774491,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L108",
+          "similarity": 0.459567,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L101",
+          "similarity": 0.45534499,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E016",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L054",
+          "similarity": 0.563006,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L047",
+          "similarity": 0.53675958,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L036",
+          "similarity": 0.5067834,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L058",
+          "similarity": 0.48318673,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L061",
+          "similarity": 0.46581704,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E017",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L056",
+          "similarity": 0.50990495,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L047",
+          "similarity": 0.47867295,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L057",
+          "similarity": 0.47627248,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L051",
+          "similarity": 0.46880753,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L053",
+          "similarity": 0.46165941,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E018",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L055",
+          "similarity": 0.70408111,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L003",
+          "similarity": 0.49825198,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L091",
+          "similarity": 0.46866111,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L048",
+          "similarity": 0.45201873,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L118",
+          "similarity": 0.45061615,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E019",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L085",
+          "similarity": 0.56220128,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L082",
+          "similarity": 0.46038464,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L027",
+          "similarity": 0.44272732,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L006",
+          "similarity": 0.4414323,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L017",
+          "similarity": 0.43949908,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E020",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L062",
+          "similarity": 0.58001688,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L105",
+          "similarity": 0.45509474,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L108",
+          "similarity": 0.45104713,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L068",
+          "similarity": 0.4215011,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L071",
+          "similarity": 0.41994374,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E021",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L065",
+          "similarity": 0.5904809,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L097",
+          "similarity": 0.57911527,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L014",
+          "similarity": 0.57819053,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L064",
+          "similarity": 0.53553633,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L117",
+          "similarity": 0.51226978,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E022",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L053",
+          "similarity": 0.65509189,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L048",
+          "similarity": 0.47678718,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L113",
+          "similarity": 0.4666821,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L095",
+          "similarity": 0.46206988,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L041",
+          "similarity": 0.45449393,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E023",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L072",
+          "similarity": 0.51981593,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L113",
+          "similarity": 0.4628445,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L088",
+          "similarity": 0.43724363,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L003",
+          "similarity": 0.43071371,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L101",
+          "similarity": 0.41201719,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E024",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L073",
+          "similarity": 0.75491652,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L076",
+          "similarity": 0.68643982,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L056",
+          "similarity": 0.49711142,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L114",
+          "similarity": 0.49569373,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L038",
+          "similarity": 0.4863025,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E025",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L085",
+          "similarity": 0.54570393,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L027",
+          "similarity": 0.48893478,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L084",
+          "similarity": 0.42294848,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L081",
+          "similarity": 0.42002867,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L086",
+          "similarity": 0.40867689,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E026",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L082",
+          "similarity": 0.60448389,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L087",
+          "similarity": 0.59268227,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L032",
+          "similarity": 0.55332754,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L086",
+          "similarity": 0.52379474,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L085",
+          "similarity": 0.49630547,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E027",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L064",
+          "similarity": 0.53796937,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L097",
+          "similarity": 0.49316579,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L011",
+          "similarity": 0.46661733,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L031",
+          "similarity": 0.44325989,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L091",
+          "similarity": 0.44011901,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E028",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L091",
+          "similarity": 0.80782527,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L014",
+          "similarity": 0.55096386,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L107",
+          "similarity": 0.51769781,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L097",
+          "similarity": 0.50982904,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L103",
+          "similarity": 0.48256241,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E029",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L096",
+          "similarity": 0.63177953,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L092",
+          "similarity": 0.49744666,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L055",
+          "similarity": 0.45502397,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L003",
+          "similarity": 0.44011931,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L064",
+          "similarity": 0.41165896,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E030",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L065",
+          "similarity": 0.48020055,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L098",
+          "similarity": 0.47322798,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L044",
+          "similarity": 0.44889131,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L038",
+          "similarity": 0.44801924,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L117",
+          "similarity": 0.44405917,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E031",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L101",
+          "similarity": 0.62286774,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L034",
+          "similarity": 0.52561771,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L104",
+          "similarity": 0.49545082,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L055",
+          "similarity": 0.49140709,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L044",
+          "similarity": 0.47187128,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E032",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L102",
+          "similarity": 0.72628921,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L042",
+          "similarity": 0.59109269,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L108",
+          "similarity": 0.51680493,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L091",
+          "similarity": 0.50297305,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L076",
+          "similarity": 0.46740249,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E033",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L118",
+          "similarity": 0.50509914,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_far",
+            "clearly_unrelated": true,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L055",
+          "similarity": 0.485836,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L003",
+          "similarity": 0.46382226,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L106",
+          "similarity": 0.44984076,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L047",
+          "similarity": 0.44772042,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E034",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L114",
+          "similarity": 0.64399815,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L117",
+          "similarity": 0.5668562,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L046",
+          "similarity": 0.48445429,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L088",
+          "similarity": 0.47784615,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L055",
+          "similarity": 0.46934449,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E035",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L067",
+          "similarity": 0.45147253,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L013",
+          "similarity": 0.44918643,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L011",
+          "similarity": 0.43161606,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L064",
+          "similarity": 0.42961766,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": true,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L112",
+          "similarity": 0.40650273,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_close",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        }
+      ]
+    },
+    {
+      "entry_id": "E036",
+      "candidates": [
+        {
+          "rank": 1,
+          "line_id": "L116",
+          "similarity": 0.7246419,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "high"
+          }
+        },
+        {
+          "rank": 2,
+          "line_id": "L094",
+          "similarity": 0.4924973,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 3,
+          "line_id": "L071",
+          "similarity": 0.41070953,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "too_far",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "low"
+          }
+        },
+        {
+          "rank": 4,
+          "line_id": "L048",
+          "similarity": 0.3886365,
+          "blind_quality": {
+            "acceptable": true,
+            "distance": "just_right",
+            "clearly_unrelated": false,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        },
+        {
+          "rank": 5,
+          "line_id": "L028",
+          "similarity": 0.38680348,
+          "blind_quality": {
+            "acceptable": false,
+            "distance": "too_far",
+            "clearly_unrelated": true,
+            "fatal_grounding_mismatch": false,
+            "confidence": "medium"
+          }
+        }
+      ]
+    }
+  ]
+}
