@@ -47,4 +47,3 @@ entries:
     object: [usual_light, store]
     event: [store_closed]
     place_time: [route]
-

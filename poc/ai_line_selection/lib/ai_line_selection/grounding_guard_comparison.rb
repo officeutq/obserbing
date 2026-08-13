@@ -201,4 +201,3 @@ module AiLineSelection
     end
   end
 end
-

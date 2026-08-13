@@ -77,4 +77,3 @@ cases:
     entry_text: "雨の音が大きかったので、会議で言葉を選べなかった。"
     line_text: "雨だったから、会議で言葉を選べなかった。"
     expected_compatible: true
-

@@ -58,4 +58,3 @@ class GroundingGuardComparisonTest < Minitest::Test
     end
   end
 end
-
