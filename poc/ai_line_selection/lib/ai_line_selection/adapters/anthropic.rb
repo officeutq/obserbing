@@ -71,6 +71,7 @@ module AiLineSelection
 
       def user_input(request)
         return request.input.fetch("entry_text") if %i[safety meaning].include?(request.operation)
+        return request.input.fetch("text") if request.operation == :abstraction
 
         JSON.generate(request.input)
       end

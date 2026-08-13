@@ -5,6 +5,7 @@ module AiLineSelection
     FILES = {
       safety: "safety.md",
       meaning: "meaning.md",
+      abstraction: "abstraction.md",
       line_evaluation: "line_evaluation.md"
     }.freeze
 

@@ -11,6 +11,7 @@ external_api:
   maximum_integrated_comparison_requests: 469
   maximum_embedding_comparison_requests: 12
   maximum_line_evaluation_comparison_requests: 218
+  maximum_abstraction_comparison_requests: 469
   maximum_repetitions: 3
 
 safety_providers:
@@ -230,6 +231,13 @@ operations:
     model: offline-meaning-v1
     prompt_version: draft-1
     schema_version: draft-1
+    timeout_seconds: 3
+  abstraction:
+    adapter: fixture
+    provider: fixture
+    model: offline-abstraction-v1
+    prompt_version: abstraction-only-v1
+    schema_version: abstraction-only-v1
     timeout_seconds: 3
   embedding:
     adapter: fixture

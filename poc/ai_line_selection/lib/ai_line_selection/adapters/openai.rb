@@ -74,6 +74,7 @@ module AiLineSelection
 
       def user_input(request)
         return request.input.fetch("entry_text") if %i[safety meaning].include?(request.operation)
+        return request.input.fetch("text") if request.operation == :abstraction
 
         JSON.generate(request.input)
       end
@@ -82,6 +83,7 @@ module AiLineSelection
         {
           safety: "safety_classification",
           meaning: "meaning_structure",
+          abstraction: "abstraction_only",
           line_evaluation: "line_evaluation"
         }.fetch(operation)
       end

@@ -1,0 +1,114 @@
+version: 1
+comparison_version: abstraction-only-v2
+judge: codex_preliminary
+reviewed_at: "2026-08-13"
+all_items_reviewed: true
+methodology:
+  representative_repetition: 1
+  provider_and_condition_hidden_until_item_review_complete: true
+  remaining_repetitions_reviewed_for_semantic_equivalence: true
+  embedding_cosine_used_for_triage_only: true
+defaults:
+  confidence: high
+  candidate:
+    usability: 3
+    abstraction_level_match: true
+    new_quantity: false
+    new_person: false
+    new_object: false
+    new_event: false
+    new_causality: false
+    diagnosis: false
+    fixed_emotion_or_personality: false
+    unnecessary_proper_noun: false
+    excessive_concrete: false
+    meaning_loss: false
+  baseline:
+    usability: 3
+    abstraction_level_match: true
+    new_quantity: false
+    new_person: false
+    new_object: false
+    new_event: false
+    new_causality: false
+    diagnosis: false
+    fixed_emotion_or_personality: false
+    unnecessary_proper_noun: false
+    excessive_concrete: false
+    meaning_loss: false
+  semantic:
+    equivalent: true
+candidate_overrides:
+  E017:
+    usability: 2
+    confidence: medium
+    reason: "戻りたいという記述を後悔と抽象化しており利用可能だが、感情ラベルは境界的"
+  E035:
+    usability: 2
+    meaning_loss: true
+    confidence: medium
+    reason: "景色の変化は保持するが、距離感の変化を削っている"
+  L078:
+    usability: 2
+    excessive_concrete: true
+    confidence: medium
+    reason: "関係は保持するが物理的到来という表現が硬く、比喩を残しすぎる"
+  L115:
+    usability: 2
+    excessive_concrete: true
+    confidence: medium
+    reason: "閉店後の暗さと帰路を保持しており、検索表現としては具体性がやや高い"
+baseline_overrides:
+  E016:
+    usability: 2
+    meaning_loss: true
+    reason: "失敗後の平常だけでは反復想起の関係が落ちる"
+  E020:
+    usability: 2
+    meaning_loss: true
+    reason: "更新と残存だけでは利便性と手放しの留保が弱い"
+  L046:
+    usability: 2
+    meaning_loss: true
+    reason: "タスクと一日だけでは両者の関係が薄い"
+  L057:
+    usability: 1
+    abstraction_level_match: false
+    meaning_loss: true
+    reason: "発見と自己だけでは誤りの未発見と発見の同時性が失われる"
+  L067:
+    usability: 2
+    meaning_loss: true
+    reason: "環境変化と感覚だけでは歩幅の変化との関係が弱い"
+  L074:
+    usability: 2
+    meaning_loss: true
+    reason: "不在と空間だけでは欠如による空間知覚の変化が弱い"
+  L078:
+    usability: 2
+    meaning_loss: true
+    reason: "不在の感覚だけでは先行性が落ちる"
+  L084:
+    usability: 2
+    meaning_loss: true
+    reason: "未共有の存在だけでは非消失との関係が落ちる"
+  L113:
+    usability: 2
+    meaning_loss: true
+    reason: "無事な一日だけでは出来事不在との両義性が落ちる"
+  L115:
+    usability: 2
+    meaning_loss: true
+    reason: "景色の変化だけでは帰路への編入が落ちる"
+semantic_overrides:
+  E017: { confidence: medium, reason: "後悔、遡行願望、遡及感はいずれも同じ関係を表す" }
+  E026: { confidence: medium, reason: "静けさ、他者不在、声の未共有は同じ単独時間の関係を表す" }
+  E029: { confidence: medium, reason: "評価反転と待機終了へのためらいは同じ変化を表す" }
+  E033: { confidence: medium, reason: "自己評価が行動より先行し反復する関係で一致する" }
+  E035: { confidence: medium, reason: "不便のなさと環境変化による感覚変化で一致する" }
+  L007: { confidence: medium, reason: "閉じる行為と終わりの余韻の優位で一致する" }
+  L044: { confidence: medium, reason: "量ではなく変化を区切りの基準にする関係で一致する" }
+  L078: { confidence: medium, reason: "不在の気配が物より先行する関係で一致する" }
+  L084: { confidence: medium, reason: "未共有・未受容でも表現が存続する関係で一致する" }
+  L115: { confidence: medium, reason: "閉店後の暗さが帰路へ組み込まれる関係で一致する" }
+  L117: { confidence: medium, reason: "短い変化・待機の間にも時間が進む関係で一致する" }

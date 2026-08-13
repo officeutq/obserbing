@@ -27,6 +27,9 @@ module AiLineSelection
       when "prepare" then prepare
       when "compare-meaning" then compare_meaning
       when "review-meaning" then review_meaning
+      when "plan-abstraction" then plan_abstraction
+      when "compare-abstraction" then compare_abstraction
+      when "apply-abstraction-preliminary" then apply_abstraction_preliminary
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
       when "plan-safety-boundary" then plan_safety_boundary
@@ -148,6 +151,81 @@ module AiLineSelection
         input: @input,
         output: @output
       ).call
+    end
+
+    def plan_abstraction
+      options = abstraction_options(allow_external_api_option: false)
+      print_json(AbstractionComparison.new(
+        configuration: @configuration,
+        version: options.fetch(:version)
+      ).plan(
+        provider: options.fetch(:provider),
+        embedding_provider: options.fetch(:embedding_provider),
+        repetitions: options.fetch(:repetitions),
+        item_ids: options.fetch(:item_ids)
+      ))
+    end
+
+    def compare_abstraction
+      options = abstraction_options(allow_external_api_option: true)
+      print_json(AbstractionComparison.new(
+        configuration: @configuration,
+        version: options.fetch(:version),
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        provider: options.fetch(:provider),
+        embedding_provider: options.fetch(:embedding_provider),
+        repetitions: options.fetch(:repetitions),
+        item_ids: options.fetch(:item_ids)
+      ))
+    end
+
+    def abstraction_options(allow_external_api_option:)
+      options = {
+        provider: "fixture",
+        embedding_provider: "fixture",
+        version: "abstraction-only-v2",
+        repetitions: 3,
+        item_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--provider NAME", %w[fixture openai anthropic]) { |value| options[:provider] = value }
+        parser.on("--embedding-provider NAME", @configuration.embedding_provider_names) do |value|
+          options[:embedding_provider] = value
+        end
+        parser.on("--version NAME", AbstractionComparison::VERSIONS.keys) { |value| options[:version] = value }
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--item-id ID", "Limit the comparison to one Entry or Line") do |value|
+          options[:item_ids] = [value]
+        end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid abstraction and Embedding API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def apply_abstraction_preliminary
+      options = { results: nil, judgments: nil, export: nil }
+      OptionParser.new do |parser|
+        parser.on("--results DIRECTORY") { |value| options[:results] = value }
+        parser.on("--judgments FILE") { |value| options[:judgments] = value }
+        parser.on("--export FILE") { |value| options[:export] = value }
+      end.parse!(@argv)
+      unless options[:results] && options[:judgments]
+        raise ConfigurationError.new("apply-abstraction-preliminary requires --results and --judgments")
+      end
+
+      print_json(AbstractionPreliminaryReviewer.new(
+        configuration: @configuration,
+        results_dir: options.fetch(:results),
+        judgments_path: options.fetch(:judgments),
+        export_path: options.fetch(:export)
+      ).call)
     end
 
     def plan_safety
@@ -530,6 +608,9 @@ module AiLineSelection
           ruby bin/ai_line_selection compare-meaning --providers openai,anthropic --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection compare-meaning --providers openai --repetitions 1 --entry-id E001 --allow-external-api
           ruby bin/ai_line_selection review-meaning --results results/meaning_<timestamp>_<suffix>
+          ruby bin/ai_line_selection plan-abstraction --version abstraction-only-v2 --provider openai --embedding-provider openai-small --repetitions 3
+          ruby bin/ai_line_selection compare-abstraction --version abstraction-only-v2 --provider openai --embedding-provider openai-small --repetitions 3 --allow-external-api
+          ruby bin/ai_line_selection apply-abstraction-preliminary --results results/abstraction_<version>_<timestamp>_<suffix> --judgments reviews/abstraction_only_v2_codex_preliminary.yml --export data/abstractions/abstraction_only_v2.yml
           ruby bin/ai_line_selection plan-safety --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-safety [--providers fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-safety --providers openai,anthropic --repetitions 3 --allow-external-api
