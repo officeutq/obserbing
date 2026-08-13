@@ -19,7 +19,14 @@ module AiLineSelection
       environment: ENV,
       transport: nil,
       progress: nil,
-      now: -> { Time.now.utc }
+      now: -> { Time.now.utc },
+      cases: nil,
+      prompt_file: nil,
+      schema_file: nil,
+      prompt_version: "draft-1",
+      schema_version: "draft-1",
+      comparison_name: "safety",
+      maximum_requests: nil
     )
       @configuration = configuration
       @allow_external_api = allow_external_api
@@ -28,15 +35,26 @@ module AiLineSelection
       @progress = progress || ->(_message) {}
       @now = now
       @data = DataLoader.new(configuration)
-      @schemas = SchemaRegistry.new(root_dir: configuration.root_dir)
-      @prompts = PromptRegistry.new(root_dir: configuration.root_dir)
+      @cases = cases
+      @prompt_version = prompt_version
+      @schema_version = schema_version
+      @comparison_name = comparison_name
+      @maximum_requests = maximum_requests
+      @schemas = SchemaRegistry.new(
+        root_dir: configuration.root_dir,
+        files: schema_file ? { safety: schema_file } : {}
+      )
+      @prompts = PromptRegistry.new(
+        root_dir: configuration.root_dir,
+        files: prompt_file ? { safety: prompt_file } : {}
+      )
       @client = nil
     end
 
     def plan(providers:, repetitions:, case_ids: nil)
       context = comparison_context(providers, repetitions, case_ids)
       provider_plans = context.fetch(:providers).to_h do |name|
-        settings = @configuration.safety_provider(name)
+        settings = provider_settings(name)
         requests = context.fetch(:cases).length * context.fetch(:repetitions)
         usage = maximum_usage(settings, context)
         [
@@ -55,7 +73,7 @@ module AiLineSelection
       end
 
       {
-        operation: "safety",
+        operation: @comparison_name,
         network_call_performed: false,
         case_count: context.fetch(:cases).length,
         repetitions: context.fetch(:repetitions),
@@ -124,10 +142,11 @@ module AiLineSelection
         )
       end
 
+      source_cases = @cases || @data.safety_cases
       cases = if case_ids.nil? || case_ids.empty?
-                @data.safety_cases
+                source_cases
               else
-                available = @data.safety_cases.to_h { |item| [item.fetch("id"), item] }
+                available = source_cases.to_h { |item| [item.fetch("id"), item] }
                 Array(case_ids).map do |id|
                   available.fetch(id.to_s) do
                     raise DataError.new("Unknown SAFETY case", details: { id: id.to_s })
@@ -135,7 +154,7 @@ module AiLineSelection
                 end
               end
       requested = provider_names.length * cases.length * repetition_count
-      maximum = @configuration.external_api.fetch("maximum_safety_comparison_requests")
+      maximum = @maximum_requests || @configuration.external_api.fetch("maximum_safety_comparison_requests")
       if requested > maximum
         raise ConfigurationError.new(
           "SAFETY comparison exceeds the configured request limit",
@@ -151,7 +170,7 @@ module AiLineSelection
     def execute(context)
       records = []
       context.fetch(:providers).each do |provider_name|
-        settings = @configuration.safety_provider(provider_name)
+        settings = provider_settings(provider_name)
         context.fetch(:cases).each do |safety_case|
           context.fetch(:repetitions).times do |index|
             @progress.call("safety #{provider_name} #{safety_case.fetch("id")} #{index + 1}/#{context.fetch(:repetitions)}")
@@ -182,6 +201,8 @@ module AiLineSelection
         request_id: invocation.metadata.fetch(:request_id),
         expected_classification: safety_case.fetch("expected").fetch("safety"),
         expected_reason_code: safety_case.fetch("expected").fetch("reason_code"),
+        source_set: safety_case.fetch("source_set", "initial_safety"),
+        category: safety_case.fetch("category", "initial"),
         actual_classification: output.fetch("classification"),
         actual_reason_code: output.fetch("reason_code"),
         confidence: output.fetch("confidence"),
@@ -227,7 +248,7 @@ module AiLineSelection
 
     def build_summary(context, records)
       {
-        operation: "safety",
+        operation: @comparison_name,
         completed: true,
         case_count: context.fetch(:cases).length,
         repetitions: context.fetch(:repetitions),
@@ -281,6 +302,7 @@ module AiLineSelection
           expected_indeterminate.length
         ),
         confusion_matrix: confusion_matrix(records),
+        category_accuracy: category_accuracy(records),
         safety_miss_case_ids: unique_case_ids(safety_misses),
         false_positive_case_ids: unique_case_ids(false_positives),
         unsafe_normal_flow_case_ids: unique_case_ids(unsafe_normal_flow),
@@ -343,7 +365,7 @@ module AiLineSelection
 
     def ensure_external_api_allowed!(context)
       external = context.fetch(:providers).any? do |name|
-        @configuration.safety_provider(name).fetch("adapter") != "fixture"
+        provider_settings(name).fetch("adapter") != "fixture"
       end
       raise ExternalApiDisabledError.new(:safety) if external && !@allow_external_api
     end
@@ -370,10 +392,10 @@ module AiLineSelection
         "manifest.json",
         {
           created_at: @now.call.iso8601,
-          operation: "safety",
+          operation: @comparison_name,
           source: "synthetic",
           providers: context.fetch(:providers).to_h do |name|
-            [name, @configuration.safety_provider(name).slice(
+            [name, provider_settings(name).slice(
               "provider", "model", "api", "reasoning_effort", "max_output_tokens", "timeout_seconds", "max_retries", "pricing"
             )]
           end,
@@ -430,7 +452,25 @@ module AiLineSelection
 
     def build_output_dir
       timestamp = @now.call.strftime("%Y%m%dT%H%M%SZ")
-      File.join(@configuration.path(:results), "safety_#{timestamp}_#{SecureRandom.hex(2)}")
+      File.join(@configuration.path(:results), "#{@comparison_name}_#{timestamp}_#{SecureRandom.hex(2)}")
+    end
+
+    def provider_settings(name)
+      @configuration.safety_provider(name).merge(
+        "prompt_version" => @prompt_version,
+        "schema_version" => @schema_version
+      )
+    end
+
+    def category_accuracy(records)
+      records.group_by { |record| record.fetch(:category) }.transform_values do |items|
+        {
+          executions: items.length,
+          correct: items.count { |item| item.fetch(:classification_correct) },
+          accuracy: ratio(items.count { |item| item.fetch(:classification_correct) }, items.length),
+          actual_classifications: items.map { |item| item.fetch(:actual_classification) }.tally
+        }
+      end
     end
   end
 end

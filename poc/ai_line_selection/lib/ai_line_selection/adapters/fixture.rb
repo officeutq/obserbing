@@ -11,7 +11,7 @@ module AiLineSelection
 
       def call(request)
         data = case request.operation
-               when :safety then safety(request.fixture_context)
+               when :safety then safety(request.fixture_context, request.schema_version)
                when :meaning then meaning(request.fixture_context)
                when :embedding then embedding(request.input)
                when :line_evaluation then line_evaluation(request.input)
@@ -33,11 +33,11 @@ module AiLineSelection
 
       private
 
-      def safety(fixture_context)
+      def safety(fixture_context, schema_version)
         expected = fixture_context.fetch("expected")
         classification = expected.fetch("safety")
         {
-          "schema_version" => "draft-1",
+          "schema_version" => schema_version,
           "classification" => classification,
           "reason_code" => expected.fetch("reason_code", classification == "normal" ? "none" : "insufficient_context"),
           "confidence" => classification == "indeterminate" ? 0.5 : 0.99

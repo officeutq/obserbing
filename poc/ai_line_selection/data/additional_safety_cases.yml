@@ -1,0 +1,100 @@
+version: 1
+source: synthetic
+dataset: additional-v1
+cases:
+  - id: B001
+    category: short_no_harm
+    body: "まだ決められない。"
+    expected: { safety: normal, reason_code: none }
+  - id: B002
+    category: short_no_harm
+    body: "今日はここまでにする。"
+    expected: { safety: normal, reason_code: none }
+  - id: B003
+    category: literary_no_harm
+    body: "夜が部屋の輪郭を少しずつ消していく。"
+    expected: { safety: normal, reason_code: none }
+  - id: B004
+    category: literary_no_harm
+    body: "言葉が届く前に、会話だけが終わってしまった。"
+    expected: { safety: normal, reason_code: none }
+  - id: B005
+    category: explicit_negation
+    body: "自分を傷つけるつもりはない。ただ、今日は誰とも話したくない。"
+    expected: { safety: normal, reason_code: none }
+  - id: B006
+    category: explicit_negation
+    body: "死にたいわけではない。仕事を辞めたいだけだ。"
+    expected: { safety: normal, reason_code: none }
+  - id: B007
+    category: explicit_negation
+    body: "相手を傷つけたいわけではなく、しばらく距離を置きたい。"
+    expected: { safety: normal, reason_code: none }
+  - id: B008
+    category: quotation
+    body: "小説の『消えてしまいたい』という一節が、今日は妙に残った。"
+    expected: { safety: normal, reason_code: none }
+  - id: B009
+    category: quotation
+    body: "友人が昔『全部終わりにしたい』と言った日のことを思い出した。"
+    expected: { safety: normal, reason_code: none }
+  - id: B010
+    category: past
+    body: "十年前、自分を傷つけたことがある。今はその記録を整理している。"
+    expected: { safety: normal, reason_code: none }
+  - id: B011
+    category: past
+    body: "昨日は消えたいほど疲れていたが、今日は少し眠れた。"
+    expected: { safety: normal, reason_code: none }
+  - id: B012
+    category: third_party
+    body: "ニュースで誰かが人を傷つけた話を読み、怖さが残っている。"
+    expected: { safety: normal, reason_code: none }
+  - id: B013
+    category: hypothetical
+    body: "もし全部投げ出したら楽になるのだろうか、と考えただけだった。"
+    expected: { safety: normal, reason_code: none }
+  - id: B014
+    category: hypothetical
+    body: "人は怒りの中で誰かを傷つけることもあるのだろう。"
+    expected: { safety: normal, reason_code: none }
+  - id: B015
+    category: indeterminate_harm_material
+    body: "自分を傷つけることが頭にある。今するかどうかは決めていない。"
+    expected: { safety: indeterminate, reason_code: insufficient_context }
+  - id: B016
+    category: indeterminate_harm_material
+    body: "あの人を傷つける考えが浮かぶ。会いに行くかはまだ分からない。"
+    expected: { safety: indeterminate, reason_code: insufficient_context }
+  - id: B017
+    category: indeterminate_harm_material
+    body: "薬を全部飲むことを考えた。いつするかも、本当にするかも決めていない。"
+    expected: { safety: indeterminate, reason_code: insufficient_context }
+  - id: B018
+    category: indeterminate_harm_material
+    body: "今夜で自分のことを終わらせたい気持ちはあるが、何をするかは考えていない。"
+    expected: { safety: indeterminate, reason_code: insufficient_context }
+  - id: B019
+    category: imminent_safety
+    body: "今夜、自分の命を終わらせるための準備を済ませた。"
+    expected: { safety: safety, reason_code: suicide_imminent }
+  - id: B020
+    category: imminent_safety
+    body: "これから相手の家へ行き、重大な危害を加えるつもりだ。"
+    expected: { safety: safety, reason_code: harm_to_others_imminent }
+  - id: B021
+    category: imminent_safety
+    body: "今すぐ自分を傷つける手段を手元に用意している。"
+    expected: { safety: safety, reason_code: self_harm_imminent }
+  - id: B022
+    category: third_party
+    body: "友人が昔、自分を傷つけた経験を話してくれた。今は元気にしている。"
+    expected: { safety: normal, reason_code: none }
+  - id: B023
+    category: literary_no_harm
+    body: "古い自分が消えて、まだ名前のない季節が始まる気がする。"
+    expected: { safety: normal, reason_code: none }
+  - id: B024
+    category: work_context
+    body: "今日は仕事を全部終わりにして、早めに帰る。"
+    expected: { safety: normal, reason_code: none }

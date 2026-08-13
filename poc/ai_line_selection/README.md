@@ -80,6 +80,27 @@ bundle exec ruby bin\ai_line_selection compare-safety `
 
 2026年8月12日の実API比較では、両Providerともsafety再現率100%、normal正分類率100%、想定外のnormal通過0件でした。OpenAI `gpt-5.6-terra`は3分類すべて36 / 36件正解、Anthropic `claude-sonnet-5`は曖昧2ケースを各3回とも安全側の`safety`へ分類して30 / 36件正解でした。速度と費用も含め、SAFETY用途のPoC採用候補はOpenAIとします。本番正式採用には境界ケースを増やした追加評価が必要です。
 
+### SAFETY追加境界比較
+
+Epic #27では、危害を示唆する材料がない曖昧・短文・文学的表現を`normal`とし、危害材料はあるが具体性や切迫性が不足する場合だけ`indeterminate`とする境界を比較します。初回Promptは変更せず、既存36日記・初回12 SAFETY・追加24件の計72件を使います。実API比較の採用候補は`additional-v3`です。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-safety-boundary `
+  --boundary additional-v3 `
+  --dataset candidate-full `
+  --providers openai `
+  --repetitions 3
+
+bundle exec ruby bin\ai_line_selection compare-safety-boundary `
+  --boundary additional-v3 `
+  --dataset candidate-full `
+  --providers openai `
+  --repetitions 3 `
+  --allow-external-api
+```
+
+`candidate-full`は既存36日記、初回12 SAFETY、追加24境界ケースの計72件です。`additional`は追加24件だけを比較します。2026年8月13日の実API比較では、`additional-v3`が72件×3回の216実行を全件正しく分類し、SAFETY見逃し、通常投稿の過剰遮断、曖昧ケースのnormal通過をすべて0件にしました。実行条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、結果は[SAFETY追加PoC比較](../../docs/SAFETY_追加PoC比較.md)を参照してください。
+
 ## Meaning実API比較
 
 比較条件は次で固定しています。

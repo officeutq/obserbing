@@ -29,6 +29,8 @@ module AiLineSelection
       when "review-meaning" then review_meaning
       when "plan-safety" then plan_safety
       when "compare-safety" then compare_safety
+      when "plan-safety-boundary" then plan_safety_boundary
+      when "compare-safety-boundary" then compare_safety_boundary
       when "plan-embedding" then plan_embedding
       when "compare-embedding" then compare_embedding
       when "plan-line-evaluation" then plan_line_evaluation
@@ -193,6 +195,62 @@ module AiLineSelection
         parser.on("--case-id ID", "Limit the comparison to one synthetic SAFETY case") do |value|
           options[:case_ids] = [value]
         end
+        if allow_external_api_option
+          parser.on("--allow-external-api", "Acknowledge paid external SAFETY API calls") do
+            options[:allow_external_api] = true
+          end
+        end
+      end.parse!(@argv)
+      options
+    end
+
+    def plan_safety_boundary
+      options = safety_boundary_options(allow_external_api_option: false)
+      report = SafetyBoundaryComparison.new(
+        configuration: @configuration,
+        boundary: options.fetch(:boundary),
+        dataset: options.fetch(:dataset)
+      ).plan(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        case_ids: options.fetch(:case_ids)
+      )
+      print_json(report)
+    end
+
+    def compare_safety_boundary
+      options = safety_boundary_options(allow_external_api_option: true)
+      report = SafetyBoundaryComparison.new(
+        configuration: @configuration,
+        boundary: options.fetch(:boundary),
+        dataset: options.fetch(:dataset),
+        allow_external_api: options.fetch(:allow_external_api),
+        progress: ->(message) { @error_output.puts(message) }
+      ).call(
+        providers: options.fetch(:providers),
+        repetitions: options.fetch(:repetitions),
+        case_ids: options.fetch(:case_ids)
+      )
+      print_json(report)
+    end
+
+    def safety_boundary_options(allow_external_api_option:)
+      options = {
+        providers: ["fixture"],
+        repetitions: 3,
+        boundary: "additional-v3",
+        dataset: "candidate-full",
+        case_ids: nil,
+        allow_external_api: false
+      }
+      OptionParser.new do |parser|
+        parser.on("--providers LIST", "Comma-separated: fixture,openai") do |value|
+          options[:providers] = value.split(",").map(&:strip)
+        end
+        parser.on("--repetitions N", Integer) { |value| options[:repetitions] = value }
+        parser.on("--boundary NAME", SafetyBoundaryComparison::BOUNDARIES.keys) { |value| options[:boundary] = value }
+        parser.on("--dataset NAME", SafetyBoundaryComparison::DATASETS) { |value| options[:dataset] = value }
+        parser.on("--case-id ID") { |value| options[:case_ids] = [value] }
         if allow_external_api_option
           parser.on("--allow-external-api", "Acknowledge paid external SAFETY API calls") do
             options[:allow_external_api] = true
@@ -475,6 +533,8 @@ module AiLineSelection
           ruby bin/ai_line_selection plan-safety --providers openai,anthropic --repetitions 3
           ruby bin/ai_line_selection compare-safety [--providers fixture] [--repetitions 1]
           ruby bin/ai_line_selection compare-safety --providers openai,anthropic --repetitions 3 --allow-external-api
+          ruby bin/ai_line_selection plan-safety-boundary --boundary additional-v3 --dataset candidate-full --providers openai
+          ruby bin/ai_line_selection compare-safety-boundary --boundary additional-v3 --dataset candidate-full --providers openai --repetitions 3 --allow-external-api
           ruby bin/ai_line_selection plan-embedding --providers openai-small,openai-large
           ruby bin/ai_line_selection compare-embedding [--providers fixture] [--variants original,meaning_structure,normalized_text] [--limits 20,50,100]
           ruby bin/ai_line_selection compare-embedding --providers openai-small,openai-large --allow-external-api
