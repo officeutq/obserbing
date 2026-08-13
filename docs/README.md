@@ -47,7 +47,9 @@ docs/
 ├─ design/
 │  ├─ Rails基本設計.md
 │  ├─ AWS基本設計.md
+│  ├─ AI基本設計.md
 │  └─ ai/
+│     └─ B-v2_AI選定基本設計.md
 ├─ evaluation/
 ├─ research/
 │  └─ ai/
