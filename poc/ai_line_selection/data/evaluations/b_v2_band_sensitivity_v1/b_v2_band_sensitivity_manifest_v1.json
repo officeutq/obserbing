@@ -89,6 +89,15 @@
     "pair_similarities_sha256": "ba9f4eaeba38ed0d477017e1a8c9bf54b7a274264922ab7c27886f91e33db3b6",
     "selections_sha256": "ab21a1d68666a5e2eb7470480f45f629625672fc498786e8047bcdcaf35dd015",
     "mechanical_sha256": "4a19c50a75a20955dac7d202a1b1c6dc92519302365478dbd8613ecddb417f47",
-    "pair_judgments_sha256": "eeccd734cfd64f745365de67bd50c58b3ed9ebb7250b91b2e6bb8c387d3e8ab6"
+    "pair_judgments_sha256": "eeccd734cfd64f745365de67bd50c58b3ed9ebb7250b91b2e6bb8c387d3e8ab6",
+    "quality_sha256": "2ed902fe202e4bdc997efb2bd5aa879b6c9c9703683deacf3c26773f315ff2a0",
+    "heatmaps_sha256": "6cb720d679e0f5d25cb8f3aa176febc5b959977dde2c4b11593689173a426855",
+    "analysis_sha256": "5cb630883fe6da2b293c3fea8191092b0ba4e6d8945dcfc7ff1037ada4c1d88a"
+  },
+  "offline_evaluation": {
+    "completed": true,
+    "setting_count": 825,
+    "external_api_calls": 0,
+    "selected_pair_label_coverage_rate": 1.0
   }
 }

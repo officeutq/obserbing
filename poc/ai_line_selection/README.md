@@ -451,6 +451,20 @@ Codex等による事前評価を使う場合は、評価行へ`judge`、`confide
 
 ## テスト
 
+### B-v2帯域感度 follow-up
+
+Issue #59では、#46の保存済みEntry原文・abstractionに不足していたEntry Embeddingだけを1バッチで補完し、108 outcome × 96 Approved Lineの全10,368 pair cosineを再解析の正本として保存します。`line_index.json`の固定SHA256が一致しない場合は停止し、Line Embeddingを再生成しません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-b-v2-band-sensitivity --results results\b_v2_integrated_live_20260813_issue46
+bundle exec ruby bin\ai_line_selection complete-b-v2-entry-embeddings --results results\b_v2_integrated_live_20260813_issue46 --output-dir results\b_v2_band_sensitivity_20260813_issue59 --allow-external-api
+bundle exec ruby bin\ai_line_selection prepare-b-v2-band-sweep --results results\b_v2_integrated_live_20260813_issue46 --completion-results results\b_v2_band_sensitivity_20260813_issue59 --output-dir data\evaluations\b_v2_band_sensitivity_v1
+bundle exec ruby bin\ai_line_selection apply-b-v2-band-sweep-codex-review --results results\b_v2_integrated_live_20260813_issue46 --completion-results results\b_v2_band_sensitivity_20260813_issue59 --output-dir data\evaluations\b_v2_band_sensitivity_v1 --review data\evaluations\b_v2_band_sensitivity_codex_review_v1.yml
+bundle exec ruby bin\ai_line_selection evaluate-b-v2-band-sweep --results results\b_v2_integrated_live_20260813_issue46 --completion-results results\b_v2_band_sensitivity_20260813_issue59 --output-dir data\evaluations\b_v2_band_sensitivity_v1
+```
+
+外部APIを使うのは2行目のEntry Embedding補完だけです。以後の825設定スイープ、uniform選択、Codex暫定品質評価、ヒートマップ集計は完全オフラインです。結果と`selector_review_needed`の判断は[B-v2 帯域感度追補診断](../../docs/B-v2_帯域感度追補診断.md)を参照してください。既存Gate AとEpic #40の判断は変更しません。
+
 ### 事実整合ガード追加PoC
 
 元の日記・Lineを変更せず、数量・人物・物・出来事・場所/時刻・強い因果の不整合を、影版・事前属性・静的検出・組み合わせで比較します。外部APIは呼びません。

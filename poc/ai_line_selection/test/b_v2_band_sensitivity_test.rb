@@ -63,6 +63,57 @@ class Bv2BandSensitivityTest < Minitest::Test
     assert_equal 0, review.fetch("external_api_calls")
   end
 
+  def test_quality_sweep_and_final_diagnosis_are_complete_without_rewriting_gate_a
+    quality = File.readlines(artifact("b_v2_band_sensitivity_quality_v1.jsonl"), encoding: "UTF-8")
+                  .map { |line| JSON.parse(line) }
+    analysis = JSON.parse(File.read(artifact("b_v2_band_sensitivity_analysis_v1.json"), encoding: "UTF-8"))
+    heatmaps = JSON.parse(File.read(artifact("b_v2_band_sensitivity_heatmaps_v1.json"), encoding: "UTF-8"))
+    conclusion = YAML.safe_load_file(
+      File.expand_path("../data/evaluations/b_v2_band_sensitivity_conclusion_v1.yml", __dir__),
+      permitted_classes: [], aliases: false
+    )
+
+    assert_equal 825, quality.length
+    assert_equal 825, quality.map { |row| row.fetch("setting_id") }.uniq.length
+    current = analysis.fetch("current_setting")
+    assert_equal "A0450_S0550_N020", current.fetch("setting_id")
+    assert_equal 51, current.fetch("acceptable_count")
+    assert_in_delta 0.472222, current.fetch("acceptable_rate"), 0.000001
+    best = analysis.fetch("best_point")
+    assert_equal "A0425_S0425_N010", best.fetch("setting_id")
+    assert_equal 69, best.fetch("acceptable_count")
+    assert_in_delta 0.638889, best.fetch("acceptable_rate"), 0.000001
+    assert_equal 2, analysis.dig("largest_near_best_region", "cell_count")
+    assert_equal %w[5 10 20 40 96], heatmaps.fetch("panels").keys
+    assert_equal "selector_review_needed", conclusion.fetch("diagnosis")
+    assert_equal false, conclusion.fetch("changes_existing_gate_a_or_epic_40_decision")
+    assert_equal 0, conclusion.fetch("external_api_calls_for_conclusion")
+    manifest = JSON.parse(File.read(artifact("b_v2_band_sensitivity_manifest_v1.json"), encoding: "UTF-8"))
+    assert_equal true, manifest.dig("offline_evaluation", "completed")
+    assert_equal 825, manifest.dig("offline_evaluation", "setting_count")
+    assert_equal 0, manifest.dig("offline_evaluation", "external_api_calls")
+    assert_equal Digest::SHA256.file(artifact("b_v2_band_sensitivity_analysis_v1.json")).hexdigest,
+                 manifest.dig("artifact_hashes", "analysis_sha256")
+  end
+
+  def test_entry_embedding_completion_stayed_within_the_preflight_envelope
+    completion = JSON.parse(File.read(
+      File.expand_path("../data/evaluations/b_v2_entry_embedding_completion_v1.json", __dir__),
+      encoding: "UTF-8"
+    ))
+
+    assert_equal 36, completion.fetch("embedded_raw_entry_count")
+    assert_equal 108, completion.fetch("embedded_abstraction_outcome_count")
+    assert_equal 144, completion.fetch("embedded_input_count")
+    assert_equal 1, completion.fetch("api_requests_including_retries")
+    assert_equal 3627, completion.fetch("input_tokens")
+    assert_operator completion.fetch("estimated_cost_jpy"), :<, completion.fetch("hard_cost_limit_jpy")
+    assert_equal 10_368, completion.fetch("pair_similarity_count")
+    assert_equal 0, completion.dig("external_operation_counts", "line_embedding")
+    assert_equal 0, completion.dig("external_operation_counts", "other_llm")
+    assert_equal false, completion.fetch("entry_vectors_committed_to_git")
+  end
+
   private
 
   def artifact(filename)

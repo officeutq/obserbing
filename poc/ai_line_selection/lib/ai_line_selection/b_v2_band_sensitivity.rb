@@ -185,6 +185,18 @@ module AiLineSelection
       )
       analysis_path = File.join(output_dir, "b_v2_band_sensitivity_analysis_v1.json")
       File.write(analysis_path, JSON.pretty_generate(analysis), mode: "w:UTF-8")
+      manifest_path = File.join(output_dir, "b_v2_band_sensitivity_manifest_v1.json")
+      manifest = JSON.parse(File.read(manifest_path, encoding: "UTF-8"))
+      manifest.fetch("artifact_hashes").merge!(
+        "quality_sha256" => Digest::SHA256.file(quality_path).hexdigest,
+        "heatmaps_sha256" => Digest::SHA256.file(heatmaps_path).hexdigest,
+        "analysis_sha256" => Digest::SHA256.file(analysis_path).hexdigest
+      )
+      manifest["offline_evaluation"] = {
+        "completed" => true, "setting_count" => quality.length,
+        "external_api_calls" => 0, "selected_pair_label_coverage_rate" => 1.0
+      }
+      File.write(manifest_path, JSON.pretty_generate(manifest), mode: "w:UTF-8")
       {
         completed: true, setting_count: quality.length,
         quality_path: quality_path, heatmaps_path: heatmaps_path, analysis_path: analysis_path,
