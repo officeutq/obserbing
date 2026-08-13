@@ -1,0 +1,61 @@
+version: b-v2-guard-policy-v1
+issue: 44
+status: frozen_before_issue_46_live_results
+created_at: "2026-08-13"
+line_pool:
+  approved_count: 96
+  approved_id_text_status_canonical_sha256: 2f418244d710d1d2ce1853febc74c82f4817ee8b6d9c7d5e3e779465a7fcd9b9
+  policy_review_basis: existing_reviewed_approved_set
+  changed_by_issue_44: false
+versions:
+  profile: b-v2-profile-primary-secondary-v1
+  embedding: b-v2-openai-small-dual-cosine-v1
+  approval_policy: b-v2-line-approval-policy-v1
+  runtime_policy: b-v2-runtime-policy-v1
+line_approval:
+  required_status: approved
+  prohibited_flags:
+    - advice_or_diagnosis
+    - imperative_instruction
+    - fixed_personality_or_emotion
+    - user_directed_unverified_assertion
+    - explicit_harmful_content
+    - prohibited_content
+  independent_general_expression_allowed: true
+  metaphor_allowed: true
+  different_concrete_example_allowed: true
+  analogical_transfer_allowed: true
+runtime:
+  deterministic_order:
+    - status
+    - compatible_profile_and_embedding_version
+    - approval_policy
+    - explicit_contradiction
+    - user_fact_assertion
+    - history_and_reuse
+  excluded_claim_types:
+    - user_fact_assertion
+    - explicit_contradiction
+    - advice_or_diagnosis
+  independent_line_facts_need_entry_evidence: false
+  domain_mismatch_excludes: false
+  technical_error_becomes_silence: false
+  zero_eligible_after_valid_processing: silence
+history:
+  same_entry_line_pair_reuse: prohibited
+  recent_line_window: 12
+  recent_window_scope: user_display_history
+  retry_with_same_idempotency_key_returns_stored_outcome: true
+  automatic_threshold_relaxation: false
+regressions:
+  must_remain_allowed:
+    - pair_id: E001/L083
+      reason: 人物をユーザー事実として断定せず、独立したanalogical expressionとして扱う
+    - pair_id: E033/L102
+      reason: 数量・完了構造をユーザーへ帰属せず、独立したanalogical expressionとして扱う
+  old_combined_v1_inherited: false
+  old_fact_category_equality_required: false
+evidence:
+  external_api_calls: 0
+  line_pool_changes: 0
+  gate_criteria_changes: 0
