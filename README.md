@@ -40,20 +40,23 @@ obserbingが意味を与えるのではなく、ユーザー自身がいつか�
 | 領域 | 採用技術・方針 |
 |---|---|
 | 対象OS | iOS / Android |
-| モバイル | React Native / TypeScript |
+| モバイル | React Native / TypeScript（`mobile/`） |
 | 開発・ビルド | Expo Development Build / EAS Build |
-| サーバー | Ruby on Rails |
+| サーバー | Ruby on Rails（`backend/`） |
 | API | REST JSON / OpenAPI / `/api/v1` |
 | 管理画面 | Rails Views / HotwireによるWebアプリ |
-| データベース | PostgreSQL |
+| ローカル開発 | Docker Compose（Rails + PostgreSQL / pgvector） |
+| データベース | PostgreSQL / pgvector |
 | アプリ内課金 | StoreKit / Google Play Billing |
 | 課金管理 | RevenueCat / `react-native-purchases` |
-| インフラ | AWS（詳細構成は今後決定） |
+| インフラ | AWS EC2 + Docker / Amazon RDS for PostgreSQL |
 | リポジトリ構成 | モノレポ |
 
 iOSとAndroidは同時に開発し、審査、課金設定、テストおよびリリースは、それぞれの進捗に合わせて進めます。
 
 Railsはモバイル向けREST APIと、運営者向けWeb管理画面を同じアプリケーション内で提供します。管理画面はネイティブアプリに含めません。
+
+モノレポではRailsを`backend/`、React Native / Expoを`mobile/`、PoCを`poc/`へ分離します。初期本番はRailsをEC2上のDockerコンテナで実行し、既存RDS PostgreSQLインスタンス内のobserbing専用Database・専用DB Userを使用します。ネイティブアプリはEC2のIPではなく、HTTPSのAPIサブドメインへ接続します。
 
 ### AI
 
@@ -70,6 +73,8 @@ Rails側では、AIプロバイダーおよびモデルを設定によって切�
 
 - [ドキュメント索引](docs/README.md)
 - [要件定義書](docs/requirements/要件定義_v1_0.md)
+- [Rails基本設計](docs/design/Rails基本設計.md)
+- [AWS基本設計](docs/design/AWS基本設計.md)
 - [AI基本設計](docs/design/AI基本設計.md)
 - [B-v2 AI選定基本設計](docs/design/ai/B-v2_AI選定基本設計.md)
 - [Reflective Distance 評価ルーブリック](docs/evaluation/Reflective_Distance_評価ルーブリック.md)

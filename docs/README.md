@@ -9,9 +9,11 @@
    - [要件定義書](requirements/要件定義_v1_0.md)：現行の上位要件
 2. 基本設計・詳細設計
    - [`docs/design/`](design/)：上位仕様を実現する現行設計
+   - [Rails基本設計](design/Rails基本設計.md)
+   - [AWS基本設計](design/AWS基本設計.md)
    - [AI基本設計](design/AI基本設計.md)
    - [B-v2 AI選定基本設計](design/ai/B-v2_AI選定基本設計.md)
-   - 今後作成する`Rails基本設計.md`等もこの配下へ置く
+   - 今後作成する詳細設計もこの配下へ置く
 3. 現行評価基準
    - [`docs/evaluation/`](evaluation/)：現在も有効な評価基準・ルーブリック
    - [Reflective Distance 評価ルーブリック](evaluation/Reflective_Distance_評価ルーブリック.md)
@@ -43,6 +45,8 @@ docs/
 ├─ README.md
 ├─ requirements/
 ├─ design/
+│  ├─ Rails基本設計.md
+│  ├─ AWS基本設計.md
 │  └─ ai/
 ├─ evaluation/
 ├─ research/
@@ -61,6 +65,8 @@ docs/
 
 ### design
 
+- [Rails基本設計](design/Rails基本設計.md)
+- [AWS基本設計](design/AWS基本設計.md)
 - [AI基本設計](design/AI基本設計.md)
 - [B-v2 AI選定基本設計](design/ai/B-v2_AI選定基本設計.md)
 
