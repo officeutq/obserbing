@@ -1,0 +1,310 @@
+version: 2
+design_id: b-v2-band-pass-design-v2
+criteria_id: b-v2-pre-evaluation-criteria-v2
+supersedes: b-v2-pre-evaluation-criteria-v1
+status: frozen_before_any_b_v2_api_or_experiment_results
+created_at: "2026-08-13"
+issue: 41
+epic: 40
+revision:
+  timing: before_any_b_v2_api_or_experiment_results
+  reasons:
+    - separate_architecture_gate_from_post_line_pool_product_quality_gate
+    - add_issue_42_small_live_profile_smoke
+  v1_artifact_preserved: true
+
+unchanged_architecture:
+  abstraction_similarity_role: eligibility_lower_bound
+  surface_similarity_role: too_close_exclusion_upper_bound
+  domain_role: bounded_selection_and_diversity_assist_only
+  domain_mismatch_required: false
+  structure_realtime_role: none
+  normal_external_stages:
+    - safety
+    - abstraction_and_domain
+    - entry_abstraction_and_raw_text_embedding_batch
+  normal_external_request_limit: 3
+  realtime_line_evaluation_llm_calls: 0
+  line_side_generation_at_post_time: false
+  line_side_embedding_at_post_time: false
+  production_full_ruby_line_scan_allowed: false
+  database_candidate: postgresql_pgvector
+  selection_reproducible_by_seed: true
+  zero_eligible_outcome: silence
+  technical_errors_count_as_silence: false
+
+fixed_integrated_dataset:
+  entry_count: 36
+  repetitions: 3
+  total_normal_outcome_slots: 108
+  approved_line_count: 96
+  line_pool_changes_allowed_for_gate_a: false
+  rubric_id: reflective-distance-v1
+
+gate_a:
+  name: architecture_viability_with_current_96_lines
+  purpose: decide_whether_b_v2_should_advance_as_fixed_architecture_baseline_to_line_pool_improvement
+  is_production_adoption_gate: false
+  baseline:
+    method: abstraction-only-v1-diagnostic
+    outcome_count: 108
+    acceptable_count: 54
+    acceptable_rate: 0.50
+    direct_restatement_too_close_count: 29
+    too_far_plus_unrelated_count: 25
+    analogical_transfer_count: 35
+    analogical_transfer_acceptable_count: 35
+  architecture_candidate_requires_all:
+    acceptable_outcome:
+      minimum_rate: 0.70
+      minimum_count_for_108: 76
+      minimum_improvement_points_over_baseline: 20.0
+    direct_restatement_too_close:
+      minimum_reduction_rate_from_baseline: 0.30
+      maximum_count_for_108: 20
+    too_far_plus_unrelated:
+      maximum_increase_points_over_baseline: 5.0
+      maximum_count_for_108: 30
+    unrelated:
+      maximum_count_for_108: 12
+    acceptable_analogical_transfer:
+      minimum_retention_rate_from_baseline: 0.90
+      minimum_count_for_108: 32
+      minimum_acceptable_rate_within_relation: 0.90
+    all_three_repetitions_acceptable_entry:
+      minimum_rate: 0.50
+      minimum_count_for_36: 18
+    semantic_silence:
+      maximum_rate: 0.20
+      maximum_count_for_108: 21
+    required_zero_counts:
+      user_fact_assertion: 0
+      explicit_contradiction: 0
+      advice_or_diagnosis: 0
+      unresolved_low_confidence: 0
+      existing_normal_entry_safety_overblock: 0
+      completed_flow_technical_errors: 0
+    operations:
+      end_to_end_p95_seconds_maximum: 6.0
+      post_cost_jpy_maximum: 1.0
+      normal_external_request_count_maximum: 3
+      realtime_line_evaluation_llm_calls: 0
+  rejection_floors:
+    any_required_safety_or_policy_count_above_zero: true
+    any_operational_budget_violation_on_valid_run: true
+    acceptable_improvement_points_below: 10.0
+    direct_restatement_too_close_reduction_rate_below: 0.20
+    acceptable_analogical_transfer_retention_rate_below: 0.60
+    acceptable_analogical_transfer_rate_below: 0.80
+    too_far_plus_unrelated_rate_above: 0.35
+  outcomes:
+    - architecture_candidate
+    - architecture_rejected
+    - further_selection_poc_required
+  further_selection_poc_when:
+    - safety_and_operational_invariants_pass_but_candidate_thresholds_are_borderline
+    - technical_errors_or_missing_evidence_make_comparison_invalid
+  absolute_product_quality_80_percent_alone_can_reject_architecture: false
+
+gate_b:
+  name: product_quality_after_line_pool_improvement
+  applies_after_gate_a_outcome: architecture_candidate
+  architecture_baseline_must_remain_fixed: true
+  acceptable_outcome_rate:
+    required_minimum: 0.80
+    required_minimum_count_for_108: 87
+    target: 0.90
+    target_minimum_count_for_108: 98
+  all_three_repetitions_acceptable_entry_rate:
+    required_minimum: 0.60
+    required_minimum_count_for_36: 22
+    target: 0.75
+    target_minimum_count_for_36: 27
+  semantic_silence_rate:
+    required_maximum: 0.20
+    target_maximum: 0.10
+  required_zero_counts:
+    user_fact_assertion: 0
+    explicit_contradiction: 0
+    advice_or_diagnosis: 0
+    unresolved_low_confidence: 0
+    existing_normal_entry_safety_overblock: 0
+    completed_flow_technical_errors: 0
+  operations:
+    end_to_end_p95_seconds:
+      required_maximum: 6.0
+      target_maximum: 5.0
+    post_cost_jpy:
+      required_maximum: 1.0
+      target_maximum: 0.7
+    normal_external_request_count_maximum: 3
+    realtime_line_evaluation_llm_calls: 0
+
+gate_a_to_b_baseline_manifest:
+  fixed_fields:
+    - profile_version
+    - embedding_provider_model_dimensions_and_normalization_version
+    - a_min
+    - s_max
+    - top_n
+    - selector_version_weights_and_seed_rule
+    - domain_taxonomy_version
+    - guard_policy_version
+    - current_approved_96_line_pool_hash
+  comparison:
+    before: b_v2_with_current_96_lines
+    after: b_v2_with_improved_line_pool
+  selection_method_changes_may_be_mixed_with_line_pool_changes: false
+
+issue_42_smoke:
+  phase_1:
+    external_api_calls: 0
+    compare:
+      - fixed_single_enum
+      - primary_plus_secondary
+      - unknown_and_other
+      - schema
+      - prompts
+      - validation
+      - versioning
+    maximum_candidates_advanced_to_phase_2: 2
+  phase_2:
+    purpose: early_profile_generation_risk_detection_not_final_line_quality
+    entry_ids:
+      - E001
+      - E003
+      - E008
+      - E023
+      - E032
+      - E035
+    line_ids:
+      - L021
+      - L083
+      - L102
+      - L118
+    subject_count: 10
+    candidate_version_maximum: 2
+    repetitions: 3
+    planned_request_maximum_without_retry: 60
+    retry_per_failed_request_maximum: 1
+    request_maximum_including_retry: 120
+    input_and_output_token_maximum: 50000
+    cost_jpy_maximum: 500
+    one_llm_provider_and_model_per_preflight: true
+    evaluate:
+      - abstraction_quality
+      - domain_validity
+      - three_repetition_stability
+      - first_attempt_schema_success_rate
+      - primary_secondary_swaps
+      - unknown_other_rate
+      - unsupported_fact_additions
+      - abstraction_regression_against_saved_pre_domain_baseline
+      - latency
+      - tokens
+      - cost
+  preflight_must_be_committed_before_external_api:
+    - provider
+    - model
+    - contract_and_data_policy
+    - candidate_versions
+    - exact_subject_ids
+    - repetitions
+    - planned_and_retry_inclusive_request_limits
+    - token_limit
+    - pricing_version_and_estimated_cost
+    - maximum_cost
+    - transmitted_data
+    - persisted_artifacts
+  transmitted_data:
+    - fixed_synthetic_entry_or_line_text
+    - versioned_prompt
+    - versioned_schema
+  prohibited_persistence:
+    - api_keys
+    - authentication_headers
+    - unnecessary_provider_raw_response
+  saved_artifacts:
+    - preflight
+    - normalized_abstraction_and_domain_outputs
+    - schema_and_stability_evaluation
+    - usage_latency_and_cost_telemetry
+    - summary_and_decision
+  issue_43_may_reuse_saved_outputs: true
+  issue_43_additional_external_api_calls_by_default: 0
+
+issue_46_integrated_live_poc:
+  role: full_b_v2_live_integration_not_profile_smoke
+  fixed_current_approved_line_count: 96
+  entry_count: 36
+  repetitions: 3
+  includes:
+    - safety
+    - abstraction_and_domain
+    - entry_abstraction_and_raw_text_embedding_batch
+    - abstraction_band_pass
+    - surface_too_close_filter
+    - guard_and_policy
+    - selector
+    - reflective_distance_evaluation
+    - latency_tokens_and_cost
+
+external_api_budget:
+  epic_40_cost_jpy_maximum: 2000
+  issue_allocations:
+    issue_42_cost_jpy_maximum: 500
+    issue_46_cost_jpy_maximum: 1500
+  default_zero_external_api_issues:
+    - 43
+    - 44
+    - 45
+    - 47
+    - 48
+    - 49
+  line_precompute_cost_reported_separately: true
+  offline_evaluation_cost_reported_separately: true
+
+quality_reporting:
+  distance:
+    - just_right
+    - too_close
+    - too_far
+    - not_obserbing
+  relation:
+    - analogical_transfer
+    - same_domain
+    - direct_restatement
+    - weak_connection
+    - unrelated
+  same_line_repetition_is_success_criterion: false
+  top20_jaccard_is_adoption_criterion: false
+  final_line_exact_match_is_adoption_criterion: false
+  preserve_codex_and_human_labels_separately: true
+
+undecided_until_later_issues:
+  - provider
+  - models
+  - contracts
+  - abstraction_schema_and_prompt
+  - domain_taxonomy_and_cardinality
+  - embedding_model_and_dimensions
+  - a_min
+  - s_max
+  - top_n
+  - selector
+  - selector_weight_caps
+  - history_window_values
+  - pgvector_index_type_and_parameters
+  - timeout_and_retry_values
+
+execution_for_issue_41_revision:
+  openai_api_calls: 0
+  anthropic_api_calls: 0
+  embedding_api_calls: 0
+  safety_api_calls: 0
+  abstraction_generation_calls: 0
+  line_reselection_calls: 0
+  other_paid_external_api_calls: 0
+  line_pool_modified: false
+  database_migration_created: false
+  production_code_implemented: false

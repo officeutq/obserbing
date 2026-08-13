@@ -1,8 +1,8 @@
 # obserbing AI基本設計
 
-**文書ステータス：基本設計（初回PoC結果反映）**
+**文書ステータス：基本設計（Reflective Distance再評価・B-v2設計方針反映）**
 
-**作成日：2026年8月12日**
+**作成日：2026年8月12日（2026年8月13日更新）**
 
 ---
 
@@ -12,7 +12,7 @@
 
 本書が扱うのは、AI処理の構成、責務分担、処理フロー、障害時の制御、運用、PoCおよびモデル選定方針である。プロダクトの人格、体験、禁止事項およびデータ保持要件そのものは再定義しない。
 
-AIの目的は、ユーザーへ自由文章を生成することではなく、日記の意味を限定的に理解し、登録済みLineの中から適切な距離を持つ候補を評価することである。最終判断と状態変更はRailsが担う。
+AIの目的は、ユーザーへ自由文章を生成することではなく、日記の意味を限定的に理解し、登録済みLineの中から適切な距離を持つ候補を見つけるための表現を作ることである。最終判断と状態変更はRailsが担う。
 
 ---
 
@@ -48,8 +48,8 @@ AIの目的は、ユーザーへ自由文章を生成することではなく、
 
 AI処理を、応答特性と責務が異なる次の3系統に分離する。
 
-1. **リアルタイムLLM**：投稿リクエスト内でSAFETY判定、Meaning Structure抽出、Line候補評価を行う。
-2. **Embedding**：Meaning StructureとLineをベクトル化し、意味的な候補絞り込みやGap集約を補助する。
+1. **リアルタイムLLM**：投稿リクエスト内でSAFETY判定とEntryのabstraction + domain生成を行う。B-v2ではLine候補を評価しない。
+2. **Embedding**：abstractionで本質的に近い候補を検索し、Entry原文とLine本文のsurface similarityで近すぎる候補を除外する。Gap集約も補助する。
 3. **バッチLLM**：Gap分析やLine Candidate生成など、ユーザーを待たせない処理を非同期に行う。
 
 Railsは全処理のオーケストレーターであり、AIへの入力を組み立て、出力を検証し、禁止条件と状態遷移を適用して、結果を確定する。AI Providerへ直接接続するのはRails側のAdapterだけとし、React NativeからAI APIを呼び出さない。
@@ -60,8 +60,8 @@ flowchart TB
     Admin["Rails管理画面"] --> Rails
 
     subgraph AI["AI処理"]
-        RT["リアルタイムLLM<br/>SAFETY・意味抽出・候補評価"]
-        EMB["Embedding<br/>候補検索・類似判定"]
+        RT["リアルタイムLLM<br/>SAFETY・abstraction + domain"]
+        EMB["Embedding<br/>本質検索・too-close除外"]
         BATCH["バッチLLM<br/>Gap分析・Candidate生成"]
     end
 
@@ -90,9 +90,10 @@ AI出力は事実や命令ではなく、検証が必要な評価値として扱
 
 | 処理 | AI | Rails | 理由 |
 |---|---|---|---|
-| 日記の意味理解 | Meaning Structure候補を抽出 | スキーマ検証、保存可否を判断 | 自然言語理解はAI向きだが、保存形式はシステム契約であるため |
+| 日記の意味理解 | abstraction + domain候補を抽出 | スキーマ・版を検証し、保存可否を判断 | 自然言語理解はAI向きだが、保存形式はシステム契約であるため |
 | SAFETY | 構造化された判定候補を返す | 不正・判定不能を含めて分岐を確定 | 高リスク分岐を未検証の出力だけで確定しないため |
-| Line候補の意味評価 | 複数軸をスコアリング | 候補集合を制限し、最終候補を確定 | AIに禁止候補を選択させないため |
+| Line候補の適格判定 | 事前生成した表現とEmbeddingを提供 | abstraction下限、surface上限、状態・履歴・policyを適用 | 投稿時のLine評価LLMを使わず、再現可能な帯域を作るため |
+| 適格候補からの選択 | なし | 版・履歴・seedに基づいて最終候補を確定 | 最高得点1件を当てる方式にせず、監査可能にするため |
 | 利用プラン・投稿上限 | なし | 判定・同時実行制御 | 明確な業務ルールであるため |
 | Lineの状態 | なし | Candidate / Approved / Retiredを管理 | 公開状態は監査可能な状態遷移であるため |
 | 再利用・直近利用制御 | なし | 要件定義書の条件を適用 | 正確な履歴照合が必要なため |
@@ -107,14 +108,12 @@ AI出力は事実や命令ではなく、検証が必要な評価値として扱
 
 ## 5.1 責務
 
-リアルタイムLLMは、投稿リクエストの応答時間内で次を行う。
+B-v2のリアルタイムLLMは、投稿リクエストの応答時間内で次を行う。
 
 - SAFETY分類
-- Meaning Structure抽出
-- RailsとEmbeddingが絞り込んだLine候補の評価
-- obserbing distanceに関する複数軸のスコアリング
+- abstraction + domain生成
 
-Line本文の自由生成は行わない。通常応答として返せるのは、Railsが許可したApproved LineのIDに限る。
+Line本文の自由生成、候補ごとの評価、obserbing distanceのリアルタイム採点は行わない。通常応答として返せるのは、Railsが許可したApproved LineのIDに限る。structureを分析用に生成・保存する余地は残すが、B-v2のリアルタイム選定条件には使用しない。
 
 ## 5.2 設計方針
 
@@ -125,18 +124,17 @@ Line本文の自由生成は行わない。通常応答として返せるのは�
 - 同じ投稿の再送ではIdempotency Keyを用い、異なるLineを返したり二重保存したりしない。
 - プロバイダーやモデルの選定は設定に閉じ込め、ドメイン処理から具体名を参照しない。
 
-## 5.3 呼び出し回数の初期案
+## 5.3 呼び出し回数のB-v2案
 
-通常投稿では、次の4呼び出しを基本案とする。
+通常投稿では、再試行を除き次の最大3呼び出しを基本案とする。
 
 1. SAFETY分類：1回
-2. Meaning Structure抽出：1回
-3. Embedding生成：1回
-4. Line候補一括評価：1回
+2. abstraction + domain生成：1回
+3. Entry abstractionとEntry原文の一括Embedding：1回
 
-SAFETY対象と確定した場合は1回で終了する。候補ごとにLLMを呼び出さず、許容件数の候補を1リクエストで評価する。
+SAFETY対象と確定した場合は1回で終了する。リアルタイムLine評価LLMは0回とし、Line側の表現・Embeddingは登録、承認またはバッチ時に事前生成する。
 
-SAFETY分類とMeaning Structure抽出の統合は呼び出し回数を削減できる一方、失敗原因の分離、タイムアウト制御、スキーマの単純性を損なう可能性があるため、PoCの比較項目とする。
+SAFETY分類とabstraction + domain生成は、失敗境界を分けるため別処理とする。投稿時に複数LLM Providerへfan-outせず、可能なら1 Provider + Embeddingで成立する構成を優先する。Provider、モデルおよび契約はPoC後まで未決定とする。
 
 ---
 
@@ -144,32 +142,33 @@ SAFETY分類とMeaning Structure抽出の統合は呼び出し回数を削減で
 
 ## 6.1 用途
 
-Embeddingは最終決定ではなく、広い候補集合を意味的に絞り込むために用いる。
+Embeddingは最終決定ではなく、「本質的に十分近く、表面的には近すぎない」候補帯域を作るために用いる。
 
-- Entry由来のMeaning Structureのベクトル化
-- Approved Lineのベクトル化
-- Line候補の近傍検索
+- Entry / Approved Lineのabstractionのベクトル化
+- Entry原文 / Approved Line本文のベクトル化
+- abstraction類似度による候補検索と下限判定
+- surface similarityによるtoo-close上限判定
 - GapEventの類似判定とGapCluster形成の補助
 - Meaning Cluster形成の補助
 
 ## 6.2 ベクトル化対象
 
-日記原文をそのまま検索キーとして保存するのではなく、原則として、Meaning Structureから生成した検索用の正規化テキストをEmbedding対象とする。これにより、固有名詞等の私的情報を減らし、表層語より意味構造へ検索を寄せる。
+主検索キーはEntry / Line双方のabstractionとし、abstraction similarityを適格条件の下限として扱う。別途Entry原文とLine本文もEmbeddingし、surface similarityをtoo-close除外の上限として用いる。surface similarityが低いほど良いとは扱わない。
 
-ただし、原文、Meaning Structureおよび両者の組み合わせのどれがLine選択品質に優れるかはPoCで比較する。いずれの場合も、Entry由来のベクトルは個別ユーザーデータとして削除対象に含める。
+Entry abstractionとEntry原文は同一Embeddingモデル・次元・正規化版で、可能なら1リクエストの配列入力として生成する。いずれも個別ユーザーデータとして削除対象に含める。
 
 ## 6.3 Line Embeddingのライフサイクル
 
 - HumanまたはAI Candidateとして作成した時点では、通常検索へ公開しない。
-- Approvedへの変更時、または検索対象フィールドの更新時にEmbeddingを生成する。
+- Approvedへの変更時、または検索対象フィールドの更新時にabstraction、domain、本文Embedding、abstraction Embeddingを事前生成する。
 - 検索時はDB条件でも`Approved`だけに限定する。
 - Retiredへ変更した時点で通常検索から除外する。過去TRACEが参照するLineは維持する。
-- Embeddingにはモデル識別子とベクトル生成バージョンを関連付ける。
+- 各Embeddingには用途、モデル識別子、次元、ベクトル生成バージョンおよびLine本文hashを関連付ける。
 - モデル変更時は再計算ジョブを実行し、新旧ベクトルの切り替えを完了するまで検索バージョンを混在させない。
 
 ## 6.4 検索基盤
 
-PostgreSQLと`pgvector`による近似近傍検索を第一候補とする。データ量、検索精度、インデックス更新、運用負荷をPoCで確認し、必要な場合にのみ外部ベクトルDBを比較する。
+PostgreSQLと`pgvector`によるabstraction近似近傍Top N検索を第一候補とする。取得候補だけsurface similarityを計算し、Railsルールへ渡す。全LineのRuby総当たりは本番設計にしない。データ量、検索精度、インデックス更新、運用負荷をPoCで確認し、必要な場合にのみ外部ベクトルDBを比較する。
 
 ---
 
@@ -189,7 +188,7 @@ PostgreSQLと`pgvector`による近似近傍検索を第一候補とする。デ
 - Railsのジョブとして冪等に実行できる単位へ分割する。
 - 集約対象期間、GapCluster、使用モデル、プロンプトバージョンを実行記録へ残す。
 - 同一対象・同一バージョンの重複実行を防止する。
-- 個々の日記原文をバッチLLMへ渡さず、削除可能なMeaning Structureまたは十分に匿名化された集約情報を使用する。
+- 個々の日記原文をバッチLLMへ渡さず、削除可能なEntry AI profileまたは十分に匿名化された集約情報を使用する。
 - 生成物は必ずCandidateとして保存し、自動でApprovedへ遷移させない。
 
 分析は「集約対象期間 × GapCluster」、Candidate生成は「GapCluster × 生成バージョン」を基本的な実行単位候補とする。バッチの頻度、対象件数、入力データの匿名化境界およびCandidate生成数は詳細設計で決定する。
@@ -221,15 +220,16 @@ sequenceDiagram
         Note over API,DB: SAFETY時のEntry・TRACE保存と投稿件数は詳細決定前
         API-->>App: 固定SAFETY応答
     else 通常
-        API->>AI: Meaning Structure抽出
-        AI-->>API: 構造化Meaning
-        API->>Vec: Meaning Embedding生成・候補検索
-        Vec-->>API: Approved Line候補
-        API->>DB: 再利用・状態・直近利用条件で除外
-        DB-->>API: 評価可能な候補
-        API->>AI: 候補を一括評価
-        AI-->>API: 候補別スコア
-        API->>API: 検証・最終決定
+        API->>AI: abstraction + domain生成
+        AI-->>API: 構造化Entry profile
+        API->>Vec: abstraction + 原文を一括Embedding
+        Vec-->>API: 2種類のEntry vector
+        API->>DB: abstraction Top N検索
+        DB-->>API: Approved Line候補
+        API->>API: abstraction下限・surface上限を適用
+        API->>DB: policy・状態・履歴・再利用条件で除外
+        DB-->>API: 適格候補集合
+        API->>API: domain補助・seed付き選択
         alt 適切な候補あり
             API->>API: Lineを確定
         else 適切な候補なし
@@ -249,16 +249,16 @@ sequenceDiagram
 | 1 | 入力・認証検証 | Rails | Credential、日記、Idempotency Key | 正規化済み入力 | 同期 | なし | 0 |
 | 2 | 投稿枠確認・予約 | Rails | Account、Plan、当日利用状況 | 投稿試行の許可 | 同期 | 本文を含まない予約メタデータ候補 | 0 |
 | 3 | SAFETY分類 | リアルタイムLLM + Rails | 日記原文、分類スキーマ | normal / safety / indeterminate | 同期 | 最終確定までメモリ上 | 1 |
-| 4 | Meaning抽出 | リアルタイムLLM + Rails | 日記原文、抽出スキーマ | Meaning Structure | 同期 | 最終確定までメモリ上 | 1 |
-| 5 | Embedding生成 | Embedding Adapter | 検索用Meaning | ベクトル | 同期 | 最終確定までメモリ上 | 1 |
-| 6 | Line近傍検索 | Rails + Vector Search | ベクトル、Approved条件 | Line候補集合 | 同期 | なし | 0 |
-| 7 | 禁止候補除外 | Rails | 候補、利用履歴、状態 | 評価可能候補 | 同期 | なし | 0 |
-| 8 | 候補評価 | リアルタイムLLM + Rails | Meaning、候補Line | 候補別評価JSON | 同期 | 最終確定までメモリ上 | 1 |
-| 9 | Line / SILENCE確定 | Rails | 検証済み評価、設定 | 応答対象、Gap理由 | 同期 | なし | 0 |
-| 10 | 保存・件数確定 | Rails | Entry、Meaning、Embedding、応答、分析情報 | TRACE等 | 同期 | 1トランザクション | 0 |
+| 4 | Entry profile生成 | リアルタイムLLM + Rails | 日記原文、abstraction + domainスキーマ | 版付きEntry profile | 同期 | 最終確定までメモリ上 | 1 |
+| 5 | 一括Embedding生成 | Embedding Adapter | abstraction、日記原文 | 用途別の2ベクトル | 同期 | 最終確定までメモリ上 | 1 |
+| 6 | abstraction近傍検索 | Rails + pgvector候補 | abstraction vector、Approved・版条件 | Top N候補集合 | 同期 | なし | 0 |
+| 7 | 適格帯域・禁止候補除外 | Rails | 候補、surface vector、policy、利用履歴、状態 | 適格候補集合 | 同期 | なし | 0 |
+| 8 | 軽量選択 | Rails | 適格候補、domain、履歴、selector版、seed | Line候補または候補なし | 同期 | なし | 0 |
+| 9 | Line / SILENCE確定 | Rails | 選択結果、設定 | 応答対象、Gap理由 | 同期 | なし | 0 |
+| 10 | 保存・件数確定 | Rails | Entry、profile、Embedding、応答、分析情報 | TRACE等 | 同期 | 1トランザクション | 0 |
 | 11 | Gap集約 | Rails Job | 保存済みGapEvent | GapCluster・集計 | 非同期 | 集約結果 | 別途 |
 
-通常系のAI API呼び出しは初期案で合計4回、SAFETY系は1回である。リトライは別カウントとし、コスト計測へ含める。
+通常系の外部API呼び出しはB-v2案で最大3回、SAFETY系は1回である。リアルタイムLine評価LLMは0回とする。リトライは別カウントとし、コスト計測へ含める。
 
 ## 8.3 保存と投稿件数の整合性
 
@@ -266,7 +266,7 @@ sequenceDiagram
 
 1. 短いトランザクションで投稿枠を確認し、Idempotency Keyに対する予約を作る。
 2. AI処理はトランザクション外で行う。
-3. 成功時に短い最終トランザクションでEntry、Meaning Structure、Embedding、TRACE、必要なGapEventを保存し、予約を投稿済み件数へ確定する。
+3. 成功時に短い最終トランザクションでEntry、Entry AI profile、Embedding、TRACE、必要なGapEventを保存し、予約を投稿済み件数へ確定する。
 4. 失敗時は予約を解放または期限切れにし、投稿済み件数を増やさない。
 
 最終トランザクションが失敗した場合は全てをロールバックし、投稿済み件数を増やさない。保存完了後にクライアントとの通信だけが失敗した場合は、同じIdempotency Keyへの再送に保存済みの同一結果を返し、AI再実行と二重計上を防ぐ。
@@ -275,25 +275,27 @@ sequenceDiagram
 
 ---
 
-# 9. Meaning Structure
+# 9. Entry AI profile
 
 ## 9.1 役割
 
-Meaning Structureは、日記原文を表示用に再表現するものではなく、検索と評価に必要な意味構造を限定的に表す中間データである。
+Entry AI profileは、日記原文を表示用に再表現するものではなく、検索と分析に必要な意味を限定的に表す中間データである。B-v2のリアルタイム選定ではabstractionとdomainだけを使用する。
 
 | 概念 | 役割 |
 |---|---|
 | 日記原文 | ユーザーが書いた一次情報。TRACE表示の正本 |
-| Meaning Structure | Entry単位の意味構造。検索・評価の中間表現 |
+| Entry AI profile | Entry単位のabstraction・domainと版情報。検索の中間表現 |
+| Meaning Structure | 初回PoCで用いたthemes / structure / abstraction。履歴・分析用 |
 | Theme | Line等へ付与する比較的粗い分類・編集メタデータ |
 | Meaning Cluster | 類似するMeaning StructureやGapを束ねる集合 |
 
-Meaning StructureはAI出力であっても個別ユーザーデータであり、匿名集計とは扱わない。Entryまたはアカウント削除時には、関連Embeddingおよび個別GapEventとともに削除する。
+Entry AI profileとMeaning StructureはAI出力であっても個別ユーザーデータであり、匿名集計とは扱わない。Entryまたはアカウント削除時には、関連Embeddingおよび個別GapEventとともに削除する。
 
 ## 9.2 利用方法
 
-- リアルタイム検索：検索用テキストを組み立て、Embeddingを生成する。
-- Line評価：日記原文の露出を必要最小限にするため、候補評価では原則Meaning Structureを使用する。原文が必要な評価項目はPoCで確認する。
+- リアルタイム検索：abstractionを主検索キー、Entry原文をtoo-close除外キーとしてEmbeddingする。
+- domain補助：候補分布とselectorの有限な補助情報にのみ用い、適格条件にはしない。
+- structure：分析・デバッグ用に保持してもよいが、リアルタイムの適格条件、重み、tie-breakには用いない。
 - Gap分析：個別GapEventの特徴量として利用し、その後GapClusterへ集約する。
 - 監査・再現：スキーマ、プロンプト、モデルの各バージョンを関連付ける。
 
@@ -303,14 +305,18 @@ Meaning StructureはAI出力であっても個別ユーザーデータであり�
 
 ```json
 {
-  "schema_version": "draft-1",
-  "themes": ["選択", "不確実性"],
-  "structure": "選択によって別の可能性を失うことへのためらい",
-  "abstraction": "決定と喪失可能性の同居"
+  "schema_version": "b-v2-entry-profile-vX",
+  "abstraction": "決定と喪失可能性の同居",
+  "domain": {
+    "primary": "decision",
+    "secondary": ["expectation"],
+    "taxonomy_version": "domain-vX",
+    "confidence": 0.0
+  }
 }
 ```
 
-診断、感情の断定、人物像の固定化、不要な固有名詞の保持を避ける。必須項目、最大長、列挙値および多値表現はPoC後の詳細設計で確定する。
+診断、感情の断定、人物像の固定化、不要な固有名詞の保持を避ける。domainの固定enum、階層、単一・複数値、必須項目および最大長はIssue #42で比較する。
 
 ---
 
@@ -318,75 +324,64 @@ Meaning StructureはAI出力であっても個別ユーザーデータであり�
 
 ## 10.1 多段階検索
 
-大量のLineを毎回LLMへ渡さず、次の順で候補を削減する。
+大量のLineをRubyで総当たりせず、次の順で適格候補帯域を作る。
 
 ```mermaid
 flowchart LR
-    All["Approved Line集合"] --> Vector["Embedding近傍検索"]
-    Vector -->|"PoC初期値：50〜100件程度"| Rules["Rails禁止条件フィルター"]
-    Rules -->|"LLM投入上限内"| Eval["LLM一括評価"]
-    Eval --> Final["Rails最終決定"]
-    Final --> Line["Line"]
-    Final --> Silence["SILENCE"]
+    All["Approved・profile準備済みLine"] --> Vector["abstraction Top N検索"]
+    Vector --> Lower["abstraction similarity >= A_min"]
+    Lower --> Upper["surface similarity <= S_max"]
+    Upper --> Rules["policy・status・履歴・再利用ルール"]
+    Rules --> Select["domain補助・seed付きselector"]
+    Select --> Line["Line"]
+    Rules -->|"適格候補0件"| Silence["SILENCE"]
 ```
 
-件数は性能要件ではなくPoC開始時の仮値であり、品質、トークン量、応答時間およびコストを見て決定する。
+`A_min`、`S_max`およびTop Nは結果を見る前に版固定する。具体値はIssue #43でオフライン比較し、実API統合PoC前に確定する。
 
-PoCの初期案では、Embedding検索で50〜100件程度を取得し、Railsの禁止条件適用後に最大20〜50件程度をLLMへ渡す。条件適用後の件数が上限未満なら残った候補だけを渡す。最終値は固定せず、正解候補の再現率とリアルタイム性能の両方で決める。
+abstraction similarityは本質的な近さの下限、surface similarityはtoo-close除外の上限として扱う。両者を単一の「高いほど良い」スコアへ潰さず、適格候補0件でも閾値を自動緩和しない。
 
 ## 10.2 検索条件
 
 - 検索クエリとDB条件の両方でApprovedのみを対象にする。
 - Candidateは管理画面のレビュー対象であり、通常検索インデックスへ含めない。
 - Retiredは通常検索から除外し、過去TRACEからの参照だけを維持する。
-- Railsで要件定義書の再利用、直近利用、状態およびその他の禁止条件を適用してからLLMへ渡す。
-- LLMへ渡す候補IDはRailsが発行した許可リストと照合し、リスト外IDを無効とする。
+- profile、Embeddingモデル、次元、版および本文hashが一致するLineだけを対象にする。
+- Railsで要件定義書の再利用、直近利用、状態およびその他の禁止条件を適用する。
+- domainの一致・不一致だけで候補を含めたり除外したりしない。
+- Entryにない人物・数量・物・場所を含むことだけでは除外しない。ユーザー事実断定、明示的矛盾、助言・診断、禁止Lineと独立した比喩・類推を区別する。
 
-Embedding類似度は「意味が近い」ことを示すが、「近すぎない」「余白がある」「obserbingらしい」ことを保証しない。そのため類似度だけでは最終決定せず、LLMの複数軸評価とRailsのルールを組み合わせる。
+Lineプール承認時には、ユーザーへの未根拠な事実断定、助言、診断、人格・感情断定および禁止表現を防ぐ。投稿時にはApproved状態、profile準備、明示的矛盾、policy metadata、履歴・再利用を決定的に検証する。最終契約はIssue #44で固定する。
 
 ---
 
 # 11. obserbing distance評価
 
-obserbing distanceの意味と品質要件は要件定義書を参照する。本書では、候補ごとの曖昧な評価をLLMが構造化し、Railsが検証・集約する方式を採る。
+obserbing distanceの意味と品質要件は要件定義書を参照する。B-v2では投稿時LLMで候補ごとのdistanceを採点せず、abstraction下限、surface上限、承認時policyとRailsルールで適格帯域を作る。`reflective-distance-v1`はPoC結果のオフライン評価ルーブリックとして使用する。
 
-## 11.1 評価軸候補
+## 11.1 オフライン評価軸
 
-- `relevance`：Meaning Structureとの意味的接続
-- `directness`：言い換え、回答、指示への近さ
-- `space`：ユーザーが意味を接続できる余白
-- `obserbing_fit`：人格・文体・禁止事項への適合
+- distance：`just_right / too_close / too_far / not_obserbing`
+- relation：`analogical_transfer / same_domain / direct_restatement / weak_connection / unrelated`
+- 必須不適合：`user_fact_assertion / explicit_contradiction / advice_or_diagnosis`
+- 主品質：SILENCEと技術エラーを含む全normal実行枠に対するacceptable outcome率
+- 反復安定性：36 Entryのうち3反復すべてがacceptable outcomeだったEntry率
 
-評価軸、尺度、重み、合格閾値はPoCで調整する。全ての軸で「高いほど良い」とは限らず、例えば`directness`は高すぎる候補を避けるために使う。
+B-v2の採否は2 Gateに分離する。Gate Aは現Approved 96 Lineを固定し、B-v1に対するacceptable改善、too-close削減、too-far / unrelated抑制、analogical保持、反復、安全、速度、費用を総合して、Lineプール改善へ進めるアーキテクチャ候補かを判断する。現Lineプールで絶対80%に届かないことだけでは棄却しない。Gate BはGate A通過後に方式版を固定し、Lineプール改善後の製品品質としてacceptable outcome率80%以上（目標90%）、3反復すべてacceptableのEntry率60%以上（目標75%）を要求する。両Gateとも必須不適合と未解決low confidenceは各0件とする。
 
-次は検討用の出力例であり、確定スキーマではない。
+旧PoCの90%はtoo-closeを許容し得る指標であり、`reflective-distance-v1`の90%と同じ意味ではない。Gate Aの具体的な比較基準とGate Bの80% / 90%はIssue #46の結果閲覧前に版固定し、結果に合わせて変更しない。
 
-```json
-{
-  "schema_version": "draft-1",
-  "candidates": [
-    {
-      "line_id": 123,
-      "relevance": 0.72,
-      "directness": 0.31,
-      "space": 0.86,
-      "obserbing_fit": 0.91
-    }
-  ]
-}
-```
+Top 20 Jaccardと最終Line完全一致率は診断として記録してよいが、主採用基準にしない。analogical transfer件数にも最低ノルマを置かず、距離やdomain差を増やして件数を稼ぐことを防ぐ。
 
-Railsは候補ID、重複、欠落、数値範囲およびスキーマバージョンを検証し、禁止条件を再確認した後、設定で管理する選択式により最終候補を決める。合格候補がなければSILENCEへ分岐する。
+## 11.2 適格候補からの選択方式
 
-## 11.2 最終決定方式の比較
-
-| 方式 | メリット | デメリット |
+| 方式 | 特徴 | 比較上の注意 |
 |---|---|---|
-| AIが最終決定 | 実装が単純で、文脈をまとめて判断しやすい | 禁止条件、説明可能性、再現性、異常出力への統制が弱い |
-| Railsが全て決定 | 再現性と監査性が高い | 曖昧な距離感を固定式だけで表すことが難しい |
-| AIが評価しRailsが最終制御 | 意味評価とルール統制を分離できる | スコア設計とPoCが必要 |
+| uniform random | 適格候補を等確率で選ぶ | 候補内のabstraction差を使わない |
+| abstraction weighted random | 本質が近い候補を有限範囲で優遇 | 最高得点1件へ収束させないweight上限が必要 |
+| domain-diversity assisted random | 直近domain偏りを有限範囲で緩和 | domain差を品質や適格性と誤認しない |
 
-現在方針として、3つ目の構成を採る。
+いずれも同じ入力profile、候補集合、履歴snapshot、selector版、seedから同じ結果を再現できることを必須とする。採用方式とweight上限はIssue #45で比較する。適格候補がなければSILENCEとし、技術エラーをSILENCEへ置き換えない。
 
 ---
 
@@ -396,7 +391,7 @@ SAFETYの対象条件と表示要件は要件定義書を正とする。
 
 ## 12.1 処理位置
 
-SAFETY分類は、投稿上限確認後、Meaning Structure抽出およびLine検索より前に行う。対象時に不要な検索や通常Line選択を停止し、日記原文を追加のAI処理へ送る範囲を最小化するためである。
+SAFETY分類は、投稿上限確認後、Entry profile生成およびLine検索より前に行う。対象時に不要な検索や通常Line選択を停止し、日記原文を追加のAI処理へ送る範囲を最小化するためである。
 
 ## 12.2 構造化判定
 
@@ -411,7 +406,7 @@ SAFETY分類は、投稿上限確認後、Meaning Structure抽出およびLine�
 ## 12.3 分岐と失敗
 
 - `safety`：通常Line検索とSILENCEを停止し、サーバー管理の固定応答へ分岐する。
-- `normal`：Meaning Structure抽出へ進む。
+- `normal`：abstraction + domain生成へ進む。
 - `indeterminate`、JSON不正、タイムアウト、API失敗：通常Line選択へ進めない。
 
 判定不能をSILENCEへ置き換えると、SAFETY判断を回避したまま通常体験を完了させることになるため採用しない。同期処理を技術エラーとして終了する初期方針とし、ユーザー向け文言、投稿枠の扱い、再試行導線はプロダクト判断を含むため未決定事項とする。
@@ -424,14 +419,13 @@ SAFETY分類は、投稿上限確認後、Meaning Structure抽出およびLine�
 
 SILENCEの意味、文言方針およびTRACE上の扱いは要件定義書を参照する。
 
-Railsは、SAFETY分類、Meaning抽出、Embedding検索、禁止条件除外および候補評価が正常終了したうえで、適切な通常Lineが成立しない場合にSILENCEを選択する。
+Railsは、SAFETY分類、Entry profile生成、一括Embedding、候補検索、適格帯域判定および業務ルール適用が正常終了したうえで、適格候補がない場合にSILENCEを選択する。
 
 主な技術的分岐理由は次のとおりとする。
 
-- 検索候補がない。
-- 禁止条件適用後の候補がない。
-- 候補はあるが、検証済み評価が合格条件を満たさない。
-- 評価結果に選択可能な候補IDがない。
+- abstraction Top N検索の候補がない。
+- abstraction下限またはsurface上限の適用後に候補がない。
+- policy、状態、履歴、再利用条件の適用後に候補がない。
 
 外部API障害や不正JSONは「意味的に適切なLineがない」状態ではないため、原則としてSILENCEへフォールバックしない。障害をSILENCEとして集計するとGap分析も汚染するため、技術エラーと意味的な不成立を別の理由コードで管理する。
 
@@ -465,7 +459,7 @@ flowchart TB
 
 リアルタイム処理では、Line不成立の事実と理由を個別GapEventとして記録するところまでを行う。類似Gapの集約、傾向分析、不足領域判定およびCandidate生成はバッチで行い、投稿応答を待たせない。
 
-GapEventには、原文ではなく、検索に用いたMeaning Structure参照、Embedding参照、候補件数、除外後件数、最良評価、SILENCE理由等の必要最小限を保持する。Entry削除時は個別GapEventも削除する。
+GapEventには、原文ではなく、検索に用いたEntry profile参照、Embedding参照、Top N件数、下限・上限・policy別の除外件数、SILENCE理由等の必要最小限を保持する。Entry削除時は個別GapEventも削除する。
 
 GapClusterや統計を個人へ再結合できない集計情報として残すための匿名化条件は、要件定義書に従って詳細設計する。単にAccount IDを外しただけの個別データは匿名集計とみなさない。
 
@@ -474,7 +468,7 @@ GapClusterや統計を個人へ再結合できない集計情報として残す�
 - バッチLLMの出力はスキーマ検証後もCandidateとしてのみ保存する。
 - 管理者が採用、修正して採用、却下を行う。
 - 承認操作を監査ログへ記録する。
-- Approved遷移後にEmbeddingを生成し、生成成功後に通常検索へ反映する。
+- Approved遷移後にLine profileと2種類のEmbeddingを生成し、版・本文hashを含む検証成功後に通常検索へ反映する。
 - Candidate生成とApproved公開を同一ジョブで行わない。
 
 ---
@@ -489,8 +483,7 @@ Railsのドメイン処理を特定ProviderのSDK、モデル名、リクエス�
 
 ```text
 Ai::SafetyClassifier
-Ai::MeaningExtractor
-Ai::LineEvaluator
+Ai::EntryProfileGenerator
 Ai::EmbeddingClient
 Ai::CandidateGenerator
 ```
@@ -508,7 +501,7 @@ Adapterは次を吸収する。
 - 共通スキーマへの変換
 - Provider別の料金計算に必要な利用量
 
-用途ごとの設定は、例えば`real_time.safety`、`real_time.meaning`、`real_time.line_evaluation`、`embedding`、`batch.candidate_generation`のように独立させる。同じProviderまたは同じモデルを使うことを前提にしない。
+用途ごとの設定は、例えば`real_time.safety`、`real_time.entry_profile`、`embedding`、`batch.line_profile`、`batch.candidate_generation`のように独立させる。設定は分離しつつ、投稿時は可能なら1 LLM Provider + Embeddingで成立する構成を優先する。
 
 自動的な別Providerへの切り替えは、日記が新たな第三者へ送信されること、出力差、重複課金を伴う。利用規約、データ保持方針、運用承認を満たすProviderだけを事前設定し、処理別の切替条件を明示する。無条件の自動フォールバックは採用しない。
 
@@ -534,9 +527,11 @@ Adapterは次を吸収する。
 | JSON不正 | 同一処理を1回再要求する候補 | 再失敗で中止 | 不可 | Railsで厳格に検証 |
 | 必須フィールド欠落 | JSON不正と同じ | 再失敗で中止 | 不可 | 欠落を補完して推測しない |
 | SAFETY判定不能 | 原則1回まで | 通常処理へ進めず中止 | 不可 | 固定SAFETY応答へも自動分岐しない |
-| Meaning抽出失敗 | 1回候補 | 中止 | 不可 | 不正なMeaningで検索しない |
-| Embedding失敗 | 1回候補 | 中止 | 不可 | 未検証のキーワード検索へ自動退避しない |
-| Line評価失敗 | 1回候補 | 中止 | 原則不可 | Rails単独選択はPoCで品質確認後に再検討 |
+| Entry profile生成失敗 | 1回候補 | 中止 | 不可 | 不正なabstraction / domainで検索しない |
+| Embedding失敗・件数/次元不一致 | 1回候補 | 中止 | 不可 | 未検証のキーワード検索へ自動退避しない |
+| ベクトル版不一致 | なし | 中止 | 不可 | 異なるモデル・次元・正規化版を比較しない |
+| pgvector / DB失敗 | DB方針に従う | 中止 | 不可 | Ruby総当たりへ自動退避しない |
+| selector不変条件違反 | なし | 中止 | 不可 | 閾値自動緩和や別Lineへの暗黙切替をしない |
 
 リトライ回数、タイムアウト秒数、サーキットブレーカー、ユーザー向けエラー表示およびクライアント再送方式は、PoC・API詳細設計で確定する。
 
@@ -546,7 +541,7 @@ Adapterは次を吸収する。
 
 ## 17.1 ログ方針
 
-日記本文、Meaning Structure全文、AIへのプロンプト本文およびAIレスポンス本文を通常のアプリケーションログ、APM、例外通知へ出力しない。Provider SDKのデバッグログも本番では無効化またはマスキングする。
+日記本文、Entry AI profile全文、Embedding、AIへのプロンプト本文およびAIレスポンス本文を通常のアプリケーションログ、APM、例外通知へ出力しない。Provider SDKのデバッグログも本番では無効化またはマスキングする。
 
 運用ログには、次のメタ情報だけを必要最小限で記録する。
 
@@ -556,7 +551,8 @@ Adapterは次を吸収する。
 - 開始時刻、処理時間、試行回数
 - Input / Output TokenまたはEmbedding利用量
 - 成功 / 失敗、正規化したエラー種別
-- 検索候補件数、禁止条件適用後の候補件数
+- Top N件数、abstraction下限・surface上限・policy・履歴ごとの除外件数、適格候補件数
+- profile、Embedding、taxonomy、閾値、selectorの各versionとseed
 - 選択Line IDまたはSILENCE理由コード
 - API料金推定値と料金表バージョン
 
@@ -570,7 +566,8 @@ AccountやEntryへ結び付けられる運用メタデータは個人へ再結�
 - JSONスキーマ検証失敗率
 - p50 / p95 / p99応答時間
 - SAFETY判定不能率
-- Meaning抽出失敗率、Embedding失敗率、Line評価失敗率
+- Entry profile生成失敗率、Embedding失敗率、ベクトル版不一致率
+- 適格候補数、too-close除外率、selector不変条件違反率
 - SILENCE率と技術エラー率（混同しない）
 - 1投稿あたり呼び出し回数、Token量、推定コスト
 
@@ -592,6 +589,7 @@ AI呼び出しごとに利用量レコードを作り、投稿単位、日次、
 - 日次・月次の合計と平均
 - Plan別の投稿件数と推定AIコスト（個別本文なし）
 - 異常な呼び出し回数、Token量、失敗リトライの検出
+- Line profile / Embedding事前生成費用と投稿時費用の分離
 
 料金は変更されるため、利用時点の単価または料金表バージョンを保持し、後日の集計が現在の単価で変化しないようにする。サブスクリプション価格との採算判断は別文書で行う。
 
@@ -603,12 +601,12 @@ AI呼び出しごとに利用量レコードを作り、投稿単位、日次、
 
 アプリ全体を実装する前に、**obserbingの一行選定が技術的に成立するか**を検証する。
 
-具体的には、Meaning Structure、Embeddingによる候補絞り込み、obserbing distance評価およびRails相当の最終制御を組み合わせたとき、品質・応答時間・安定性・コストが実用候補になるかを確認する。
+B-v2では、abstraction + domain、一括Embedding、abstraction下限、surface上限、grounding / 業務ルールおよびseed付きselectorを組み合わせたとき、Reflective Distance品質・応答時間・安定性・コストが実用候補になるかを確認する。
 
 ## 19.2 データセット
 
-- サンプル日記：30〜50件程度
-- Line：100〜500件程度
+- 固定合成Entry：現在の36件
+- Line：現在のApproved 96件（B-v1との方式比較が終わるまで変更しない）
 - SAFETY評価用の独立したテストケース
 - 同じ入力を複数回試す再現性評価ケース
 
@@ -618,29 +616,30 @@ AI呼び出しごとに利用量レコードを作り、投稿単位、日次、
 
 | 系統 | 主な比較項目 |
 |---|---|
-| リアルタイムLLM | 日本語理解、SAFETY、Meaning抽出、Line評価、JSON成功率、応答時間、コスト |
-| Embedding | 人間が期待する候補の再現率、順位、検索時間、ベクトルサイズ、コスト |
+| リアルタイムLLM | 日本語理解、SAFETY、abstraction + domain、JSON成功率、応答時間、コスト |
+| Embedding | abstraction候補帯域、surface too-close除外、検索時間、ベクトルサイズ、コスト |
 | バッチLLM | 不足領域の解釈、Candidate品質、多様性、レビュー負荷、コスト |
 
-人間評価では、少なくとも「近すぎる」「ちょうどいい」「遠すぎる」「obserbingらしくない」を使用する。併せて、JSON出力成功率、p50 / p95応答時間、APIコスト、選択結果の再現性を測定する。
+人間評価では`reflective-distance-v1`を固定し、「近すぎる」「ちょうどいい」「遠すぎる」「obserbingらしくない」とrelation、必須不適合を記録する。併せてJSON出力成功率、p50 / p95応答時間、APIコスト、3反復すべてacceptableのEntry率を測定する。
 
 ## 19.4 実施手順
 
 1. 評価用日記、Line、期待する禁止候補、評価票を固定する。
 2. 比較対象ごとに入力形式、出力スキーマ、候補集合を可能な範囲で揃える。
-3. Meaning抽出だけ、Embedding検索だけ、候補評価だけを個別評価する。
-4. 多段階フローを結合し、通常系、候補不足、SAFETY、外部API失敗を実行する。
-5. 同じ条件を複数回実行し、品質と再現性を記録する。
-6. モデル名を伏せた状態で複数人が結果を評価できる形を優先する。
-7. 品質、レイテンシ、安定性、プライバシー条件、コストを総合して採用候補を決める。
+3. Issue #42でabstraction + domainをオフラインで最大2候補へ絞り、固定合成Entry 6件・Line 4件 × 3反復の小規模APIスモークを行う。
+4. abstraction下限 + surface上限、grounding、selectorを保存成果物で個別にオフライン評価する。
+5. #46で多段階フローを36 Entry × 3反復で結合し、通常系、候補不足、SAFETY、外部API失敗を実行する。
+6. 同じ条件を複数回実行し、品質と再現性を記録する。
+7. モデル名を伏せた状態で複数人が結果を評価できる形を優先する。
+8. Gate Aでアーキテクチャ候補、Lineプール改善後のGate Bで製品品質を判断する。
 
 ## 19.5 採用判断
 
-平均点だけでなく、致命的な禁止候補の選択、SAFETY見逃し、構造化出力失敗、遅延の裾、再現性の低さを個別に評価する。採用基準値はテスト実施前に決め、結果を見て都合よく変更しない。
+Gate Aは絶対acceptable率だけでなくB-v1からの改善幅、too-close減少、too-far / unrelated、analogical保持、必須不適合、SAFETY、SILENCE、遅延、投稿時費用、API回数、反復安定性を評価する。Gate A通過は本番採用ではなく、方式を固定してLineプール改善へ進む判断である。Gate BがLine改善後の製品品質を判断する。基準値は各結果を見る前に版固定する。
 
 PoCでは実接続用の本番実装、正式契約、DB migration、アプリUI実装および本番プロンプト確定を行わない。
 
-初回PoCの実施結果と採用判断は[AI一行選定 PoC結果](AI_PoC結果.md)を参照する。
+初回PoCは[AI一行選定 PoC結果](AI_PoC結果.md)、追加PoCは[AI追加PoC結果](AI_追加PoC結果.md)、B-v2事前基準は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を参照する。
 
 ---
 
@@ -682,6 +681,25 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 評価条件、比較値、採否およびEpic完了判断は[AI追加PoC結果](AI_追加PoC結果.md)、ライブ実測の詳細は[Abstraction Only ライブ統合追補](Abstraction_Only_ライブ統合追補.md)を正とする。
 
+## 20.3 Reflective Distance再評価とB-v2設計
+
+`reflective-distance-v1`による最終再評価では、`abstraction-only-v1-diagnostic`の許容率は54 / 108（50.00%）で、方式不採用を維持した。一方で`analogical_transfer`35表示はすべて許容され、旧fatalだった独立した具体例も許容された。低確信10種類の人間確認では4種類がCodex一次判断から反転し、構造的説明可能性だけではobserbing品質を完全に代理できない可能性も確認した。
+
+この証拠を受け、Epic #40では次方式を`b-v2-band-pass-design-v2`として設計する。`v1`作成後、実験結果を見る前にGate A / B分離とIssue #42の小規模APIスモークを追加した改訂であり、`v1`成果物も保持する。
+
+- abstraction similarityを本質的近さの下限とする。
+- surface similarityをtoo-close除外の上限とする。
+- domainは有限な選択・diversity補助に限定し、domain差を適格条件にしない。
+- structureはリアルタイム選定に使用しない。
+- 投稿時外部処理をSAFETY、abstraction + domain、一括Embeddingの最大3段階とし、Line評価LLMを0回とする。
+- Approved 96 Lineを変えずにB-v1との方式差を先に比較する。
+
+現96 Lineの評価は、Gate A「B-v2をLineプール改善へ進めるアーキテクチャ候補とみなせるか」と、Gate B「方式固定・Lineプール改善後に製品品質を満たすか」へ分離する。Gate Aでは絶対80%未達だけで棄却せず、B-v1からの改善、too-close削減、too-far / unrelated抑制、analogical保持、安全、反復、速度、費用、API回数を総合する。判定は`architecture_candidate / architecture_rejected / further_selection_poc_required`とし、`architecture_candidate`も本番採用確定ではない。
+
+Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と、固定合成Entry 6件・Line 4件を各3反復するPhase 2の小規模APIスモークに分ける。通常最大60、retry込み120リクエスト、50,000 token、500円を上限とし、Provider、model、単価、送信・保存データ等を実行前のpreflightコミットで固定する。#46は現96 Line・36 Entry × 3反復の本統合ライブPoCとして分離する。
+
+固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。機械可読な現行基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v2.yml`に保存し、`v1`も履歴として保持する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
+
 ---
 
 # 21. 未決定事項
@@ -690,11 +708,13 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 - 採用するAI Provider、モデルおよび契約
 - `pgvector`の正式採用、インデックス方式、外部ベクトルDB比較の要否
-- Meaning Structureの確定スキーマ、最大長、正規化方式
-- Meaning抽出・Line評価で日記原文をどこまで使用するか
+- abstraction + domainの確定Schema、最大長、正規化方式
+- domain taxonomy、単一・複数値、階層、unknownの扱い
 - プロンプト本文、生成パラメータおよびスキーマの確定版
-- Embedding対象、類似度方式、取得件数、LLM投入件数
-- obserbing distanceの軸、重み、合格閾値、同点処理
+- Embedding Provider、モデル、次元、距離方式
+- abstraction下限`A_min`、surface上限`S_max`、Top N
+- selector方式、weight上限、同点・seed処理
+- Line承認時policy metadata、投稿時grounding guard、履歴windowの具体値
 - SAFETY分類スキーマ、判定閾値、固定応答文
 - SAFETY応答時のEntry / TRACE保存方式と投稿件数の扱い
 - SILENCEの具体文言、選択方式、再利用制御
@@ -710,13 +730,16 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 # 22. 詳細設計・PoCへ送る事項
 
-## 22.1 追加PoCへ送る事項
+## 22.1 B-v2 Epicへ送る事項
 
-- SAFETY境界データの拡充と通常日記の過剰遮断対策
-- Meaning抽出結果からEmbedding検索までのRecall@20低下原因の分解
-- 入力にない数量、状況、因果関係を持つLineの除外方式
-- Line評価の低遅延モデル、候補数、二段階評価および非同期UXの比較
-- 修正後の統合フローについてJSON成功率、応答時間、コスト、再現性を再計測
+- #42：abstraction + domainをオフライン比較し、preflight固定後に小規模実APIスモークを行う。
+- #43：abstraction下限 + surface too-close上限をオフライン検証する。
+- #44：独立した比喩・類推を許容するgrounding / 業務ルールを再設計する。
+- #45：適格帯域からのseed付き軽量selectorを比較する。
+- #46：現在のApproved 96 Lineを変えず、B-v2実API統合PoCを行う。
+- #47：B-v1と同じLineプール・同じReflective Distanceルーブリックで品質・速度・費用を比較する。
+- #48：`architecture_candidate / architecture_rejected / further_selection_poc_required`でGate Aを判断する。
+- #49：Gate A成立時にprofile、Embedding、閾値、selector、taxonomy、guard、現96 Line hashを固定し、Lineプール改善の別Epicへ接続する。
 - 実データ規模を想定した`pgvector`の性能評価
 - 不足領域抽出とCandidate生成を行うバッチLLMの独立評価
 - 外部API障害時に品質を損なわない代替方式の可否

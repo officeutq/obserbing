@@ -1,0 +1,195 @@
+version: 1
+design_id: b-v2-band-pass-design-v1
+criteria_id: b-v2-pre-evaluation-criteria-v1
+status: frozen_before_component_and_integrated_results
+created_at: "2026-08-13"
+issue: 41
+epic: 40
+
+hypothesis:
+  abstraction_similarity_role: eligibility_lower_bound
+  surface_similarity_role: too_close_exclusion_upper_bound
+  domain_role: bounded_selection_and_diversity_assist_only
+  structure_realtime_role: none
+  realtime_line_evaluation_llm_calls: 0
+  zero_eligible_outcome: silence
+  select_highest_score_only: false
+
+runtime_pipeline:
+  normal_external_stages:
+    - safety
+    - abstraction_and_domain
+    - entry_abstraction_and_raw_text_embedding_batch
+  normal_external_request_limit: 3
+  entry_embedding_inputs_per_request: 2
+  realtime_llm_provider_limit: 1
+  line_side_generation_at_post_time: false
+  line_side_embedding_at_post_time: false
+
+eligibility:
+  required_all:
+    - approved_and_profile_ready
+    - embedding_version_compatible
+    - abstraction_similarity_at_least_a_min
+    - surface_similarity_at_most_s_max
+    - runtime_policy_pass
+    - history_and_reuse_pass
+  domain_mismatch_required: false
+  domain_can_override_failed_eligibility: false
+  thresholds_auto_relaxed_when_empty: false
+
+line_precompute:
+  required_fields:
+    - text
+    - abstraction
+    - domain
+    - status
+    - text_embedding
+    - abstraction_embedding
+    - profile_version
+    - embedding_version
+    - source_text_sha256
+    - policy_flags
+  searchable_only_when_profile_and_embeddings_ready: true
+  cost_accounting_separate_from_post: true
+
+fixed_evaluation_dataset:
+  entry_count: 36
+  repetitions: 3
+  total_normal_outcome_slots: 108
+  approved_line_count: 96
+  line_pool_changes_allowed_before_b_v1_comparison: false
+
+quality:
+  rubric_id: reflective-distance-v1
+  primary_metric: acceptable_outcome_rate
+  primary_denominator: all_normal_outcome_slots_including_silence_and_technical_errors
+  acceptable_outcome_rate:
+    required_minimum: 0.80
+    required_minimum_count_for_108: 87
+    target: 0.90
+    target_minimum_count_for_108: 98
+  all_three_repetitions_acceptable_entry_rate:
+    required_minimum: 0.60
+    required_minimum_count_for_36: 22
+    target: 0.75
+    target_minimum_count_for_36: 27
+  semantic_silence_rate:
+    required_maximum: 0.20
+    target_maximum: 0.10
+  required_zero_counts:
+    user_fact_assertion: 0
+    explicit_contradiction: 0
+    advice_or_diagnosis: 0
+    unresolved_low_confidence: 0
+  report_distance_counts:
+    - just_right
+    - too_close
+    - too_far
+    - not_obserbing
+  report_relation_counts:
+    - analogical_transfer
+    - same_domain
+    - direct_restatement
+    - weak_connection
+    - unrelated
+  analogical_transfer_minimum_quota: null
+  same_line_repetition_is_success_criterion: false
+  top20_jaccard_is_adoption_criterion: false
+  final_line_exact_match_is_adoption_criterion: false
+  human_review:
+    all_codex_low_confidence: true
+    all_required_disqualifier_flags: true
+    stratified_minimum_display_count: 24
+    preserve_codex_and_human_labels_separately: true
+
+quality_threshold_rationale:
+  old_poc_90_percent_semantically_identical: false
+  reason: >-
+    reflective-distance-v1 rejects direct restatements and too-close Lines that the old
+    PoC acceptable metric could allow. Eighty percent is the frozen minimum for entering
+    detailed-design candidacy; ninety percent remains the product-quality target.
+
+safety_and_reliability:
+  existing_normal_entry_overblock_count_maximum: 0
+  completed_flow_technical_error_count_maximum: 0
+  first_attempt_schema_success_rate_minimum: 0.99
+  technical_errors_count_as_silence: false
+
+performance:
+  end_to_end_p95_seconds:
+    required_maximum: 6.0
+    target_maximum: 5.0
+    b_v1_reference: 5.48768
+  database_and_ruby_p95_ms:
+    required_maximum: 250
+    target_maximum: 100
+
+cost:
+  post_cost_jpy:
+    required_maximum: 1.0
+    target_maximum: 0.7
+    b_v1_reference: 0.551
+  line_precompute_cost_reported_separately: true
+  offline_evaluation_cost_reported_separately: true
+
+comparison:
+  baseline_method: abstraction-only-v1-diagnostic
+  same_rubric_required: true
+  same_approved_96_lines_required: true
+  line_pool_controlled_comparison_allowed: true
+  strict_head_to_head_equivalence_claim_allowed: false
+  reason: >-
+    Stored B-v1 and future B-v2 runs may differ in generated profiles and sampling;
+    the comparison isolates the fixed Line pool but is still a PoC rather than a
+    production-generalization experiment.
+
+guard_redesign:
+  inherit_combined_v1_unchanged: false
+  concrete_person_quantity_object_presence_is_fatal_by_itself: false
+  distinguish:
+    - independent_general_expression_or_analogy
+    - user_fact_assertion
+    - explicit_contradiction
+    - advice_or_diagnosis
+    - prohibited_line
+  approval_time_primary_defense: true
+  runtime_llm_guard_allowed: false
+
+database:
+  primary_candidate: postgresql_pgvector
+  full_ruby_scan_allowed_for_production_design: false
+  query_order:
+    - abstraction_top_n
+    - abstraction_lower_bound
+    - surface_upper_bound_on_retrieved_candidates
+    - domain_and_business_metadata
+    - seeded_selector
+  vector_version_mixing_allowed: false
+
+undecided_until_later_issues:
+  - provider
+  - models
+  - contracts
+  - abstraction_schema_and_prompt
+  - domain_taxonomy_and_cardinality
+  - embedding_model_and_dimensions
+  - a_min
+  - s_max
+  - top_n
+  - selector
+  - selector_weight_caps
+  - history_window_values
+  - pgvector_index_type_and_parameters
+  - timeout_and_retry_values
+
+execution_for_issue_41:
+  openai_api_calls: 0
+  anthropic_api_calls: 0
+  embedding_api_calls: 0
+  safety_api_calls: 0
+  abstraction_generation_calls: 0
+  line_reselection_calls: 0
+  other_paid_external_api_calls: 0
+  line_pool_modified: false
+  database_migration_created: false
