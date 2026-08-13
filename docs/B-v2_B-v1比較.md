@@ -42,7 +42,7 @@ B-v2はdirect restatement / too-closeを29件から19件へ34.48%削減し、1�
 - 3反復すべてacceptableのEntryは4 / 36で、最低18件に届かない。
 - SILENCE、1投稿費用、投稿時API回数、リアルタイムLine評価LLM、SAFETY、policy必須不適合、技術エラーは基準内である。
 - p95は6.23389秒で6秒上限を0.23389秒超える。
-- 8件のlow-confidenceをすべてacceptableへ反転しても59 / 108であり、Gate Aの最低76件に届かない。逆にすべて不許容へ反転した場合は44 / 108となる。
+- 現在のlow-confidence 8件は暫定acceptable 7件、不許容1件である。全件を許容に確定しても52 / 108、全件を不許容に確定すると44 / 108であり、Gate Aの最低76件に届かない。
 
 ## 比較上の制約
 

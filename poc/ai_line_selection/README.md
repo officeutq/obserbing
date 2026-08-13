@@ -172,6 +172,15 @@ bundle exec ruby bin\ai_line_selection compare-b-v2-b-v1 `
 
 比較結果と母数・実行時点の注意は[B-v2 / B-v1比較](../../docs/B-v2_B-v1比較.md)を参照してください。
 
+固定済みGate Aは次で再評価できます。結果は`architecture_rejected`であり、製品品質80%未達だけを理由にした判定ではありません。
+
+```powershell
+bundle exec ruby bin\ai_line_selection evaluate-b-v2-gate-a `
+  --output data\evaluations\b_v2_gate_a_decision_v1.json
+```
+
+全25条件とrejection floorは[B-v2 Gate A判定](../../docs/B-v2_Gate_A判定.md)を参照してください。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
