@@ -139,6 +139,20 @@ Issue #44では、Line承認時policyと投稿時guardを`b-v2-guard-policy-v1`�
 
 Issue #45ではuniform、abstraction weighted、bounded domain diversityを保存成果物だけで比較し、同じ入力・候補・seedの再現率100%とrule違反0件を確認しました。#46前の固定selectorは`b-v2-selector-v1 / uniform`です。比較結果は`data/evaluations/b_v2_selector_comparison_v1.json`、条件とseed規則は`b_v2_selector_criteria_v1.yml`、判断は[B-v2 Selector比較](../../docs/B-v2_Selector比較.md)を参照してください。
 
+## B-v2本統合ライブPoC
+
+Issue #46は、現Approved 96 Lineを変更せず、36 Entry × 3反復をSAFETY、profile、dual Embedding、band-pass、policy、uniform selectorまで接続します。実API前に`b_v2_integrated_preflight_v1.yml`をコミットし、Issue上限1,500円、Epic累計2,000円をhard limitにします。
+
+```powershell
+bundle exec ruby bin\ai_line_selection plan-b-v2-integrated
+
+bundle exec ruby bin\ai_line_selection run-b-v2-integrated `
+  --output-dir results\b_v2_integrated_live_20260813_issue46 `
+  --allow-external-api
+```
+
+中断後は同じdirectoryへ`--resume`を付け、完了済みLine profileとoutcomeを再利用します。技術エラーをSILENCEへ変換しません。
+
 ## Abstraction-only表現比較
 
 既存日記36件とLine 120件へ同じPrompt・Schemaを適用し、themes / structureを含まない短い`abstraction`だけを各3回生成します。意味類似度Embeddingは言い換えを確認対象へ振り分ける診断に限定し、意味的同等性は実表現をBlindレビューします。
