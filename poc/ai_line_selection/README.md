@@ -6,6 +6,8 @@ Issue #6のMeaning Structure比較、Issue #7のEmbedding候補検索比較、Is
 
 Epic #27では、初回PoCを変更せず、日記とLineのEmbedding入力を`abstraction`だけにそろえてリアルタイムLine評価LLMを省略する実験候補`abstraction-only-v1`を追加比較します。事前条件と採用基準は[AI追加PoC計画](../../docs/AI_追加PoC計画.md)、機械可読な固定値は`config/additional_poc.yml`を参照してください。
 
+Epic #40では、Reflective Distance再評価を踏まえ、abstraction similarityを下限、surface similarityをtoo-close除外の上限とする`b-v2-band-pass-design-v1`を設計・検証します。domainは補助属性、structureは分析用途とし、投稿時Line評価LLMは使用しません。基本設計は[B-v2 AI選定基本設計](../../docs/B-v2_AI選定基本設計.md)、結果閲覧前に固定する機械可読な基準は`data/evaluations/b_v2_design_criteria_v1.yml`を参照してください。Issue #41では設計だけを扱い、外部API実行、Lineプール変更、DB migrationは行いません。
+
 ## 必要環境
 
 - Ruby 3.3以上（開発時：3.4.7）
