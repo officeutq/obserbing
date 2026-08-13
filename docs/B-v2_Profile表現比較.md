@@ -23,6 +23,8 @@ taxonomyは両候補で共通の固定enumとする。`unknown`は判断材料�
 
 実行はOpenAI Responses API / `gpt-5.6-terra` / reasoning low / `store=false`へ固定する。入力はリポジトリ内の合成データだけであり、APIキー、認証ヘッダー、Provider生レスポンス、request IDを成果物へ保存しない。
 
+初回実行では単一domain版30件の完了後、`primary + secondary`版のSchemaにある`uniqueItems`がProvider非対応で停止した。要件自体は変えず、重複禁止を既存のローカルcontract validationへ移した。実行済み30件・11,384 token・5.3757円は破棄せず、修正と残り30件の再開条件を`b-v2-profile-preflight-v1.1`へ実API再開前に固定した。
+
 ## 評価項目
 
 - 初回Schema成功率とretry後の完了

@@ -84,4 +84,13 @@ class Bv2ProfileComparisonTest < Minitest::Test
       end
     end
   end
+
+
+  def test_primary_secondary_schema_uses_local_uniqueness_validation_for_provider_compatibility
+    schema = JSON.parse(File.read(File.join(configuration.root_dir, "schemas", "b_v2_profile_primary_secondary_v1.json")))
+    secondary = schema.dig("properties", "domain", "properties", "secondary")
+
+    refute secondary.key?("uniqueItems")
+    assert_equal 2, secondary.fetch("maxItems")
+  end
 end
