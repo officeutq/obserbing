@@ -367,9 +367,9 @@ obserbing distanceの意味と品質要件は要件定義書を参照する。B-
 - 主品質：SILENCEと技術エラーを含む全normal実行枠に対するacceptable outcome率
 - 反復安定性：36 Entryのうち3反復すべてがacceptable outcomeだったEntry率
 
-B-v2の事前基準は、acceptable outcome率80%以上を必須、90%以上を目標とし、3反復すべてacceptableのEntry率60%以上を必須、75%以上を目標とする。必須不適合と未解決low confidenceは各0件とする。
+B-v2の採否は2 Gateに分離する。Gate Aは現Approved 96 Lineを固定し、B-v1に対するacceptable改善、too-close削減、too-far / unrelated抑制、analogical保持、反復、安全、速度、費用を総合して、Lineプール改善へ進めるアーキテクチャ候補かを判断する。現Lineプールで絶対80%に届かないことだけでは棄却しない。Gate BはGate A通過後に方式版を固定し、Lineプール改善後の製品品質としてacceptable outcome率80%以上（目標90%）、3反復すべてacceptableのEntry率60%以上（目標75%）を要求する。両Gateとも必須不適合と未解決low confidenceは各0件とする。
 
-旧PoCの90%はtoo-closeを許容し得る指標であり、`reflective-distance-v1`の90%と同じ意味ではない。このため80%を詳細設計候補への必須線、90%を製品品質の目標線として結果閲覧前に固定する。
+旧PoCの90%はtoo-closeを許容し得る指標であり、`reflective-distance-v1`の90%と同じ意味ではない。Gate Aの具体的な比較基準とGate Bの80% / 90%はIssue #46の結果閲覧前に版固定し、結果に合わせて変更しない。
 
 Top 20 Jaccardと最終Line完全一致率は診断として記録してよいが、主採用基準にしない。analogical transfer件数にも最低ノルマを置かず、距離やdomain差を増やして件数を稼ぐことを防ぐ。
 
@@ -626,15 +626,16 @@ B-v2では、abstraction + domain、一括Embedding、abstraction下限、surfac
 
 1. 評価用日記、Line、期待する禁止候補、評価票を固定する。
 2. 比較対象ごとに入力形式、出力スキーマ、候補集合を可能な範囲で揃える。
-3. abstraction + domain、abstraction下限 + surface上限、grounding、selectorを個別にオフライン評価する。
-4. 多段階フローを結合し、通常系、候補不足、SAFETY、外部API失敗を実行する。
-5. 同じ条件を複数回実行し、品質と再現性を記録する。
-6. モデル名を伏せた状態で複数人が結果を評価できる形を優先する。
-7. 品質、レイテンシ、安定性、プライバシー条件、コストを総合して採用候補を決める。
+3. Issue #42でabstraction + domainをオフラインで最大2候補へ絞り、固定合成Entry 6件・Line 4件 × 3反復の小規模APIスモークを行う。
+4. abstraction下限 + surface上限、grounding、selectorを保存成果物で個別にオフライン評価する。
+5. #46で多段階フローを36 Entry × 3反復で結合し、通常系、候補不足、SAFETY、外部API失敗を実行する。
+6. 同じ条件を複数回実行し、品質と再現性を記録する。
+7. モデル名を伏せた状態で複数人が結果を評価できる形を優先する。
+8. Gate Aでアーキテクチャ候補、Lineプール改善後のGate Bで製品品質を判断する。
 
 ## 19.5 採用判断
 
-acceptable outcome率だけでなく、必須不適合、SAFETY見逃し、構造化出力失敗、SILENCE、遅延の裾、投稿時費用、反復安定性を個別に評価する。採用基準値はテスト実施前に版固定し、結果を見て変更しない。
+Gate Aは絶対acceptable率だけでなくB-v1からの改善幅、too-close減少、too-far / unrelated、analogical保持、必須不適合、SAFETY、SILENCE、遅延、投稿時費用、API回数、反復安定性を評価する。Gate A通過は本番採用ではなく、方式を固定してLineプール改善へ進む判断である。Gate BがLine改善後の製品品質を判断する。基準値は各結果を見る前に版固定する。
 
 PoCでは実接続用の本番実装、正式契約、DB migration、アプリUI実装および本番プロンプト確定を行わない。
 
@@ -684,7 +685,7 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 `reflective-distance-v1`による最終再評価では、`abstraction-only-v1-diagnostic`の許容率は54 / 108（50.00%）で、方式不採用を維持した。一方で`analogical_transfer`35表示はすべて許容され、旧fatalだった独立した具体例も許容された。低確信10種類の人間確認では4種類がCodex一次判断から反転し、構造的説明可能性だけではobserbing品質を完全に代理できない可能性も確認した。
 
-この証拠を受け、Epic #40では次方式を`b-v2-band-pass-design-v1`として設計する。
+この証拠を受け、Epic #40では次方式を`b-v2-band-pass-design-v2`として設計する。`v1`作成後、実験結果を見る前にGate A / B分離とIssue #42の小規模APIスモークを追加した改訂であり、`v1`成果物も保持する。
 
 - abstraction similarityを本質的近さの下限とする。
 - surface similarityをtoo-close除外の上限とする。
@@ -693,7 +694,11 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 - 投稿時外部処理をSAFETY、abstraction + domain、一括Embeddingの最大3段階とし、Line評価LLMを0回とする。
 - Approved 96 Lineを変えずにB-v1との方式差を先に比較する。
 
-固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。機械可読な基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v1.yml`に保存する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
+現96 Lineの評価は、Gate A「B-v2をLineプール改善へ進めるアーキテクチャ候補とみなせるか」と、Gate B「方式固定・Lineプール改善後に製品品質を満たすか」へ分離する。Gate Aでは絶対80%未達だけで棄却せず、B-v1からの改善、too-close削減、too-far / unrelated抑制、analogical保持、安全、反復、速度、費用、API回数を総合する。判定は`architecture_candidate / architecture_rejected / further_selection_poc_required`とし、`architecture_candidate`も本番採用確定ではない。
+
+Issue #42は、表現方式を外部APIなしで最大2候補へ絞るPhase 1と、固定合成Entry 6件・Line 4件を各3反復するPhase 2の小規模APIスモークに分ける。通常最大60、retry込み120リクエスト、50,000 token、500円を上限とし、Provider、model、単価、送信・保存データ等を実行前のpreflightコミットで固定する。#46は現96 Line・36 Entry × 3反復の本統合ライブPoCとして分離する。
+
+固定した評価基準、費用・速度予算、将来のpgvector実装像、未決定事項およびIssue依存関係は[B-v2 AI選定基本設計](B-v2_AI選定基本設計.md)を正とする。機械可読な現行基準は`poc/ai_line_selection/data/evaluations/b_v2_design_criteria_v2.yml`に保存し、`v1`も履歴として保持する。本書更新時点では外部AI API、Embedding API、SAFETY、abstraction生成、Line再選定を実行していない。
 
 ---
 
@@ -727,14 +732,14 @@ Provider、モデル、契約、プロンプトおよび本番閾値は引き続
 
 ## 22.1 B-v2 Epicへ送る事項
 
-- #42：abstraction + domain表現方式を設計・比較する。
+- #42：abstraction + domainをオフライン比較し、preflight固定後に小規模実APIスモークを行う。
 - #43：abstraction下限 + surface too-close上限をオフライン検証する。
 - #44：独立した比喩・類推を許容するgrounding / 業務ルールを再設計する。
 - #45：適格帯域からのseed付き軽量selectorを比較する。
 - #46：現在のApproved 96 Lineを変えず、B-v2実API統合PoCを行う。
 - #47：B-v1と同じLineプール・同じReflective Distanceルーブリックで品質・速度・費用を比較する。
-- #48：B-v2基本方式の採否を判断する。
-- #49：採用候補が成立した場合だけLineプール改善の別Epicへ接続する。
+- #48：`architecture_candidate / architecture_rejected / further_selection_poc_required`でGate Aを判断する。
+- #49：Gate A成立時にprofile、Embedding、閾値、selector、taxonomy、guard、現96 Line hashを固定し、Lineプール改善の別Epicへ接続する。
 - 実データ規模を想定した`pgvector`の性能評価
 - 不足領域抽出とCandidate生成を行うバッチLLMの独立評価
 - 外部API障害時に品質を損なわない代替方式の可否

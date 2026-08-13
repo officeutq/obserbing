@@ -2,7 +2,7 @@
 
 **文書ステータス：基本設計・PoC事前基準固定**
 
-**設計版：`b-v2-band-pass-design-v1`**
+**設計版：`b-v2-band-pass-design-v2`**
 
 **作成日：2026年8月13日**
 
@@ -22,6 +22,8 @@ B-v2の中心仮説を、次の帯域選択として固定する。
 投稿時の外部処理はSAFETY、abstraction + domain生成、Entry abstraction + raw textの一括Embeddingの最大3段階とする。リアルタイムLine評価LLMは使用しない。Line側のAI出力とEmbeddingは登録・承認時またはバッチで事前生成し、投稿時に再生成しない。
 
 本書は設計を確定するもので、Provider、モデル、`A_min`、`S_max`、Top N、domain taxonomy、selectorを正式採用するものではない。これらは後続Issueで比較してライブ実行前に版固定する。
+
+`v2`は`v1`作成後、B-v2に関する実験結果を一切見る前に、アーキテクチャ成立判定とLineプール改善後の製品品質判定を分離し、Issue #42の小規模APIスモークを追加した版である。`v1`のcriteria成果物とGit履歴は削除・改変せず保持する。
 
 ## 2. 背景と設計根拠
 
@@ -43,7 +45,7 @@ Reflective Distanceの人間確認では、低確信10種類中4種類でCodex�
 - 適格候補からの軽量selector比較
 - 現Approved 96 Lineを固定した実API統合PoC
 - B-v1との品質・速度・費用比較
-- B-v2基本方式の採否
+- B-v2をLineプール改善へ進めるアーキテクチャ候補とみなせるかのGate A判定
 
 ### 3.2 本Epicで扱わない
 
@@ -53,7 +55,7 @@ Reflective Distanceの人間確認では、低確信10種類中4種類でCodex�
 - 本番の閾値・domain taxonomyの正式決定
 - リアルタイムLine評価LLMの再導入
 
-最初の実API比較では現Approved 96 Lineを変更しない。選定方式変更とLineプール変更を同時に行わず、B-v2が採用候補になった場合だけ別EpicでLineプール改善へ進む。
+最初の実API比較では現Approved 96 Lineを変更しない。選定方式変更とLineプール変更を同時に行わず、Gate Aで`architecture_candidate`となった場合はB-v2を固定baselineとして別EpicのLineプール改善へ進む。この時点では本番採用ではない。現96 Lineで製品品質の絶対基準に届かないことだけを理由に、改善効果のあるB-v2アーキテクチャを不採用にしない。
 
 ## 4. 設計原則
 
@@ -257,31 +259,95 @@ Issue #45では次を比較する。
 
 1. 現在の固定合成Entry 36件とApproved 96 Lineを使う。
 2. Line本文、status、承認集合を変更しない。
-3. Issue #42〜#45で表現、閾値、guard、selectorをオフライン比較する。
-4. ライブ結果を見る前に各版と閾値を固定する。
-5. Issue #46で36 Entry × 3反復をライブ実行する。
-6. B-v1保存結果と同じ`reflective-distance-v1`で比較する。
-7. B-v2採否後にのみLineプール改善を別Epicへ送る。
+3. Issue #42のPhase 1で表現方式をオフラインで絞り、Phase 2で小規模APIスモークを行う。
+4. Issue #44を#42と並行し、Issue #43・#45は保存成果物を用いてオフライン比較する。
+5. #46のライブ結果を見る前にprofile、Embedding、閾値、selector、taxonomy、guardの各版を固定する。
+6. Issue #46で現96 Lineのまま36 Entry × 3反復をライブ実行する。
+7. Issue #47でB-v1保存結果と同じ`reflective-distance-v1`により比較する。
+8. Issue #48でGate Aを判定する。
+9. `architecture_candidate`の場合、Issue #49で固定baselineを作り、別EpicのLineプール改善後にGate Bを評価する。
 
-オフライン調整とライブ評価が同じ合成36 Entryを使うため、一般化性能を証明する試験ではない。PoC採用候補になった場合は、別のholdoutまたは実データ相当評価を詳細設計前に追加する。
+オフライン調整とライブ評価が同じ合成36 Entryを使うため、一般化性能を証明する試験ではない。Gate Aはアーキテクチャ成立候補を判断するPoC gateであり、本番採用判断ではない。Gate B前後には別のholdoutまたは実データ相当評価を追加する。
 
-### 13.2 主品質
+### 13.2 Issue #42：表現方式の小規模APIスモーク
+
+Issue #42は次の2 Phaseに分ける。
+
+#### Phase 1：オフライン設計比較
+
+外部APIを使わず、固定enum、`primary + secondary`、`unknown / other`、Schema、Prompt、validation、versioningを比較する。実APIへ出す候補は最大2版に絞る。この段階では本番候補を確定しない。
+
+#### Phase 2：小規模実APIスモーク
+
+固定した合成データ10件を、候補最大2版、各3反復で生成する。
+
+- Entry 6件：`E001 / E003 / E008 / E023 / E032 / E035`
+- Line 4件：`L021 / L083 / L102 / L118`
+- 通常予定：10対象 × 最大2候補 × 3反復 = 最大60リクエスト
+- retry：失敗した各リクエストにつき最大1回、retry込み最大120リクエスト
+- token上限：入力・出力合計50,000 token
+- 費用上限：500円
+
+このsubsetは、単一・複合・境界domain、analogical transfer、人間/Codex判断差、人物・数量を含む独立表現、短文・長文を含む。目的は最終Line品質の判定ではなく、abstraction品質、domain妥当性、3反復安定性、Schema成功率、primary / secondaryの入替、unknown / other率、元文にない事実追加、domain追加前の保存済みabstractionからの劣化、latency、token、費用を早期確認することである。
+
+API実行前に、Provider、model、契約、候補版、対象ID、反復数、通常・retry込みリクエスト上限、token上限、単価、最大費用、送信データ、保存成果物をpreflight成果物へ固定してコミットする。費用見積りが500円を超える構成は実行しない。送信するのは固定合成本文と版付きPrompt / Schemaだけとし、APIキーは表示・保存しない。保存するのは正規化したabstraction / domain、Schema結果、版、usage、latency、費用および評価であり、認証情報や不要なProvider生レスポンスを保存しない。
+
+#43は#42の保存出力を診断入力として再利用できるが、追加外部APIを実行せず、少数subsetへ過適合させない。#46前に36件のオフライン評価で`A_min / S_max / Top N`を固定する。
+
+### 13.3 Gate A：B-v2アーキテクチャ成立判定
+
+Gate Aは、現96 Lineの製品品質を認定するものではない。B-v1診断baselineと同じLineプール・同じ`reflective-distance-v1`で、帯域選択の改善効果と毎投稿運用可能性を判定する。
+
+比較baselineは`abstraction-only-v1-diagnostic`の保存済み108表示とする。
+
+| baseline指標 | 値 |
+|---|---:|
+| acceptable outcome | 54 / 108（50.00%） |
+| `direct_restatement / too_close` | 29 |
+| `too_far` + `unrelated` | 25 |
+| acceptableな`analogical_transfer` | 35 / 35 |
+
+`architecture_candidate`には、次をすべて要求する。
+
+- acceptable outcome率70%以上（76 / 108以上）、かつbaselineから15ポイント以上改善
+- `direct_restatement / too_close`をbaselineから30%以上削減（20件以下）
+- `too_far + unrelated`をbaseline比+5ポイント以内（30件以下）、かつ`unrelated`12件以下
+- acceptableな`analogical_transfer`をbaselineの90%以上保持（32件以上）、かつanalogical内acceptable率90%以上
+- 3反復すべてacceptableのEntry率50%以上（18 / 36以上）
+- semantic SILENCE率20%以下（21 / 108以下）
+- `user_fact_assertion / explicit_contradiction / advice_or_diagnosis`各0件
+- 既存normal EntryのSAFETY過剰遮断0件、完了フロー技術エラー0件、未解決low confidence 0件
+- End-to-End p95 6秒以下、投稿時費用1円以下、通常時外部リクエスト3以下、Line評価LLM 0回
+
+判定は次の3値とする。
+
+| 判定 | 意味 |
+|---|---|
+| `architecture_candidate` | 上記をすべて満たす。方式版を固定し、Lineプール改善Epicへ進める。本番採用ではない。 |
+| `further_selection_poc_required` | 安全・API・費用・速度の必須条件は満たすが、候補基準の一部が境界、または技術エラー等で比較が不成立。現Lineプールのまま追加選定PoCを行う。 |
+| `architecture_rejected` | 安全必須条件または運用予算に違反する、acceptable改善が10ポイント未満、too-close削減が20%未満、acceptable analogical保持が60%未満、または`too_far + unrelated`が35%を超える。 |
+
+70%または80%を単独で判定しない。例えば70%で製品品質80%に届かなくても、上記の改善・距離分布・analogical・反復・安全・速度・費用条件を満たせば`architecture_candidate`となる。結果を見た後にこの条件を変更しない。
+
+### 13.4 Gate B：Lineプール改善後の製品品質判定
 
 `acceptable_outcome_rate`を、全normal実行枠に対する最終`acceptable=true` Line数として定義する。SILENCEと技術エラーはacceptableとして数えない。これにより、低品質候補をSILENCEへ逃がして率を上げられない。
 
 - 必須：80%以上（108実行なら87件以上）
 - 目標：90%以上（108実行なら98件以上）
 
-旧PoCの90%はtoo-closeを許容し得る別の指標だった。B-v2では`direct_restatement / too_close`も不許容であり、同じ90%を必須にすると指標変更を無視することになる。そのため80%を詳細設計候補の必須線、90%を製品品質の目標線として事前固定する。
+これはGate A通過後、B-v2の方式版を固定してLineプールを改善した後に適用する製品品質基準である。現96 LineのGate Aで80%未達だったことだけをB-v2アーキテクチャの棄却理由にしない。
 
-### 13.3 反復安定性
+旧PoCの90%はtoo-closeを許容し得る別の指標だった。B-v2では`direct_restatement / too_close`も不許容であるため、80%を製品品質の必須線、90%を目標線として固定する。
+
+#### Gate Bの反復安定性
 
 同じLineが再現されることを成功条件にしない。各Entryについて3反復すべてがacceptable outcomeだった割合を測る。
 
 - 必須：60%以上（36 Entryなら22件以上）
 - 目標：75%以上（36 Entryなら27件以上）
 
-### 13.4 必須不適合
+#### Gate Bの必須不適合
 
 108表示全体で次を各0件とする。
 
@@ -291,7 +357,7 @@ Issue #45では次を比較する。
 
 未解決low confidenceは0件とする。Codex一次評価のlow confidence、必須不適合候補、さらにrelation / distanceを層化した最低24表示を人間確認し、Codexとの判断差を別集計する。
 
-### 13.5 分布と診断
+### 13.5 共通の分布と診断
 
 次は必ず報告するが、件数を採用ノルマにしない。
 
@@ -303,7 +369,21 @@ Issue #45では次を比較する。
 - Top N候補回収と閾値感度
 - Top20 Jaccard、最終Line完全一致率は診断のみ
 
-analogical transfer件数に最低ノルマを置かない。domain差や遠さを増やして件数を稼ぐことを防ぐ。主品質と必須不適合を満たした上で、B-v1よりanalogical transferを多く保持できるかを解釈する。
+Gate Aではbaselineを壊していないことを確認するため、acceptableなanalogical transferの保持基準を使う。これはdomain差や遠さを増やす生成ノルマではない。Gate Bでは固定件数ノルマを置かず、主品質と必須不適合を満たした上で分布を解釈する。
+
+### 13.6 Gate AからLineプール改善への引き渡し
+
+Issue #48が`architecture_candidate`を記録した場合、Issue #49は次を一つの不変baseline manifestとして固定する。
+
+- B-v2のprofile版
+- Embedding Provider / model / dimensions / 正規化を含むEmbedding版
+- `A_min / S_max / Top N`
+- selector版とweight、seed規則
+- domain taxonomy版
+- guard / policy版
+- 現Approved 96 LineのID、本文、statusから計算したhash
+
+別Epicはこの方式baselineを変えずにLineプールだけを改善し、`B-v2 + 現96 Line`と`B-v2 + 改善Lineプール`を比較する。方式変更が必要になった場合はLineプール改善と同じ比較へ混ぜず、別版・別評価として扱う。
 
 ## 14. 性能・費用・運用基準
 
@@ -319,7 +399,7 @@ analogical transfer件数に最低ノルマを置かない。domain差や遠さ�
 | 完了フロー技術エラー | 0 | 0 | SILENCEと分離 |
 | pgvector + Ruby処理p95 | 250ms以下 | 100ms以下 | AI待ち時間を除く診断予算 |
 
-費用は投稿時処理、評価用オフラインjudge、Line事前生成を分離する。PoC実行前に最大リクエスト数・retry込み上限・最大費用をpreflightで表示し、Epic予算を設定する。
+費用は投稿時処理、評価用オフラインjudge、Line事前生成を分離する。Epic #40の有料外部API累計上限を2,000円とし、Issue #42へ最大500円、Issue #46へLine事前生成を含む最大1,500円を割り当てる。#43〜#45、#47〜#49は保存成果物を用い、外部API 0回を既定とする。各実API Issueは実行前に最大リクエスト数・retry込み上限・token・単価・最大費用をpreflight成果物へ固定し、上限超過見込みなら実行しない。
 
 ## 15. 将来DBイメージ
 
@@ -373,12 +453,13 @@ Entry原文、profile、Embeddingは個別ユーザーデータとして扱い�
 |---|---|
 | abstraction prompt / Schemaの確定版 | #42 |
 | domain taxonomy、単一/複数、unknown | #42 |
-| Embedding Provider / model / dimensions | #42、#43、#46 |
+| profile生成Provider / model | #42 Phase 1後、Phase 2 preflight |
+| Embedding Provider / model / dimensions | #43、#46 |
 | `A_min`、`S_max`、Top N、距離方式 | #43 |
 | Line policy metadataと投稿時guard契約 | #44 |
 | 履歴・直近利用の具体値 | #44 |
 | selectorとweight上限 | #45 |
-| SAFETY / profile生成Provider・model | #46 |
+| SAFETY Provider・model | #46 |
 | timeout / retryの具体値 | #46 |
 | pgvector HNSW / IVFFlatとindex parameter | 実装前性能検証 |
 | 本番閾値、契約、監視alert | #47、#48以降 |
@@ -387,18 +468,18 @@ Entry原文、profile、Embeddingは個別ユーザーデータとして扱い�
 
 | 順序 | Issue | 成果 |
 |---:|---|---|
-| 1 | #41 | 本書と事前評価基準を固定 |
-| 2a | #42 | abstraction + domain表現を比較 |
+| 1 | #41 | 本書、Gate A / B、事前評価基準を固定 |
+| 2a | #42 | abstraction + domainをオフライン比較し、小規模実APIスモーク |
 | 2b | #44 | grounding / 業務ルールを再設計 |
 | 3 | #43 | abstraction下限 + surface上限をオフライン比較 |
 | 4 | #45 | 適格候補selectorを比較 |
-| 5 | #46 | 現96 Lineで実API統合PoC |
+| 5 | #46 | 現96 Line・36 Entry × 3反復でB-v2本統合実API PoC |
 | 6 | #47 | B-v1と品質・速度・費用比較 |
-| 7 | #48 | B-v2基本方式の採否判断 |
-| 8 | #49 | 採用候補成立時だけLine改善Epicへ接続 |
+| 7 | #48 | B-v2アーキテクチャGate A判定 |
+| 8 | #49 | Gate A成立時に固定baselineを作りLine改善Epicへ接続 |
 
 次に最初に実施するIssueは#42である。#44は#41完了後に#42と並行可能だが、#43は#42の表現版固定を待つ。
 
 ## 19. 今回の実行制約
 
-Issue #41では設計と事前基準だけを作成した。OpenAI、Anthropic、Embedding、SAFETY、abstraction生成、Line再選定、その他有料外部APIの呼び出しは0回である。Line、既存Embedding、DB schemaは変更していない。
+Issue #41では設計と事前基準だけを作成した。`v1`作成後、B-v2の実験結果を見る前にGate A / Bと#42スモークを追加して`v2`へ改訂した。OpenAI、Anthropic、Embedding、SAFETY、abstraction生成、Line再選定、その他有料外部APIの呼び出しは0回である。Line、既存Embedding、DB schemaは変更していない。
