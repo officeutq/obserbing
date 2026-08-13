@@ -1,0 +1,179 @@
+version: 1
+review_id: reflective-distance-human-review-v1
+rubric_id: reflective-distance-v1
+status: completed
+created_at: "2026-08-13"
+issue: 38
+judge: human_review
+reviewer_role: product_owner
+personal_information_recorded: false
+scope: codex_low_confidence_pairs
+human_judgment_field: acceptable
+human_rationale_collected: false
+label_normalization:
+  judge: codex_rubric_normalization
+  rule: >-
+    Keep the product owner's acceptable decision authoritative, then normalize distance
+    and relation_type to the already-frozen reflective-distance-v1 schema without
+    changing the rubric.
+
+reviews:
+  - pair_id: E004/L092
+    human_acceptable: false
+    codex_provisional_acceptable: false
+    changed_from_codex: false
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の不許容判定は、当日直前の不安と待ち時間終端の接続に補足が多く必要な
+      weak_connectionとして固定ルーブリックと整合する。
+
+  - pair_id: E005/L117
+    human_acceptable: true
+    codex_provisional_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定は、未来へ注意が偏る間にも現在が進むことを湯気の時間へ移す
+      analogical_transferとして固定ルーブリックと整合する。
+
+  - pair_id: E008/L021
+    human_acceptable: true
+    codex_provisional_acceptable: false
+    changed_from_codex: true
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定を正とし、会話中に聞くことと会話後に残る複数の声の接続を
+      same_domainのreflective distanceとして正規化する。
+
+  - pair_id: E013/L012
+    human_acceptable: true
+    codex_provisional_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定は、説明できない進捗を空白ではなく形成途中として捉え直す
+      analogical_transferとして固定ルーブリックと整合する。
+
+  - pair_id: E019/L074
+    human_acceptable: false
+    codex_provisional_acceptable: true
+    changed_from_codex: true
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の不許容判定を正とし、配置変更と空になった場所の知覚にはobserbingとして
+      十分な橋がないweak_connectionとして正規化する。
+
+  - pair_id: E023/L073
+    human_acceptable: false
+    codex_provisional_acceptable: true
+    changed_from_codex: true
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の不許容判定を正とし、写真削除と名前による終わりの輪郭の間にはobserbingとして
+      十分な橋がないweak_connectionとして正規化する。
+
+  - pair_id: E023/L118
+    human_acceptable: true
+    codex_provisional_acceptable: false
+    changed_from_codex: true
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定を正とし、消した場所の写真と通るたびに変わる景色の接続を
+      same_domainのreflective distanceとして正規化する。
+
+  - pair_id: E025/L027
+    human_acceptable: false
+    codex_provisional_acceptable: false
+    changed_from_codex: false
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の不許容判定は、共有したい余韻と次を要求しない共有の向きがずれる
+      weak_connectionとして固定ルーブリックと整合する。
+
+  - pair_id: E030/L065
+    human_acceptable: true
+    codex_provisional_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定は、時間感覚の変化に慣れが遅れて追いつく構造への
+      analogical_transferとして固定ルーブリックと整合する。
+
+  - pair_id: E034/L088
+    human_acceptable: true
+    codex_provisional_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    normalization_reason: >-
+      人間の許容判定は、小さな日常にも一日の重さがある接続を残すsame_domainの
+      reflective distanceとして固定ルーブリックと整合する。

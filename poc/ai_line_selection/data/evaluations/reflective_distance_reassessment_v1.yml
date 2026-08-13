@@ -1,0 +1,741 @@
+---
+version: 1
+evaluation_version: reflective-distance-reassessment-v1
+rubric_id: reflective-distance-v1
+judge: codex_reassessment_plus_human_review
+status: complete
+created_at: '2026-08-13'
+issue: 38
+audit:
+  rubric_frozen_commit: 51b398f
+  blind_judgments_initial_commit: ccd13e9
+  baseline_expansion_commit: 6794b76
+  old_labels_joined_after_blind_judgment_commits: true
+execution:
+  type: offline_existing_artifact_reassessment
+  openai_api_calls: 0
+  anthropic_api_calls: 0
+  external_ai_api_calls: 0
+  embedding_api_calls: 0
+  safety_calls: 0
+  abstraction_calls: 0
+  line_reselection_calls: 0
+  other_paid_external_api_calls: 0
+datasets:
+  abstraction_only_issue36:
+    evaluated_count: 108
+    unique_pair_count: 84
+    acceptable_count: 54
+    acceptable_rate: 0.5
+    distance_counts:
+      just_right: 54
+      not_obserbing: 9
+      too_close: 29
+      too_far: 16
+    relation_type_counts:
+      analogical_transfer: 35
+      direct_restatement: 29
+      same_domain: 19
+      unrelated: 9
+      weak_connection: 16
+    analogical_transfer_count: 35
+    analogical_transfer_acceptable_count: 35
+    analogical_transfer_acceptable_rate: 1.0
+    same_domain_count: 19
+    user_fact_assertion_count: 0
+    explicit_contradiction_count: 0
+    advice_or_diagnosis_count: 0
+    clearly_unrelated_count: 9
+    clearly_unrelated_rate: 0.0833
+    codex_low_confidence_count: 13
+    human_reviewed_count: 13
+    human_reviewed_acceptable_count: 7
+    unresolved_low_confidence_count: 0
+    final_judge_counts:
+      codex_reassessment: 95
+      human_review: 13
+  selected_v1_blind_sample_32:
+    evaluated_count: 32
+    unique_pair_count: 32
+    acceptable_count: 9
+    acceptable_rate: 0.2813
+    distance_counts:
+      just_right: 9
+      too_close: 23
+    relation_type_counts:
+      analogical_transfer: 3
+      direct_restatement: 23
+      same_domain: 6
+    analogical_transfer_count: 3
+    analogical_transfer_acceptable_count: 3
+    analogical_transfer_acceptable_rate: 1.0
+    same_domain_count: 6
+    user_fact_assertion_count: 0
+    explicit_contradiction_count: 0
+    advice_or_diagnosis_count: 0
+    clearly_unrelated_count: 0
+    clearly_unrelated_rate: 0.0
+    codex_low_confidence_count: 0
+    human_reviewed_count: 0
+    human_reviewed_acceptable_count: 0
+    unresolved_low_confidence_count: 0
+    final_judge_counts:
+      codex_reassessment: 32
+  selected_v1_all_stored_line_displays_98:
+    evaluated_count: 98
+    unique_pair_count: 41
+    acceptable_count: 27
+    acceptable_rate: 0.2755
+    distance_counts:
+      just_right: 27
+      too_close: 71
+    relation_type_counts:
+      analogical_transfer: 10
+      direct_restatement: 71
+      same_domain: 17
+    analogical_transfer_count: 10
+    analogical_transfer_acceptable_count: 10
+    analogical_transfer_acceptable_rate: 1.0
+    same_domain_count: 17
+    user_fact_assertion_count: 0
+    explicit_contradiction_count: 0
+    advice_or_diagnosis_count: 0
+    clearly_unrelated_count: 0
+    clearly_unrelated_rate: 0.0
+    codex_low_confidence_count: 0
+    human_reviewed_count: 0
+    human_reviewed_acceptable_count: 0
+    unresolved_low_confidence_count: 0
+    final_judge_counts:
+      codex_reassessment: 98
+old_to_new:
+  abstraction_only_issue36:
+    compared_count: 108
+    any_acceptable_or_distance_change_count: 38
+    acceptable_changed_count: 30
+    distance_changed_count: 32
+    old_too_close_to_new_acceptable_count: 5
+    old_too_close_to_new_acceptable_display_ids:
+    - A-E012-R3
+    - A-E022-R1
+    - A-E022-R2
+    - A-E022-R3
+    - A-E029-R3
+    old_too_far_to_new_acceptable_count: 0
+    old_too_far_to_new_acceptable_display_ids: []
+    old_fatal_to_new_analogical_transfer_count: 1
+    old_fatal_to_new_analogical_transfer_display_ids:
+    - A-E001-R3
+    old_acceptable_to_new_unacceptable_count: 28
+    old_acceptable_to_new_unacceptable_display_ids:
+    - A-E001-R1
+    - A-E001-R2
+    - A-E002-R1
+    - A-E002-R2
+    - A-E002-R3
+    - A-E004-R1
+    - A-E004-R2
+    - A-E004-R3
+    - A-E007-R2
+    - A-E010-R2
+    - A-E014-R2
+    - A-E016-R1
+    - A-E017-R1
+    - A-E019-R2
+    - A-E019-R3
+    - A-E020-R3
+    - A-E021-R2
+    - A-E021-R3
+    - A-E023-R3
+    - A-E024-R2
+    - A-E025-R1
+    - A-E025-R3
+    - A-E026-R2
+    - A-E028-R3
+    - A-E032-R1
+    - A-E032-R3
+    - A-E033-R1
+    - A-E035-R3
+  selected_v1_blind_sample_32:
+    compared_count: 32
+    any_acceptable_or_distance_change_count: 25
+    acceptable_changed_count: 24
+    distance_changed_count: 23
+    old_too_close_to_new_acceptable_count: 1
+    old_too_close_to_new_acceptable_display_ids:
+    - B-E015-R1
+    old_too_far_to_new_acceptable_count: 0
+    old_too_far_to_new_acceptable_display_ids: []
+    old_fatal_to_new_analogical_transfer_count: 1
+    old_fatal_to_new_analogical_transfer_display_ids:
+    - B-E033-R1
+    old_acceptable_to_new_unacceptable_count: 23
+    old_acceptable_to_new_unacceptable_display_ids:
+    - B-E001-R1
+    - B-E006-R1
+    - B-E007-R1
+    - B-E008-R1
+    - B-E009-R1
+    - B-E010-R1
+    - B-E011-R1
+    - B-E013-R1
+    - B-E014-R1
+    - B-E016-R1
+    - B-E017-R1
+    - B-E018-R1
+    - B-E020-R1
+    - B-E021-R1
+    - B-E022-R1
+    - B-E024-R1
+    - B-E026-R1
+    - B-E028-R1
+    - B-E029-R1
+    - B-E031-R1
+    - B-E032-R1
+    - B-E035-R1
+    - B-E036-R1
+comparison:
+  abstraction_only_acceptable_rate: 0.5
+  selected_v1_all_stored_acceptable_rate: 0.2755
+  delta_percentage_points: 22.45
+  direct_comparison_limitation: The datasets have different display counts, blocked
+    Entry coverage, and selection distributions. The 32-record historical blind sample
+    is smaller still, so these rates compare the same rubric but are not a controlled
+    head-to-head experiment.
+acceptance:
+  required_rate: 0.9
+  abstraction_only_met: false
+  metric_semantics_note: reflective-distance-v1 rejects direct restatements that the
+    old PoC acceptable metric could allow. The retained 90% threshold is conservative
+    and is not semantically identical to the old PoC 90% metric.
+representative_cases:
+  e001_l083:
+    pair_id: E001/L083
+    display_id: A-E001-R3
+    entry_text: 二つの案のどちらを選んでも、選ばなかった方が気になりそうだ。
+    line_text: 選んだ一人にも、選ばなかった誰かの気配がある。
+    old_acceptable: false
+    old_distance: not_obserbing
+    old_fatal_grounding_mismatch: true
+    new_acceptable: true
+    new_distance: just_right
+    new_relation_type: analogical_transfer
+    new_user_fact_assertion: false
+    codex_provisional_confidence: high
+    human_reviewed: false
+    final_judge: codex_reassessment
+    reviewer_role:
+    reason: 案から人物へ領域を移しながら選んだものにも選ばなかったものの気配が残る構造を保つ
+  e033_l102:
+    pair_id: E033/L102
+    display_id: B-E033-R1
+    entry_text: もっとできたはず、という言葉だけはいつも準備がいい。
+    line_text: 終えた三つより、始めなかった一つは声が大きい。
+    old_acceptable: false
+    old_distance: not_obserbing
+    old_fatal_grounding_mismatch: true
+    new_acceptable: true
+    new_distance: just_right
+    new_relation_type: analogical_transfer
+    new_user_fact_assertion: false
+    codex_provisional_confidence: high
+    human_reviewed: false
+    final_judge: codex_reassessment
+    reviewer_role:
+    reason: 具体的数量をユーザー事実として断定せず未達の一つが達成を上回る構造の例として示す
+  cross_domain_reflection:
+    pair_id: E024/L076
+    display_id: A-E024-R1
+    entry_text: 終わったことに名前をつけると、まだ続いていた部分まで終わる気がする。
+    line_text: 終わった線の先にも、同じ紙が続いている。
+    old_acceptable: true
+    old_distance: just_right
+    old_fatal_grounding_mismatch: false
+    new_acceptable: true
+    new_distance: just_right
+    new_relation_type: analogical_transfer
+    new_user_fact_assertion: false
+    codex_provisional_confidence: high
+    human_reviewed: false
+    final_judge: codex_reassessment
+    reviewer_role:
+    reason: 名付けた終わりの外にも続く部分があることを線の先にも続く紙へ転写する
+  clear_unrelated:
+    pair_id: E006/L044
+    display_id: A-E006-R2
+    entry_text: うまくいく根拠も、だめな根拠も同じくらいある。
+    line_text: 区切りは、仕事の量より光の変化に似ている。
+    old_acceptable: false
+    old_distance: too_far
+    old_fatal_grounding_mismatch: false
+    new_acceptable: false
+    new_distance: not_obserbing
+    new_relation_type: unrelated
+    new_user_fact_assertion: false
+    codex_provisional_confidence: high
+    human_reviewed: false
+    final_judge: codex_reassessment
+    reviewer_role:
+    reason: 相反する根拠の釣り合いと仕事の区切りを光で測ることに接続がない
+  clear_direct_restatement:
+    pair_id: E001/L001
+    display_id: A-E001-R1
+    entry_text: 二つの案のどちらを選んでも、選ばなかった方が気になりそうだ。
+    line_text: 選ばなかった方も、しばらく隣を歩く。
+    old_acceptable: true
+    old_distance: too_close
+    old_fatal_grounding_mismatch: false
+    new_acceptable: false
+    new_distance: too_close
+    new_relation_type: direct_restatement
+    new_user_fact_assertion: false
+    codex_provisional_confidence: high
+    human_reviewed: false
+    final_judge: codex_reassessment
+    reviewer_role:
+    reason: 選ばなかった選択肢が残るというEntryの意味をほぼそのまま比喩化している
+codex_low_confidence_cases:
+- pair_id: E004/L092
+  display_ids:
+  - A-E004-R1
+  - A-E004-R3
+  entry_text: 準備はしたけれど、当日になったら何か見落としている気がしてきた。
+  line_text: 待つ時間は、終わる直前に形を変える。
+  provisional_acceptable: false
+  provisional_distance: too_far
+  provisional_relation_type: weak_connection
+  provisional_reason: 当日直前の不安と待ち時間の終端変化は読めるが接続に補足が多く必要になる
+  human_reviewed: true
+  final_acceptable: false
+  final_distance: too_far
+  final_relation_type: weak_connection
+  final_judge: human_review
+- pair_id: E005/L117
+  display_ids:
+  - A-E005-R2
+  entry_text: |-
+    予定が一つ変わっただけなのに、その先も全部ずれる気がする。
+
+    実際にはまだ何も起きていない。
+  line_text: 湯気が消えるまでの時間にも、一日は流れている。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: analogical_transfer
+  provisional_reason: 未来へ注意が偏る間も現在が進むことを湯気を待つ短い時間へ転写できる
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: analogical_transfer
+  final_judge: human_review
+- pair_id: E008/L021
+  display_ids:
+  - A-E008-R2
+  entry_text: |-
+    相手の話を聞いていたつもりだった。
+    帰ってから、自分が話す番を待っていただけだったかもしれないと思った。
+  line_text: 会話のあとに残る声は、話した人のものだけではない。
+  provisional_acceptable: false
+  provisional_distance: too_far
+  provisional_relation_type: weak_connection
+  provisional_reason: 聞くより話す番を待っていた自己認識と会話後に残る複数の声の対応が曖昧である
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: same_domain
+  final_judge: human_review
+- pair_id: E013/L012
+  display_ids:
+  - A-E013-R2
+  entry_text: 今日はずっと忙しかったのに、何を進めたのか説明しようとすると言葉がない。
+  line_text: わからなさは、空白ではなく形の途中かもしれない。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: analogical_transfer
+  provisional_reason: 説明できない進捗を空白ではなく形成途中と見る接続は可能だが複数の読みが残る
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: analogical_transfer
+  final_judge: human_review
+- pair_id: E019/L074
+  display_ids:
+  - A-E019-R2
+  entry_text: 部屋の配置を変えたら、前より使いやすいのに自分の部屋ではないみたいだ。
+  line_text: 空になった場所は、前より広く見える。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: same_domain
+  provisional_reason: 空間の変更が広さや自分の場所という知覚を変える接続はあるが空になることはEntryにない
+  human_reviewed: true
+  final_acceptable: false
+  final_distance: too_far
+  final_relation_type: weak_connection
+  final_judge: human_review
+- pair_id: E023/L118
+  display_ids:
+  - A-E023-R1
+  entry_text: |-
+    もう使わない場所の写真を消した。
+    容量はほとんど変わらなかった。
+    消したという事実だけが少し大きい。
+  line_text: 同じ景色を通るたび、同じではないものが増える。
+  provisional_acceptable: false
+  provisional_distance: too_far
+  provisional_relation_type: weak_connection
+  provisional_reason: 場所の記録を消した変化と同じ景色の反復は連想できるが削除の重さへの橋が弱い
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: same_domain
+  final_judge: human_review
+- pair_id: E023/L073
+  display_ids:
+  - A-E023-R3
+  entry_text: |-
+    もう使わない場所の写真を消した。
+    容量はほとんど変わらなかった。
+    消したという事実だけが少し大きい。
+  line_text: 名前をつけると、終わりの輪郭が濃くなる。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: same_domain
+  provisional_reason: 写真削除で終わりが大きくなることと名前で終わりの輪郭が濃くなることは接続するが行為が異なる
+  human_reviewed: true
+  final_acceptable: false
+  final_distance: too_far
+  final_relation_type: weak_connection
+  final_judge: human_review
+- pair_id: E025/L027
+  display_ids:
+  - A-E025-R1
+  - A-E025-R3
+  entry_text: 一人で食べるのは平気だった。おいしかったと誰にも言わないのが少しだけ残った。
+  line_text: 一緒に笑った時間は、次の約束を要求しない。
+  provisional_acceptable: false
+  provisional_distance: too_far
+  provisional_relation_type: weak_connection
+  provisional_reason: 共有したい余韻と共有した笑いが次を要求しないことは近い語を持つが向きが異なる
+  human_reviewed: true
+  final_acceptable: false
+  final_distance: too_far
+  final_relation_type: weak_connection
+  final_judge: human_review
+- pair_id: E030/L065
+  display_ids:
+  - A-E030-R1
+  - A-E030-R3
+  entry_text: 昔は長かった一年を、今は予定表の十二枚として見ている。
+  line_text: 慣れは、変化より少し遅れて到着する。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: analogical_transfer
+  provisional_reason: 時間感覚の変化に慣れが追いつくという読みは可能だが一年が短く感じる主因までは示さない
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: analogical_transfer
+  final_judge: human_review
+- pair_id: E034/L088
+  display_ids:
+  - A-E034-R3
+  entry_text: 洗濯物がよく乾いた。それだけの日だったと言うには、少しちゃんとした日だった。
+  line_text: 共有しなかった出来事にも、同じ一日の重さがある。
+  provisional_acceptable: true
+  provisional_distance: just_right
+  provisional_relation_type: same_domain
+  provisional_reason: 小さな日常にも一日の重さがある接続は読めるが共有の有無はEntryに現れない
+  human_reviewed: true
+  final_acceptable: true
+  final_distance: just_right
+  final_relation_type: same_domain
+  final_judge: human_review
+human_review:
+  status: completed
+  required: false
+  judge: human_review
+  reviewer_role: product_owner
+  human_rationale_collected: false
+  unique_pair_count: 10
+  display_count: 13
+  acceptable_display_count: 7
+  unacceptable_display_count: 6
+  codex_human_agreement_pair_count: 6
+  codex_human_disagreement_pair_count: 4
+  changed_pair_ids:
+  - E008/L021
+  - E019/L074
+  - E023/L073
+  - E023/L118
+  net_acceptable_display_change: 0
+  all_codex_low_confidence_displays_resolved: true
+  cases:
+  - pair_id: E004/L092
+    display_ids:
+    - A-E004-R1
+    - A-E004-R3
+    entry_text: 準備はしたけれど、当日になったら何か見落としている気がしてきた。
+    line_text: 待つ時間は、終わる直前に形を変える。
+    codex_provisional_acceptable: false
+    codex_provisional_distance: too_far
+    codex_provisional_relation_type: weak_connection
+    human_acceptable: false
+    changed_from_codex: false
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の不許容判定は、当日直前の不安と待ち時間終端の接続に補足が多く必要な weak_connectionとして固定ルーブリックと整合する。
+  - pair_id: E005/L117
+    display_ids:
+    - A-E005-R2
+    entry_text: |-
+      予定が一つ変わっただけなのに、その先も全部ずれる気がする。
+
+      実際にはまだ何も起きていない。
+    line_text: 湯気が消えるまでの時間にも、一日は流れている。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: analogical_transfer
+    human_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定は、未来へ注意が偏る間にも現在が進むことを湯気の時間へ移す analogical_transferとして固定ルーブリックと整合する。
+  - pair_id: E008/L021
+    display_ids:
+    - A-E008-R2
+    entry_text: |-
+      相手の話を聞いていたつもりだった。
+      帰ってから、自分が話す番を待っていただけだったかもしれないと思った。
+    line_text: 会話のあとに残る声は、話した人のものだけではない。
+    codex_provisional_acceptable: false
+    codex_provisional_distance: too_far
+    codex_provisional_relation_type: weak_connection
+    human_acceptable: true
+    changed_from_codex: true
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定を正とし、会話中に聞くことと会話後に残る複数の声の接続を same_domainのreflective
+      distanceとして正規化する。
+  - pair_id: E013/L012
+    display_ids:
+    - A-E013-R2
+    entry_text: 今日はずっと忙しかったのに、何を進めたのか説明しようとすると言葉がない。
+    line_text: わからなさは、空白ではなく形の途中かもしれない。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: analogical_transfer
+    human_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定は、説明できない進捗を空白ではなく形成途中として捉え直す analogical_transferとして固定ルーブリックと整合する。
+  - pair_id: E019/L074
+    display_ids:
+    - A-E019-R2
+    entry_text: 部屋の配置を変えたら、前より使いやすいのに自分の部屋ではないみたいだ。
+    line_text: 空になった場所は、前より広く見える。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: same_domain
+    human_acceptable: false
+    changed_from_codex: true
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の不許容判定を正とし、配置変更と空になった場所の知覚にはobserbingとして 十分な橋がないweak_connectionとして正規化する。
+  - pair_id: E023/L073
+    display_ids:
+    - A-E023-R3
+    entry_text: |-
+      もう使わない場所の写真を消した。
+      容量はほとんど変わらなかった。
+      消したという事実だけが少し大きい。
+    line_text: 名前をつけると、終わりの輪郭が濃くなる。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: same_domain
+    human_acceptable: false
+    changed_from_codex: true
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の不許容判定を正とし、写真削除と名前による終わりの輪郭の間にはobserbingとして 十分な橋がないweak_connectionとして正規化する。
+  - pair_id: E023/L118
+    display_ids:
+    - A-E023-R1
+    entry_text: |-
+      もう使わない場所の写真を消した。
+      容量はほとんど変わらなかった。
+      消したという事実だけが少し大きい。
+    line_text: 同じ景色を通るたび、同じではないものが増える。
+    codex_provisional_acceptable: false
+    codex_provisional_distance: too_far
+    codex_provisional_relation_type: weak_connection
+    human_acceptable: true
+    changed_from_codex: true
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定を正とし、消した場所の写真と通るたびに変わる景色の接続を same_domainのreflective
+      distanceとして正規化する。
+  - pair_id: E025/L027
+    display_ids:
+    - A-E025-R1
+    - A-E025-R3
+    entry_text: 一人で食べるのは平気だった。おいしかったと誰にも言わないのが少しだけ残った。
+    line_text: 一緒に笑った時間は、次の約束を要求しない。
+    codex_provisional_acceptable: false
+    codex_provisional_distance: too_far
+    codex_provisional_relation_type: weak_connection
+    human_acceptable: false
+    changed_from_codex: false
+    final_labels:
+      acceptable: false
+      distance: too_far
+      relation_type: weak_connection
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の不許容判定は、共有したい余韻と次を要求しない共有の向きがずれる weak_connectionとして固定ルーブリックと整合する。
+  - pair_id: E030/L065
+    display_ids:
+    - A-E030-R1
+    - A-E030-R3
+    entry_text: 昔は長かった一年を、今は予定表の十二枚として見ている。
+    line_text: 慣れは、変化より少し遅れて到着する。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: analogical_transfer
+    human_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: analogical_transfer
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定は、時間感覚の変化に慣れが遅れて追いつく構造への analogical_transferとして固定ルーブリックと整合する。
+  - pair_id: E034/L088
+    display_ids:
+    - A-E034-R3
+    entry_text: 洗濯物がよく乾いた。それだけの日だったと言うには、少しちゃんとした日だった。
+    line_text: 共有しなかった出来事にも、同じ一日の重さがある。
+    codex_provisional_acceptable: true
+    codex_provisional_distance: just_right
+    codex_provisional_relation_type: same_domain
+    human_acceptable: true
+    changed_from_codex: false
+    final_labels:
+      acceptable: true
+      distance: just_right
+      relation_type: same_domain
+      user_fact_assertion: false
+      explicit_contradiction: false
+      advice_or_diagnosis: false
+      clearly_unrelated: false
+    judge: human_review
+    reviewer_role: product_owner
+    normalization_judge: codex_rubric_normalization
+    normalization_reason: 人間の許容判定は、小さな日常にも一日の重さがある接続を残すsame_domainの reflective distanceとして固定ルーブリックと整合する。
+  interpretation: Four of ten low-confidence pair judgments differed between Codex
+    and the product owner. This small reviewed subset suggests that explainable structural
+    correspondence may not fully proxy felt obserbing quality, but it is too small
+    for broad generalization.
+decision:
+  old_fatal_interpretation_revised: true
+  relative_ranking_changed_in_favor_of_abstraction_only: true
+  production_candidate: false
+  reopen_epic_27: false
+  previous_non_adoption_reversed: false
+  reason: The new rubric validates some cross-domain analogies that the previous grounding
+    framing penalized, and abstraction-only scores above selected-v1 under this rubric.
+    Product-owner review changed four of ten low-confidence pair judgments but left
+    the aggregate at 50%. The evaluated abstraction-only-v1-diagnostic still fails
+    the retained 90% threshold, so its prior non-adoption remains; abstraction-only
+    as a broader idea is not rejected.
+record_join:
+  display_pairs: reflective_distance_display_pairs_v1.csv
+  pair_judgments: reflective_distance_codex_judgments_v1.csv
+  human_review: reflective_distance_human_review_v1.yml
+  previous_labels: reflective_distance_previous_labels_v1.csv
+  join_key: entry_id/line_id for judgments; display_id for previous labels
+source_hashes:
+  rubric_sha256: 608c64b9b79085981180cd51c158582b3353fed44d9f561a8419d8b80f276023
+  judgments_sha256: 8b2790b66d3f7fecfa3b29dd448d8c6e28c6378e467210359271919dc5e0f1be
+  human_review_sha256: 68e8b6afe99376b66d3066ac660761e566ae502793728620b2d8b8c220fda8cf
+  display_pairs_sha256: c6f67ba7d9d7ce2213067542a087bdd48e0008c906f138b689118e0dc992b6cf
+  previous_labels_sha256: b1b1e7d4d7f245a998ffc99b745e0edb6dfd8c1cd13c6572e47c10659e702fa5
+  entries_sha256: 7805ce5cdc05bafa25ed730d9b24fcaed982f22270b3d48cfa71286a2326f9c5
+  lines_sha256: 79810d6a46dbaf30aec15afa5f7b637c24ece9815008c2fa04a15f660dd26eac
+  live_candidate_sets_sha256: e60a5b4cc229325f58bf457586f7de8c9d01650cd10600dd973555b12bac061e
+  live_previous_quality_sha256: cce18400cb2755169ba3c76d0725e370ae5c009dfe4d81ecae93172d1d26c9ff
+  baseline_provider_outputs_sha256: 4c8ebc4d5a7786c6378a7ab496626d6f74c51fa0d3f86cb1ae0eeb4996fddaca
+  baseline_human_evaluation_sha256: 420837a018aef0cde52fbb158ad1862eb384edf39ca07d12fe363833faa8ce47

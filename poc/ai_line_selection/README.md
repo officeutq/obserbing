@@ -387,6 +387,16 @@ bundle exec ruby bin\ai_line_selection run-abstraction-only-integrated --mode di
 
 リプレイ結果は [Abstraction Only 統合PoC比較](../../docs/Abstraction_Only_統合PoC比較.md)、ライブ実測と不採用判断の追補は [Abstraction Only ライブ統合追補](../../docs/Abstraction_Only_ライブ統合追補.md) を参照してください。同じ`--results`を指定すると完了済みEntryとLine事前Embeddingを再利用し、再開前の成功API利用量もテレメトリ台帳から費用へ含めます。
 
+### Reflective Distanceオフライン再評価
+
+Issue #36と`selected-v1`の保存済み表示ペアを、別領域への類推とユーザー事実断定を分離する`reflective-distance-v1`で再集計します。Codex低確信10種類は`reflective_distance_human_review_v1.yml`のプロダクトオーナー判定を重ね、Codex一次判断と人間確定結果を分離して保持します。既存結果を読み取るだけで、外部AI API、Embedding、SAFETY、abstraction、Line再選定は実行しません。不足する生成果物をAPIで補完せず停止します。
+
+```powershell
+ruby script\generate_reflective_distance_reassessment.rb
+```
+
+基準は [Reflective Distance 評価ルーブリック](../../docs/Reflective_Distance_評価ルーブリック.md)、結果は [Reflective Distance 再評価](../../docs/Reflective_Distance_再評価.md) を参照してください。
+
 ```powershell
 bundle exec rake test
 ```
