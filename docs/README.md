@@ -13,6 +13,7 @@
    - [AWS基本設計](design/AWS基本設計.md)
    - [AI基本設計](design/AI基本設計.md)
    - [B-v2 AI選定基本設計](design/ai/B-v2_AI選定基本設計.md)
+   - [Lineプール基本設計](design/ai/Lineプール基本設計.md)
    - 今後作成する詳細設計もこの配下へ置く
 3. 現行評価基準
    - [`docs/evaluation/`](evaluation/)：現在も有効な評価基準・ルーブリック
@@ -51,7 +52,8 @@ docs/
 │  ├─ AWS基本設計.md
 │  ├─ AI基本設計.md
 │  └─ ai/
-│     └─ B-v2_AI選定基本設計.md
+│     ├─ B-v2_AI選定基本設計.md
+│     └─ Lineプール基本設計.md
 ├─ development/
 │  ├─ Rails_Docker開発手順.md
 │  └─ Rails_Docker統合確認結果.md
@@ -76,6 +78,7 @@ docs/
 - [AWS基本設計](design/AWS基本設計.md)
 - [AI基本設計](design/AI基本設計.md)
 - [B-v2 AI選定基本設計](design/ai/B-v2_AI選定基本設計.md)
+- [Lineプール基本設計](design/ai/Lineプール基本設計.md)
 
 ### evaluation
 
